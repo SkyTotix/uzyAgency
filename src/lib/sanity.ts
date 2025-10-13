@@ -45,7 +45,7 @@ export interface SanityBlock {
     text: string;
     marks?: string[];
   }>;
-  markDefs?: any[];
+  markDefs?: unknown[];
 }
 
 // Utilidades para Sanity

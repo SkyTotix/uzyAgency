@@ -5,7 +5,7 @@ import { sanityClient } from '@/lib/sanity';
 
 interface UseSanityOptions {
   query: string;
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
   enabled?: boolean;
 }
 
@@ -16,7 +16,7 @@ interface UseSanityResult<T> {
   refetch: () => Promise<void>;
 }
 
-export function useSanity<T = any>({
+export function useSanity<T = unknown>({
   query,
   params = {},
   enabled = true
@@ -44,6 +44,7 @@ export function useSanity<T = any>({
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, JSON.stringify(params), enabled]);
 
   return {

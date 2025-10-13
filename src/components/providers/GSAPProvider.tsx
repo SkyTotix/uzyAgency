@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from 'react';
-import { gsap, ScrollTrigger, MotionPathPlugin } from '@/lib/gsap';
+import { ScrollTrigger, MotionPathPlugin } from '@/lib/gsap';
 
 interface GSAPProviderProps {
   children: React.ReactNode;
