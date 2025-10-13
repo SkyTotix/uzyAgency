@@ -1,0 +1,687 @@
+---
+alwaysApply: true
+---
+
+# GSAP Best Practices - Directrices Obligatorias
+
+## Uso OBLIGATORIO del Hook useGSAP
+
+### REGLA FUNDAMENTAL
+Todas las animaciones GSAP DEBEN usar el hook `useGSAP` proporcionado por GSAP. NUNCA usar `useEffect` para animaciones GSAP.
+
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+// ✅ CORRECTO - Usando useGSAP
+export default function AnimatedComponent() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(".fade-in", 
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, stagger: 0.2 }
+    );
+  }, { scope: containerRef }); // OBLIGATORIO: scope con ref
+
+  return (
+    <div ref={containerRef}>
+      <div className="fade-in">Elemento 1</div>
+      <div className="fade-in">Elemento 2</div>
+      <div className="fade-in">Elemento 3</div>
+    </div>
+  );
+}
+
+// ❌ INCORRECTO - Usando useEffect
+export default function WrongComponent() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { // ❌ PROHIBIDO
+    gsap.to(containerRef.current, {
+      opacity: 1,
+      duration: 1
+    });
+  }, []);
+
+  return <div ref={containerRef}>Contenido</div>;
+}
+```
+
+## Scope OBLIGATORIO con useRef
+
+### Regla Crítica
+SIEMPRE pasar una referencia `useRef` a la propiedad `scope` del hook `useGSAP` para limitar el alcance de las animaciones y evitar fugas de memoria.
+
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function ScopedAnimation() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  // ✅ CORRECTO - Scope específico para hero
+  useGSAP(() => {
+    gsap.timeline()
+      .fromTo(".hero-title", 
+        { opacity: 0, y: 100 },
+        { opacity: 1, y: 0, duration: 1 }
+      )
+      .fromTo(".hero-subtitle",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8 },
+        "-=0.5"
+      );
+  }, { scope: heroRef }); // OBLIGATORIO
+
+  // ✅ CORRECTO - Scope específico para cards
+  useGSAP(() => {
+    gsap.fromTo(".card",
+      { opacity: 0, scale: 0.8, y: 50 },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        y: 0, 
+        duration: 0.6, 
+        stagger: 0.1,
+        ease: "back.out(1.7)"
+      }
+    );
+  }, { scope: cardsRef }); // OBLIGATORIO
+
+  return (
+    <>
+      <div ref={heroRef}>
+        <h1 className="hero-title">Título Principal</h1>
+        <p className="hero-subtitle">Subtítulo</p>
+      </div>
+      
+      <div ref={cardsRef}>
+        <div className="card">Card 1</div>
+        <div className="card">Card 2</div>
+        <div className="card">Card 3</div>
+      </div>
+    </>
+  );
+}
+```
+
+## Prevención de Fugas de Memoria
+
+### Cleanup Automático
+El hook `useGSAP` maneja automáticamente la limpieza de animaciones, pero es importante seguir estas prácticas:
+
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function CleanupExample() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const tl = useRef<gsap.core.Timeline>();
+
+  useGSAP(() => {
+    // ✅ CORRECTO - Guardar referencia de timeline
+    tl.current = gsap.timeline({ repeat: -1, yoyo: true });
+    
+    tl.current
+      .to(".rotating-element", { rotation: 360, duration: 2 })
+      .to(".scaling-element", { scale: 1.2, duration: 1 }, 0);
+
+    // Cleanup automático - no necesitas cleanup manual
+  }, { scope: containerRef });
+
+  // ✅ OPCIONAL - Cleanup manual para casos específicos
+  const handleStopAnimation = () => {
+    if (tl.current) {
+      tl.current.kill();
+    }
+  };
+
+  return (
+    <div ref={containerRef}>
+      <div className="rotating-element">Rotando</div>
+      <div className="scaling-element">Escalando</div>
+      <button onClick={handleStopAnimation}>Detener</button>
+    </div>
+  );
+}
+```
+
+## Patrones de Animación Recomendados
+
+### 1. Animaciones de Entrada (Page Load)
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function PageAnimation() {
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Timeline para animación de página completa
+    const tl = gsap.timeline();
+    
+    tl.fromTo(".page-header",
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+    )
+    .fromTo(".page-content",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+      "-=0.4"
+    )
+    .fromTo(".page-footer",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.4 },
+      "-=0.2"
+    );
+  }, { scope: pageRef });
+
+  return (
+    <div ref={pageRef}>
+      <header className="page-header">Header</header>
+      <main className="page-content">Contenido</main>
+      <footer className="page-footer">Footer</footer>
+    </div>
+  );
+}
+```
+
+### 2. Animaciones de Hover
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function HoverAnimation() {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const handleMouseEnter = () => {
+      gsap.to(card, {
+        scale: 1.05,
+        y: -10,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(card, {
+        scale: 1,
+        y: 0,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    };
+
+    card.addEventListener('mouseenter', handleMouseEnter);
+    card.addEventListener('mouseleave', handleMouseLeave);
+
+    // Cleanup de event listeners
+    return () => {
+      card.removeEventListener('mouseenter', handleMouseEnter);
+      card.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, { scope: cardRef });
+
+  return (
+    <div ref={cardRef} className="card">
+      <h3>Título de la Card</h3>
+      <p>Contenido de la card con animación hover</p>
+    </div>
+  );
+}
+```
+
+### 3. Animaciones Scroll-Triggered
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Registrar plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+export default function ScrollAnimation() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(".scroll-element",
+      { opacity: 0, y: 100, scale: 0.8 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1,
+        ease: "power2.out",
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+  }, { scope: sectionRef });
+
+  return (
+    <section ref={sectionRef}>
+      <div className="scroll-element">Elemento 1</div>
+      <div className="scroll-element">Elemento 2</div>
+      <div className="scroll-element">Elemento 3</div>
+    </section>
+  );
+}
+```
+
+## Configuración Obligatoria
+
+### 1. Instalación de Dependencias
+```bash
+npm install gsap @gsap/react
+```
+
+### 2. Configuración en Layout Principal
+```tsx
+// src/app/layout.tsx
+"use client";
+
+import { useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+export default function RootLayout({ children }) {
+  useEffect(() => {
+    // Registrar plugins globalmente
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Configuración global de GSAP
+    gsap.config({
+      nullTargetWarn: false,
+      trialWarn: false
+    });
+  }, []);
+
+  return (
+    <html>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+## Checklist de Cumplimiento
+
+- [ ] Todas las animaciones usan `useGSAP` (NO `useEffect`)
+- [ ] Todas las animaciones tienen `scope` con `useRef`
+- [ ] Se evitan fugas de memoria con scope apropiado
+- [ ] Se usan timelines para animaciones complejas
+- [ ] Se implementan cleanup cuando es necesario
+- [ ] Plugins de GSAP están registrados correctamente
+- [ ] Animaciones son performantes y optimizadas# GSAP Best Practices - Directrices Obligatorias
+
+## Uso OBLIGATORIO del Hook useGSAP
+
+### REGLA FUNDAMENTAL
+Todas las animaciones GSAP DEBEN usar el hook `useGSAP` proporcionado por GSAP. NUNCA usar `useEffect` para animaciones GSAP.
+
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+// ✅ CORRECTO - Usando useGSAP
+export default function AnimatedComponent() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(".fade-in", 
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1, stagger: 0.2 }
+    );
+  }, { scope: containerRef }); // OBLIGATORIO: scope con ref
+
+  return (
+    <div ref={containerRef}>
+      <div className="fade-in">Elemento 1</div>
+      <div className="fade-in">Elemento 2</div>
+      <div className="fade-in">Elemento 3</div>
+    </div>
+  );
+}
+
+// ❌ INCORRECTO - Usando useEffect
+export default function WrongComponent() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { // ❌ PROHIBIDO
+    gsap.to(containerRef.current, {
+      opacity: 1,
+      duration: 1
+    });
+  }, []);
+
+  return <div ref={containerRef}>Contenido</div>;
+}
+```
+
+## Scope OBLIGATORIO con useRef
+
+### Regla Crítica
+SIEMPRE pasar una referencia `useRef` a la propiedad `scope` del hook `useGSAP` para limitar el alcance de las animaciones y evitar fugas de memoria.
+
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function ScopedAnimation() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  // ✅ CORRECTO - Scope específico para hero
+  useGSAP(() => {
+    gsap.timeline()
+      .fromTo(".hero-title", 
+        { opacity: 0, y: 100 },
+        { opacity: 1, y: 0, duration: 1 }
+      )
+      .fromTo(".hero-subtitle",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8 },
+        "-=0.5"
+      );
+  }, { scope: heroRef }); // OBLIGATORIO
+
+  // ✅ CORRECTO - Scope específico para cards
+  useGSAP(() => {
+    gsap.fromTo(".card",
+      { opacity: 0, scale: 0.8, y: 50 },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        y: 0, 
+        duration: 0.6, 
+        stagger: 0.1,
+        ease: "back.out(1.7)"
+      }
+    );
+  }, { scope: cardsRef }); // OBLIGATORIO
+
+  return (
+    <>
+      <div ref={heroRef}>
+        <h1 className="hero-title">Título Principal</h1>
+        <p className="hero-subtitle">Subtítulo</p>
+      </div>
+      
+      <div ref={cardsRef}>
+        <div className="card">Card 1</div>
+        <div className="card">Card 2</div>
+        <div className="card">Card 3</div>
+      </div>
+    </>
+  );
+}
+```
+
+## Prevención de Fugas de Memoria
+
+### Cleanup Automático
+El hook `useGSAP` maneja automáticamente la limpieza de animaciones, pero es importante seguir estas prácticas:
+
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function CleanupExample() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const tl = useRef<gsap.core.Timeline>();
+
+  useGSAP(() => {
+    // ✅ CORRECTO - Guardar referencia de timeline
+    tl.current = gsap.timeline({ repeat: -1, yoyo: true });
+    
+    tl.current
+      .to(".rotating-element", { rotation: 360, duration: 2 })
+      .to(".scaling-element", { scale: 1.2, duration: 1 }, 0);
+
+    // Cleanup automático - no necesitas cleanup manual
+  }, { scope: containerRef });
+
+  // ✅ OPCIONAL - Cleanup manual para casos específicos
+  const handleStopAnimation = () => {
+    if (tl.current) {
+      tl.current.kill();
+    }
+  };
+
+  return (
+    <div ref={containerRef}>
+      <div className="rotating-element">Rotando</div>
+      <div className="scaling-element">Escalando</div>
+      <button onClick={handleStopAnimation}>Detener</button>
+    </div>
+  );
+}
+```
+
+## Patrones de Animación Recomendados
+
+### 1. Animaciones de Entrada (Page Load)
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function PageAnimation() {
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Timeline para animación de página completa
+    const tl = gsap.timeline();
+    
+    tl.fromTo(".page-header",
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+    )
+    .fromTo(".page-content",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+      "-=0.4"
+    )
+    .fromTo(".page-footer",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.4 },
+      "-=0.2"
+    );
+  }, { scope: pageRef });
+
+  return (
+    <div ref={pageRef}>
+      <header className="page-header">Header</header>
+      <main className="page-content">Contenido</main>
+      <footer className="page-footer">Footer</footer>
+    </div>
+  );
+}
+```
+
+### 2. Animaciones de Hover
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+
+export default function HoverAnimation() {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const handleMouseEnter = () => {
+      gsap.to(card, {
+        scale: 1.05,
+        y: -10,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(card, {
+        scale: 1,
+        y: 0,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    };
+
+    card.addEventListener('mouseenter', handleMouseEnter);
+    card.addEventListener('mouseleave', handleMouseLeave);
+
+    // Cleanup de event listeners
+    return () => {
+      card.removeEventListener('mouseenter', handleMouseEnter);
+      card.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, { scope: cardRef });
+
+  return (
+    <div ref={cardRef} className="card">
+      <h3>Título de la Card</h3>
+      <p>Contenido de la card con animación hover</p>
+    </div>
+  );
+}
+```
+
+### 3. Animaciones Scroll-Triggered
+```tsx
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Registrar plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+export default function ScrollAnimation() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(".scroll-element",
+      { opacity: 0, y: 100, scale: 0.8 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1,
+        ease: "power2.out",
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+  }, { scope: sectionRef });
+
+  return (
+    <section ref={sectionRef}>
+      <div className="scroll-element">Elemento 1</div>
+      <div className="scroll-element">Elemento 2</div>
+      <div className="scroll-element">Elemento 3</div>
+    </section>
+  );
+}
+```
+
+## Configuración Obligatoria
+
+### 1. Instalación de Dependencias
+```bash
+npm install gsap @gsap/react
+```
+
+### 2. Configuración en Layout Principal
+```tsx
+// src/app/layout.tsx
+"use client";
+
+import { useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+export default function RootLayout({ children }) {
+  useEffect(() => {
+    // Registrar plugins globalmente
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Configuración global de GSAP
+    gsap.config({
+      nullTargetWarn: false,
+      trialWarn: false
+    });
+  }, []);
+
+  return (
+    <html>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+## Checklist de Cumplimiento
+
+- [ ] Todas las animaciones usan `useGSAP` (NO `useEffect`)
+- [ ] Todas las animaciones tienen `scope` con `useRef`
+- [ ] Se evitan fugas de memoria con scope apropiado
+- [ ] Se usan timelines para animaciones complejas
+- [ ] Se implementan cleanup cuando es necesario
+- [ ] Plugins de GSAP están registrados correctamente
+- [ ] Animaciones son performantes y optimizadas

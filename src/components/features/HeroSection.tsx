@@ -1,0 +1,50 @@
+"use client";
+
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import { gsap } from '@/lib/gsap';
+
+export default function HeroSection() {
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Timeline para animación de entrada con autoAlpha
+    const tl = gsap.timeline();
+    
+    tl.fromTo(".hero-title",
+      { opacity: 0, y: 100 },
+      { autoAlpha: 1, y: 0, duration: 1, ease: "power2.out" }
+    )
+    .fromTo(".hero-subtitle",
+      { opacity: 0, y: 50 },
+      { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" },
+      "-=0.5"
+    )
+    .fromTo(".hero-button",
+      { opacity: 0, scale: 0.8 },
+      { autoAlpha: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)" },
+      "-=0.3"
+    );
+  }, { scope: heroRef });
+
+  return (
+    <section 
+      ref={heroRef}
+      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4"
+    >
+      <div className="text-center max-w-4xl mx-auto">
+        <h1 className="hero-title text-5xl md:text-7xl font-bold text-gray-900 mb-6 opacity-0 invisible">
+          Uzi Agency
+        </h1>
+        
+        <p className="hero-subtitle text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed opacity-0 invisible">
+          Creamos experiencias digitales extraordinarias con animaciones profesionales
+        </p>
+        
+        <button className="hero-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 opacity-0 invisible">
+          Descubre Más
+        </button>
+      </div>
+    </section>
+  );
+}

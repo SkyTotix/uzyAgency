@@ -1,0 +1,792 @@
+---
+alwaysApply: true
+---
+# Tailwind CSS Conventions - Directrices Obligatorias
+
+## Filosofía Utility-First OBLIGATORIA
+
+### REGLA FUNDAMENTAL
+Tailwind CSS debe seguir estrictamente la filosofía Utility-First. Cada estilo debe aplicarse directamente en el JSX usando clases utilitarias.
+
+```tsx
+// ✅ CORRECTO - Utility-First
+export default function Card() {
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto">
+      <h2 className="text-xl font-bold text-gray-900 mb-4">
+        Título de la Card
+      </h2>
+      <p className="text-gray-600 leading-relaxed">
+        Contenido de la card con estilos utilitarios.
+      </p>
+      <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200">
+        Botón
+      </button>
+    </div>
+  );
+}
+
+// ❌ INCORRECTO - CSS personalizado
+export default function WrongCard() {
+  return (
+    <div className="card">
+      <h2 className="card-title">Título</h2>
+      <p className="card-content">Contenido</p>
+      <button className="card-button">Botón</button>
+    </div>
+  );
+}
+```
+
+## Prohibición EXPLÍCITA de @apply
+
+### REGLA CRÍTICA
+El uso de `@apply` para componentes individuales está PROHIBIDO. Se considera un antipatrón que va contra la filosofía de Tailwind CSS.
+
+```css
+/* ❌ PROHIBIDO - @apply para componentes */
+.card {
+  @apply bg-white rounded-lg shadow-lg p-6;
+}
+
+.button {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md;
+}
+
+/* ✅ CORRECTO - @apply solo para utilidades base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+  }
+}
+
+@layer components {
+  /* ✅ PERMITIDO - Solo para componentes base reutilizables */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+  }
+}
+```
+
+### Cuándo SÍ usar @apply
+Solo está permitido para:
+- Estilos base globales (`@layer base`)
+- Componentes base reutilizables muy genéricos (`@layer components`)
+- Utilidades personalizadas (`@layer utilities`)
+
+## Uso OBLIGATORIO de tailwind-merge
+
+### Regla Fundamental
+SIEMPRE usar `tailwind-merge` para fusionar clases de Tailwind de manera segura y evitar conflictos.
+
+```bash
+npm install tailwind-merge
+```
+
+```tsx
+// ✅ CORRECTO - Usando tailwind-merge
+import { cn } from '@/lib/utils'; // Función que usa tailwind-merge
+
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  children: React.ReactNode;
+}
+
+export default function Button({ 
+  variant = 'primary', 
+  size = 'md', 
+  className,
+  children 
+}: ButtonProps) {
+  const baseClasses = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+  
+  const variantClasses = {
+    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+    secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500",
+    danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
+  };
+  
+  const sizeClasses = {
+    sm: "px-3 py-1.5 text-sm",
+    md: "px-4 py-2 text-sm",
+    lg: "px-6 py-3 text-base"
+  };
+
+  return (
+    <button 
+      className={cn(
+        baseClasses,
+        variantClasses[variant],
+        sizeClasses[size],
+        className // Se fusiona correctamente con tailwind-merge
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+// ❌ INCORRECTO - Concatenación manual de strings
+export default function WrongButton({ className, children }) {
+  return (
+    <button className={`bg-blue-600 text-white px-4 py-2 rounded-md ${className}`}>
+      {children}
+    </button>
+  );
+}
+```
+
+### Configuración de tailwind-merge
+```typescript
+// src/lib/utils.ts
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+## Patrones de Diseño Recomendados
+
+### 1. Componentes con Variantes
+```tsx
+import { cn } from '@/lib/utils';
+
+interface AlertProps {
+  type: 'success' | 'warning' | 'error' | 'info';
+  children: React.ReactNode;
+  className?: string;
+}
+
+export default function Alert({ type, children, className }: AlertProps) {
+  const baseClasses = "p-4 rounded-md border";
+  
+  const typeClasses = {
+    success: "bg-green-50 border-green-200 text-green-800",
+    warning: "bg-yellow-50 border-yellow-200 text-yellow-800",
+    error: "bg-red-50 border-red-200 text-red-800",
+    info: "bg-blue-50 border-blue-200 text-blue-800"
+  };
+
+  return (
+    <div className={cn(baseClasses, typeClasses[type], className)}>
+      {children}
+    </div>
+  );
+}
+```
+
+### 2. Responsive Design
+```tsx
+export default function ResponsiveGrid() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+        <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">
+          Título
+        </h3>
+        <p className="text-sm md:text-base text-gray-600">
+          Contenido responsive
+        </p>
+      </div>
+    </div>
+  );
+}
+```
+
+### 3. Estados de Hover y Focus
+```tsx
+export default function InteractiveCard() {
+  return (
+    <div className="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+          Título de la Card
+        </h3>
+        <p className="mt-2 text-gray-600 group-hover:text-gray-700 transition-colors duration-200">
+          Descripción que cambia de color al hacer hover
+        </p>
+      </div>
+      <div className="px-6 pb-6">
+        <button className="w-full bg-gray-100 group-hover:bg-blue-600 text-gray-700 group-hover:text-white font-medium py-2 px-4 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          Acción
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Configuración de Tailwind
+
+### tailwind.config.js
+```javascript
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eff6ff',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+}
+```
+
+### globals.css
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased text-gray-900 bg-gray-50;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-gray-900;
+  }
+  
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+  
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+}
+
+@layer components {
+  /* Solo componentes base muy genéricos */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .input {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+```
+
+## Mejores Prácticas de Performance
+
+### 1. Purgado de CSS
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  // ... resto de la configuración
+}
+```
+
+### 2. Componentes Optimizados
+```tsx
+import { memo } from 'react';
+import { cn } from '@/lib/utils';
+
+interface BadgeProps {
+  children: React.ReactNode;
+  variant?: 'default' | 'success' | 'warning' | 'error';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+const Badge = memo(function Badge({ 
+  children, 
+  variant = 'default', 
+  size = 'md',
+  className 
+}: BadgeProps) {
+  const baseClasses = "inline-flex items-center font-medium rounded-full";
+  
+  const variantClasses = {
+    default: "bg-gray-100 text-gray-800",
+    success: "bg-green-100 text-green-800",
+    warning: "bg-yellow-100 text-yellow-800",
+    error: "bg-red-100 text-red-800"
+  };
+  
+  const sizeClasses = {
+    sm: "px-2 py-0.5 text-xs",
+    md: "px-2.5 py-0.5 text-sm",
+    lg: "px-3 py-1 text-sm"
+  };
+
+  return (
+    <span className={cn(
+      baseClasses,
+      variantClasses[variant],
+      sizeClasses[size],
+      className
+    )}>
+      {children}
+    </span>
+  );
+});
+
+export default Badge;
+```
+
+## Checklist de Cumplimiento
+
+- [ ] Todos los estilos usan clases utilitarias (NO CSS personalizado)
+- [ ] NO se usa `@apply` para componentes individuales
+- [ ] Se usa `tailwind-merge` para fusionar clases
+- [ ] Los componentes tienen variantes bien definidas
+- [ ] El diseño es responsive usando breakpoints de Tailwind
+- [ ] Se implementan estados de hover y focus apropiados
+- [ ] La configuración de Tailwind está optimizada
+- [ ] Los componentes están memoizados cuando es necesario
+- [ ] Se siguen las convenciones de nomenclatura
+- [ ] El CSS está purgado correctamente# Tailwind CSS Conventions - Directrices Obligatorias
+
+## Filosofía Utility-First OBLIGATORIA
+
+### REGLA FUNDAMENTAL
+Tailwind CSS debe seguir estrictamente la filosofía Utility-First. Cada estilo debe aplicarse directamente en el JSX usando clases utilitarias.
+
+```tsx
+// ✅ CORRECTO - Utility-First
+export default function Card() {
+  return (
+    <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto">
+      <h2 className="text-xl font-bold text-gray-900 mb-4">
+        Título de la Card
+      </h2>
+      <p className="text-gray-600 leading-relaxed">
+        Contenido de la card con estilos utilitarios.
+      </p>
+      <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200">
+        Botón
+      </button>
+    </div>
+  );
+}
+
+// ❌ INCORRECTO - CSS personalizado
+export default function WrongCard() {
+  return (
+    <div className="card">
+      <h2 className="card-title">Título</h2>
+      <p className="card-content">Contenido</p>
+      <button className="card-button">Botón</button>
+    </div>
+  );
+}
+```
+
+## Prohibición EXPLÍCITA de @apply
+
+### REGLA CRÍTICA
+El uso de `@apply` para componentes individuales está PROHIBIDO. Se considera un antipatrón que va contra la filosofía de Tailwind CSS.
+
+```css
+/* ❌ PROHIBIDO - @apply para componentes */
+.card {
+  @apply bg-white rounded-lg shadow-lg p-6;
+}
+
+.button {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md;
+}
+
+/* ✅ CORRECTO - @apply solo para utilidades base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+  }
+}
+
+@layer components {
+  /* ✅ PERMITIDO - Solo para componentes base reutilizables */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+  }
+}
+```
+
+### Cuándo SÍ usar @apply
+Solo está permitido para:
+- Estilos base globales (`@layer base`)
+- Componentes base reutilizables muy genéricos (`@layer components`)
+- Utilidades personalizadas (`@layer utilities`)
+
+## Uso OBLIGATORIO de tailwind-merge
+
+### Regla Fundamental
+SIEMPRE usar `tailwind-merge` para fusionar clases de Tailwind de manera segura y evitar conflictos.
+
+```bash
+npm install tailwind-merge
+```
+
+```tsx
+// ✅ CORRECTO - Usando tailwind-merge
+import { cn } from '@/lib/utils'; // Función que usa tailwind-merge
+
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  children: React.ReactNode;
+}
+
+export default function Button({ 
+  variant = 'primary', 
+  size = 'md', 
+  className,
+  children 
+}: ButtonProps) {
+  const baseClasses = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+  
+  const variantClasses = {
+    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+    secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500",
+    danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
+  };
+  
+  const sizeClasses = {
+    sm: "px-3 py-1.5 text-sm",
+    md: "px-4 py-2 text-sm",
+    lg: "px-6 py-3 text-base"
+  };
+
+  return (
+    <button 
+      className={cn(
+        baseClasses,
+        variantClasses[variant],
+        sizeClasses[size],
+        className // Se fusiona correctamente con tailwind-merge
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+// ❌ INCORRECTO - Concatenación manual de strings
+export default function WrongButton({ className, children }) {
+  return (
+    <button className={`bg-blue-600 text-white px-4 py-2 rounded-md ${className}`}>
+      {children}
+    </button>
+  );
+}
+```
+
+### Configuración de tailwind-merge
+```typescript
+// src/lib/utils.ts
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+## Patrones de Diseño Recomendados
+
+### 1. Componentes con Variantes
+```tsx
+import { cn } from '@/lib/utils';
+
+interface AlertProps {
+  type: 'success' | 'warning' | 'error' | 'info';
+  children: React.ReactNode;
+  className?: string;
+}
+
+export default function Alert({ type, children, className }: AlertProps) {
+  const baseClasses = "p-4 rounded-md border";
+  
+  const typeClasses = {
+    success: "bg-green-50 border-green-200 text-green-800",
+    warning: "bg-yellow-50 border-yellow-200 text-yellow-800",
+    error: "bg-red-50 border-red-200 text-red-800",
+    info: "bg-blue-50 border-blue-200 text-blue-800"
+  };
+
+  return (
+    <div className={cn(baseClasses, typeClasses[type], className)}>
+      {children}
+    </div>
+  );
+}
+```
+
+### 2. Responsive Design
+```tsx
+export default function ResponsiveGrid() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+        <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">
+          Título
+        </h3>
+        <p className="text-sm md:text-base text-gray-600">
+          Contenido responsive
+        </p>
+      </div>
+    </div>
+  );
+}
+```
+
+### 3. Estados de Hover y Focus
+```tsx
+export default function InteractiveCard() {
+  return (
+    <div className="group bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+          Título de la Card
+        </h3>
+        <p className="mt-2 text-gray-600 group-hover:text-gray-700 transition-colors duration-200">
+          Descripción que cambia de color al hacer hover
+        </p>
+      </div>
+      <div className="px-6 pb-6">
+        <button className="w-full bg-gray-100 group-hover:bg-blue-600 text-gray-700 group-hover:text-white font-medium py-2 px-4 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          Acción
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Configuración de Tailwind
+
+### tailwind.config.js
+```javascript
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eff6ff',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+}
+```
+
+### globals.css
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased text-gray-900 bg-gray-50;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-gray-900;
+  }
+  
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+  
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+}
+
+@layer components {
+  /* Solo componentes base muy genéricos */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .input {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+```
+
+## Mejores Prácticas de Performance
+
+### 1. Purgado de CSS
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  // ... resto de la configuración
+}
+```
+
+### 2. Componentes Optimizados
+```tsx
+import { memo } from 'react';
+import { cn } from '@/lib/utils';
+
+interface BadgeProps {
+  children: React.ReactNode;
+  variant?: 'default' | 'success' | 'warning' | 'error';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+const Badge = memo(function Badge({ 
+  children, 
+  variant = 'default', 
+  size = 'md',
+  className 
+}: BadgeProps) {
+  const baseClasses = "inline-flex items-center font-medium rounded-full";
+  
+  const variantClasses = {
+    default: "bg-gray-100 text-gray-800",
+    success: "bg-green-100 text-green-800",
+    warning: "bg-yellow-100 text-yellow-800",
+    error: "bg-red-100 text-red-800"
+  };
+  
+  const sizeClasses = {
+    sm: "px-2 py-0.5 text-xs",
+    md: "px-2.5 py-0.5 text-sm",
+    lg: "px-3 py-1 text-sm"
+  };
+
+  return (
+    <span className={cn(
+      baseClasses,
+      variantClasses[variant],
+      sizeClasses[size],
+      className
+    )}>
+      {children}
+    </span>
+  );
+});
+
+export default Badge;
+```
+
+## Checklist de Cumplimiento
+
+- [ ] Todos los estilos usan clases utilitarias (NO CSS personalizado)
+- [ ] NO se usa `@apply` para componentes individuales
+- [ ] Se usa `tailwind-merge` para fusionar clases
+- [ ] Los componentes tienen variantes bien definidas
+- [ ] El diseño es responsive usando breakpoints de Tailwind
+- [ ] Se implementan estados de hover y focus apropiados
+- [ ] La configuración de Tailwind está optimizada
+- [ ] Los componentes están memoizados cuando es necesario
+- [ ] Se siguen las convenciones de nomenclatura
+- [ ] El CSS está purgado correctamente

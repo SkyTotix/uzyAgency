@@ -1,0 +1,17 @@
+---
+alwaysApply: true
+---
+    images: ['/og-image.jpg'],
+  },
+};
+```
+
+## Checklist de Cumplimiento
+
+- [ ] Todos los componentes con hooks tienen `"use client"`
+- [ ] Estructura de carpetas respeta la organización definida
+- [ ] Lógica de servidor está aislada en `src/lib/server/`
+- [ ] Todas las imágenes usan `next/image`
+- [ ] Configuración de imágenes en `next.config.js`
+- [ ] Nomenclatura de archivos sigue las convenciones
+- [ ] Metadata está configurada correctamente
