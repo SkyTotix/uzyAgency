@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -13,25 +14,27 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-blue-600">
-              Uzi Agency
-            </h1>
+            <Link href="/">
+              <h1 className="text-2xl font-bold text-blue-600 cursor-pointer hover:text-blue-700 transition-colors">
+                Uzi Agency
+              </h1>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-900 hover:text-blue-600 font-medium transition-colors">
+            <Link href="/" className="text-gray-900 hover:text-blue-600 font-medium transition-colors">
               Inicio
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            </Link>
+            <Link href="/services" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Servicios
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-              Portfolio
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            </Link>
+            <Link href="/blog" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              Blog
+            </Link>
+            <Link href="#contact" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Contacto
-            </a>
+            </Link>
           </nav>
 
           {/* CTA Button */}
@@ -57,21 +60,21 @@ export default function Header() {
         {/* Mobile Navigation */}
         <div className={cn(
           "md:hidden transition-all duration-300 ease-in-out",
-          isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+          isMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
         )}>
           <div className="py-4 space-y-2">
-            <a href="#" className="block px-3 py-2 text-gray-900 hover:text-blue-600 font-medium">
+            <Link href="/" className="block px-3 py-2 text-gray-900 hover:text-blue-600 font-medium">
               Inicio
-            </a>
-            <a href="#" className="block px-3 py-2 text-gray-600 hover:text-blue-600 font-medium">
+            </Link>
+            <Link href="/services" className="block px-3 py-2 text-gray-600 hover:text-blue-600 font-medium">
               Servicios
-            </a>
-            <a href="#" className="block px-3 py-2 text-gray-600 hover:text-blue-600 font-medium">
-              Portfolio
-            </a>
-            <a href="#" className="block px-3 py-2 text-gray-600 hover:text-blue-600 font-medium">
+            </Link>
+            <Link href="/blog" className="block px-3 py-2 text-gray-600 hover:text-blue-600 font-medium">
+              Blog
+            </Link>
+            <Link href="#contact" className="block px-3 py-2 text-gray-600 hover:text-blue-600 font-medium">
               Contacto
-            </a>
+            </Link>
             <div className="px-3 py-2">
               <Button variant="primary" size="sm" className="w-full">
                 Comenzar Proyecto
