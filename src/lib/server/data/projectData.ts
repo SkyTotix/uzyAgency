@@ -1,35 +1,7 @@
 import 'server-only';
 import { cache } from 'react';
 import { sanityClientReadOnly } from '@/lib/sanity';
-
-// Interfaz para Project
-export interface Project {
-  _id: string;
-  _type: 'project';
-  title: string;
-  slug: {
-    _type: 'slug';
-    current: string;
-  };
-  excerpt: string;
-  description?: string;
-  mainImage?: {
-    asset: {
-      _ref: string;
-      _type: 'reference';
-    };
-    alt?: string;
-  };
-  technologies?: string[];
-  projectUrl?: string;
-  githubUrl?: string;
-  featured: boolean;
-  publishedAt: string;
-  category?: {
-    _ref: string;
-    title: string;
-  };
-}
+import type { Project } from '@/lib/types/sanity';
 
 /**
  * Obtiene los proyectos destacados desde Sanity CMS

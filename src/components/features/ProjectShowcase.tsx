@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card } from '@/components/ui';
@@ -137,7 +138,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
 
         {/* Grid de proyectos */}
         <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <Card
               key={project._id}
               className={cn(
@@ -149,10 +150,12 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
               {project.mainImage?.asset && (
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img
+                  <Image
                     src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${project.mainImage.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
                     alt={project.mainImage.alt || project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   {/* Badge de categoría */}
                   {project.category && (
