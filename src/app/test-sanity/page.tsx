@@ -3,8 +3,14 @@
 import { useSanity } from '@/lib/hooks/useSanity';
 import Link from 'next/link';
 
+interface Post {
+  _id: string;
+  _type: string;
+  title: string;
+}
+
 export default function TestSanityPage() {
-  const { data, loading, error } = useSanity({
+  const { data, loading, error } = useSanity<Post[]>({
     query: '*[_type == "post"][0...5]{ _id, _type, title }'
   });
 
@@ -52,7 +58,7 @@ export default function TestSanityPage() {
           )}
 
           {/* Éxito - Con Datos */}
-          {!loading && !error && data && data.length > 0 && (
+          {!loading && !error && Array.isArray(data) && data.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <span className="text-4xl">✅</span>
@@ -75,7 +81,7 @@ export default function TestSanityPage() {
           )}
 
           {/* Éxito - Sin Datos */}
-          {!loading && !error && (!data || data.length === 0) && (
+          {!loading && !error && (!data || !Array.isArray(data) || data.length === 0) && (
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <span className="text-4xl">✅</span>
