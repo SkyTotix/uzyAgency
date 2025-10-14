@@ -1,23 +1,29 @@
 import { createClient } from '@sanity/client';
 
+// Función para crear cliente de Sanity de forma segura
+function createSanityClient(token?: string) {
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
+
+  if (!projectId || !dataset) {
+    throw new Error('Missing required Sanity environment variables: NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET');
+  }
+
+  return createClient({
+    projectId,
+    dataset,
+    apiVersion: '2024-01-01',
+    useCdn: process.env.NODE_ENV === 'production',
+    token,
+    ignoreBrowserTokenWarning: true,
+  });
+}
+
 // Cliente para operaciones de solo lectura (público)
-export const sanityClientReadOnly = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: '2024-01-01',
-  useCdn: process.env.NODE_ENV === 'production',
-  ignoreBrowserTokenWarning: true,
-});
+export const sanityClientReadOnly = createSanityClient();
 
 // Cliente principal (con token para escritura)
-export const sanityClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: '2024-01-01', // Usar una fecha fija para versionado estable
-  useCdn: process.env.NODE_ENV === 'production', // CDN solo en producción
-  token: process.env.SANITY_API_TOKEN, // Token para operaciones de escritura (opcional)
-  ignoreBrowserTokenWarning: true, // Evitar warning en desarrollo
-});
+export const sanityClient = createSanityClient(process.env.SANITY_API_TOKEN);
 
 // Tipos de datos comunes para Sanity
 export interface SanityImage {
@@ -54,7 +60,15 @@ export const sanityUtils = {
   imageUrl: (image: SanityImage, width?: number, height?: number): string => {
     if (!image?.asset?._ref) return '';
     
-    const baseUrl = `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}`;
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
+    
+    if (!projectId || !dataset) {
+      console.warn('Missing Sanity environment variables for image URL generation');
+      return '';
+    }
+    
+    const baseUrl = `https://cdn.sanity.io/images/${projectId}/${dataset}`;
     const imageId = image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp');
     
     let url = `${baseUrl}/${imageId}`;
