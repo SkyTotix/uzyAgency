@@ -3,6 +3,9 @@
 import { useSanity } from '@/lib/hooks/useSanity';
 import Link from 'next/link';
 
+// Forzar que esta página sea dinámica
+export const dynamic = 'force-dynamic';
+
 interface Post {
   _id: string;
   _type: string;
