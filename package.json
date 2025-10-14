@@ -6,12 +6,15 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "studio": "sanity dev",
+    "deploy-studio": "sanity deploy"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@sanity/client": "^7.12.0",
+    "@sanity/vision": "^4.10.3",
     "@vercel/analytics": "^1.5.0",
     "clsx": "^2.1.1",
     "gsap": "^3.13.0",
@@ -19,6 +22,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.65.0",
+    "sanity": "^4.10.3",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.1.12"
   },
