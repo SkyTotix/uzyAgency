@@ -63,26 +63,31 @@ export interface Post extends SanityDocument {
   _type: 'post';
   title: string;
   slug: SanitySlug;
-  publishedAt: string;
   excerpt: string;
+  mainImage: SanityImage;
   content: SanityBlock[];
   author: Author;
-  mainImage: SanityImage;
   categories: Category[];
-  seo: SEO;
+  publishedAt: string;
+  featured: boolean;
+  seo?: SEO;
 }
 
 export interface Author extends SanityDocument {
   _type: 'author';
   name: string;
   slug: SanitySlug;
-  bio: SanityBlock[];
   image: SanityImage;
+  bio: SanityBlock[];
   socialLinks?: {
     twitter?: string;
     linkedin?: string;
     github?: string;
+    website?: string;
+    email?: string;
   };
+  role?: string;
+  featured?: boolean;
 }
 
 export interface Category extends SanityDocument {
@@ -90,6 +95,10 @@ export interface Category extends SanityDocument {
   title: string;
   slug: SanitySlug;
   description: string;
+  color?: string;
+  icon?: string;
+  featured?: boolean;
+  order?: number;
 }
 
 export interface Page extends SanityDocument {

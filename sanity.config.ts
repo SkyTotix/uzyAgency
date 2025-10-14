@@ -3,7 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 
 // Importar esquemas
-import { serviceSchema, settingsSchema } from './sanity/schemas'
+import { schemaTypes } from './sanity/schemas'
 
 export default defineConfig({
   name: 'uzi-agency',
@@ -46,9 +46,47 @@ export default defineConfig({
             // Divider
             S.divider(),
             
+            // Blog
+            S.listItem()
+              .title('📝 Blog')
+              .id('blog')
+              .child(
+                S.list()
+                  .title('Blog')
+                  .items([
+                    S.listItem()
+                      .title('Publicaciones')
+                      .icon(() => '📄')
+                      .child(
+                        S.documentTypeList('post')
+                          .title('Publicaciones')
+                          .filter('_type == "post"')
+                      ),
+                    S.listItem()
+                      .title('Autores')
+                      .icon(() => '👤')
+                      .child(
+                        S.documentTypeList('author')
+                          .title('Autores')
+                          .filter('_type == "author"')
+                      ),
+                    S.listItem()
+                      .title('Categorías')
+                      .icon(() => '🏷️')
+                      .child(
+                        S.documentTypeList('category')
+                          .title('Categorías')
+                          .filter('_type == "category"')
+                      )
+                  ])
+              ),
+            
+            // Divider
+            S.divider(),
+            
             // Otros tipos de contenido (para futuro)
             ...S.documentTypeListItems().filter(
-              (listItem) => !['settings', 'service'].includes(listItem.getId()!)
+              (listItem) => !['settings', 'service', 'post', 'author', 'category'].includes(listItem.getId()!)
             )
           ])
     }),
@@ -56,10 +94,7 @@ export default defineConfig({
   ],
   
   schema: {
-    types: [
-      serviceSchema,
-      settingsSchema
-    ]
+    types: schemaTypes
   },
   
   // Configuración de CORS para desarrollo
