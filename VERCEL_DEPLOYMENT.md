@@ -33,7 +33,7 @@ Agrega las siguientes **4 variables** una por una:
 
 ```
 Name:  NEXT_PUBLIC_SANITY_PROJECT_ID
-Value: 4kfh8g9s
+Value:   
 ```
 
 - ✅ Marca: **Production**
