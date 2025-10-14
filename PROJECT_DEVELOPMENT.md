@@ -1423,29 +1423,291 @@ const config = isSanityStudio
 
 ---
 
+## 🆕 **FASE 12: Implementación de ProjectShowcase con Animaciones Avanzadas**
+
+### **12.1 Sistema de Proyectos Destacados**
+
+#### **A. Funciones de Datos del Servidor (`src/lib/server/data/projectData.ts`)**
+
+```typescript
+import type { Project } from '@/lib/types/sanity';
+
+// Funciones implementadas con React cache:
+export const getFeaturedProjects = cache(async (limit: number = 3): Promise<Project[]> => {});
+export const getAllProjects = cache(async (): Promise<Project[]> => {});
+export const getProjectBySlug = cache(async (slug: string): Promise<Project | null> => {});
+export const getProjectsStats = cache(async () => {});
+```
+
+**Características:**
+- ✅ Importa tipo `Project` de `@/lib/types/sanity` (extiende SanityDocument)
+- ✅ React cache para optimización de llamadas
+- ✅ Queries GROQ optimizadas para proyectos destacados
+- ✅ Manejo de errores robusto
+- ✅ Función de estadísticas de proyectos
+
+#### **B. Tipos TypeScript Actualizados**
+
+**`src/lib/types/sanity.ts` - Interfaz Project:**
+```typescript
+export interface Project extends SanityDocument {
+  _type: 'project';
+  title: string;
+  slug: SanitySlug;
+  excerpt: string;
+  description?: string;
+  content?: SanityBlock[];
+  mainImage?: SanityImage;
+  images?: SanityImage[];
+  technologies?: string[];
+  projectUrl?: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  featured: boolean;
+  publishedAt: string;
+  completedAt?: string;
+  category?: {
+    _ref: string;
+    title: string;
+  };
+  seo?: SEO;
+}
+```
+
+**Características:**
+- ✅ Extiende `SanityDocument` (_createdAt, _updatedAt, _rev)
+- ✅ Campos obligatorios: excerpt, featured, publishedAt
+- ✅ Soporte para múltiples URLs (proyecto, live, GitHub)
+- ✅ Categorización de proyectos
+- ✅ Metadatos SEO opcionales
+
+### **12.2 Componente ProjectShowcase con Animaciones GSAP**
+
+#### **A. `src/components/features/ProjectShowcase.tsx`**
+
+**Arquitectura del Componente:**
+```typescript
+"use client";
+
+interface ProjectShowcaseProps {
+  projects: Project[];
+}
+
+export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
+  const showcaseRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    // Animaciones ScrollTrigger con stagger
+  }, { scope: showcaseRef });
+
+  return (
+    <section ref={showcaseRef}>
+      {/* Proyectos con animaciones */}
+    </section>
+  );
+}
+```
+
+**Características Implementadas:**
+
+**1. Animaciones GSAP Avanzadas:**
+- ✅ **Título de sección**: Fade-in desde y: 50
+- ✅ **Subtítulo**: Fade-in con delay de 0.2s
+- ✅ **Tarjetas de proyecto**: 
+  - Efecto stagger con `amount: 0.6`
+  - Transformación 3D inicial: `rotateX: -15`
+  - Animación desde `y: 100, scale: 0.9`
+  - Ease personalizado: `back.out(1.2)`
+- ✅ **Botón CTA**: Scale con `back.out(1.7)`
+- ✅ **Prevención de FOUC**: `opacity-0 invisible` + `autoAlpha: 1`
+- ✅ **Scope correcto**: `{ scope: showcaseRef }`
+
+**2. Optimización de Imágenes:**
+```typescript
+<Image
+  src={sanityImageUrl}
+  alt={project.mainImage.alt || project.title}
+  fill
+  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+  className="object-cover group-hover:scale-110 transition-transform duration-500"
+/>
+```
+
+**Características:**
+- ✅ Uso de `<Image>` de next/image (no `<img>`)
+- ✅ Prop `fill` para contenedores responsivos
+- ✅ `sizes` optimizados por breakpoint
+- ✅ Hover effect con scale suave
+
+**3. Diseño Visual Avanzado:**
+- ✅ Fondo con gradiente: `from-gray-900 via-blue-900 to-gray-900`
+- ✅ Efectos decorativos con blur (`blur-3xl`)
+- ✅ Glassmorphism: `bg-white/5 backdrop-blur-sm`
+- ✅ Bordes animados: `border-white/10 hover:border-blue-400/50`
+- ✅ Efecto shimmer en hover (gradiente animado)
+- ✅ Shadows dinámicos: `hover:shadow-2xl hover:shadow-blue-500/20`
+
+**4. Features de las Tarjetas:**
+- ✅ Imagen principal con overlay gradient
+- ✅ Badge de categoría en esquina superior
+- ✅ Título con hover color transition
+- ✅ Excerpt con `line-clamp-3`
+- ✅ Tecnologías (máximo 4 visibles + contador)
+- ✅ Botones de acción (Ver Proyecto, GitHub)
+- ✅ Iconos SVG inline optimizados
+- ✅ Grid responsivo: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
+
+**5. Estados del Componente:**
+```typescript
+// Estado vacío con mensaje
+if (!projects || projects.length === 0) {
+  return <section>...</section>;
+}
+```
+
+### **12.3 Integración en Página Principal**
+
+#### **A. `src/app/page.tsx` Actualizado**
+
+```typescript
+import { getFeaturedProjects } from "@/lib/server/data/projectData";
+
+export default async function Home() {
+  // Server-side data fetching
+  const featuredProjects = await getFeaturedProjects(3);
+
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen">
+        <HeroSection />
+        <ScrollSection />
+        <section className="py-20 bg-gray-50">
+          <ServiceList />
+        </section>
+        <ProjectShowcase projects={featuredProjects} />
+        <ContactForm />
+      </main>
+      <Footer />
+    </>
+  );
+}
+```
+
+**Características:**
+- ✅ Componente async (Server Component)
+- ✅ Data fetching en el servidor
+- ✅ ProjectShowcase después de servicios
+- ✅ Props tipados correctamente
+
+### **12.4 Configuración de Next.js para Imágenes**
+
+#### **A. `next.config.ts` Actualizado**
+
+```typescript
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        port: '',
+        pathname: '/images/**',
+      },
+    ],
+  },
+};
+```
+
+**Características:**
+- ✅ Permite imágenes de Sanity CDN
+- ✅ Patrón seguro con pathname específico
+- ✅ Optimización automática de imágenes
+
+### **12.5 Correcciones de Build para Vercel**
+
+#### **A. Errores Resueltos**
+
+**1. Error de Tipos TypeScript:**
+```
+Type 'Project[]' is missing properties: _createdAt, _updatedAt, _rev
+```
+
+**Solución:**
+```typescript
+// Antes ❌
+export interface Project { ... } // en projectData.ts
+
+// Después ✅
+import type { Project } from '@/lib/types/sanity';
+```
+
+**2. Warning: no-img-element**
+```typescript
+// Antes ❌
+<img src={...} className="w-full h-full object-cover" />
+
+// Después ✅
+<Image src={...} fill sizes="..." className="object-cover" />
+```
+
+**3. Warning: no-unused-vars**
+```typescript
+// Antes ❌
+{projects.map((project, index) => (
+
+// Después ✅
+{projects.map((project) => (
+```
+
+### **12.6 Commits y Control de Versiones**
+
+**Commits realizados:**
+
+**1. feat: Implementar componente ProjectShowcase (3b44e3d)**
+- Componente ProjectShowcase.tsx con animaciones GSAP
+- Función getFeaturedProjects() con React cache
+- Tipos TypeScript actualizados para Project
+- Animaciones ScrollTrigger con efecto stagger
+- Prevención de FOUC y diseño responsivo
+- Integración completa en página principal
+
+**2. fix: Corregir errores de build de Vercel (f31fb87)**
+- Usar tipo Project de sanity.ts en projectData.ts
+- Reemplazar <img> por <Image> de next/image
+- Configurar remotePatterns para cdn.sanity.io
+- Eliminar variable 'index' no utilizada
+- Prop 'fill' con sizes responsivos
+
+**3. chore: Trigger Vercel rebuild (07665a5)**
+- Forzar nueva build para fetchear contenido de Sanity
+- Actualizar caché de Vercel
+
+---
+
 ## 📊 **Estadísticas del Proyecto**
 
-### **Archivos Creados: 58** ⬆️ (+14 archivos)
+### **Archivos Creados: 60** ⬆️ (+2 archivos desde FASE 11)
 
 **Desglose por categoría:**
 - **Componentes UI**: 5 archivos (Button, Card, Input, Textarea, index)
 - **Componentes Layout**: 3 archivos (Header, Footer, index)
-- **Componentes Features**: 5 archivos (HeroSection, ScrollSection, ContactForm, ServiceList, index)
+- **Componentes Features**: 6 archivos (HeroSection, ScrollSection, ContactForm, ServiceList, ProjectShowcase, index)
 - **Providers**: 2 archivos (GSAPProvider, AnalyticsProvider)
-- **Configuración**: 10 archivos (package.json, tsconfig, tailwind.config, sanity.config, etc.)
-- **Utilidades y Tipos**: 9 archivos (utils, gsap, sanity, hooks, queries, types, serviceData)
-- **Documentación**: 4 archivos (README, SANITY_SETUP, SANITY_STUDIO_SETUP, PROJECT_DEVELOPMENT)
+- **Configuración**: 10 archivos (package.json, tsconfig, tailwind.config, sanity.config, next.config, etc.)
+- **Utilidades y Tipos**: 10 archivos (utils, gsap, sanity, hooks, queries, types, serviceData, projectData)
+- **Documentación**: 1 archivo (PROJECT_DEVELOPMENT)
 - **Reglas MDC**: 3 archivos (nextjs-architecture, gsap-best-practices, tailwind-conventions)
 - **App Files**: 6 archivos (layout, page, services/page, test-sanity/page, globals.css, favicon)
 - **Sanity Studio**: 5 archivos (sanity.config, schemas/service, schemas/settings, schemas/index, .sanity/)
 - **Assets**: 5 archivos SVG + 1 placeholder OG image
 
-### **Líneas de Código: ~13,500** ⬆️ (+3,667 líneas)
+### **Líneas de Código: ~14,200** ⬆️ (+700 líneas desde FASE 11)
 
 **Distribución:**
-- TypeScript/TSX: ~11,500 líneas (85%)
-- CSS/Tailwind: ~600 líneas (4%)
-- Markdown: ~900 líneas (7%)
+- TypeScript/TSX: ~12,000 líneas (85%)
+- CSS/Tailwind: ~650 líneas (4%)
+- Markdown: ~1,050 líneas (7%)
 - Configuración JSON/JS: ~500 líneas (4%)
 
 ---
@@ -1557,20 +1819,26 @@ const config = isSanityStudio
 - [x] Tailwind CSS con utilidades personalizadas
 - [x] Formularios con validación Zod
 - [x] Integración con Sanity CMS
-- [x] **Sanity Studio completo con esquemas personalizados** 🆕
-- [x] **Sistema de servicios con CMS** 🆕
-- [x] **Página de servicios con SEO optimizado** 🆕
-- [x] **Componente ServiceList responsivo** 🆕
-- [x] **Funciones de datos del servidor con React cache** 🆕
+- [x] **Sanity Studio completo con esquemas personalizados**
+- [x] **Sistema de servicios con CMS**
+- [x] **Página de servicios con SEO optimizado**
+- [x] **Componente ServiceList responsivo**
+- [x] **Componente ProjectShowcase con animaciones avanzadas** 🆕
+- [x] **Sistema de proyectos destacados** 🆕
+- [x] **Animaciones GSAP con ScrollTrigger y stagger** 🆕
+- [x] **Optimización de imágenes con next/image** 🆕
+- [x] **Configuración de remotePatterns para Sanity CDN** 🆕
+- [x] **Funciones de datos del servidor con React cache**
 - [x] Vercel Analytics configurado
 - [x] Metadata API completa
-- [x] Documentación exhaustiva
+- [x] Documentación exhaustiva actualizada
 - [x] Desplegado en Vercel
 - [x] Sin errores de build
 - [x] Sin errores de ESLint
 - [x] Arquitectura escalable
-- [x] **Resolución de conflictos PostCSS** 🆕
-- [x] **Sanity Studio funcional en desarrollo** 🆕
+- [x] **Resolución de conflictos PostCSS**
+- [x] **Sanity Studio funcional en desarrollo**
+- [x] **Correcciones de build para producción** 🆕
 
 ### **📍 Próximos Pasos Sugeridos:**
 
@@ -1646,6 +1914,7 @@ uziAgency/
 │   │   │   ├── HeroSection.tsx
 │   │   │   ├── ScrollSection.tsx
 │   │   │   ├── ServiceList.tsx
+│   │   │   ├── ProjectShowcase.tsx
 │   │   │   └── index.ts
 │   │   ├── layout/
 │   │   │   ├── Footer.tsx
@@ -1668,7 +1937,8 @@ uziAgency/
 │       ├── server/
 │       │   ├── contact.ts
 │       │   └── data/
-│       │       └── serviceData.ts
+│       │       ├── serviceData.ts
+│       │       └── projectData.ts
 │       ├── types/
 │       │   └── sanity.ts
 │       ├── gsap.ts
