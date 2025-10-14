@@ -184,14 +184,45 @@ export const serviceSchema = defineType({
     select: {
       title: 'title',
       subtitle: 'summary',
-      media: 'icon'
+      icon: 'icon'
     },
     prepare(selection) {
-      const { title, subtitle } = selection
+      const { title, subtitle, icon } = selection
+      
+      // Mapeo de iconos a emojis para preview
+      const iconMap: Record<string, string> = {
+        'code': '💻',
+        'design': '🎨',
+        'marketing': '📈',
+        'seo': '🔍',
+        'mobile': '📱',
+        'ecommerce': '🛒',
+        'consulting': '💡',
+        'analytics': '📊',
+        'social': '📱',
+        'content': '📝',
+        'branding': '🎯',
+        'strategy': '🧠',
+        'development': '⚡',
+        'ui': '✨',
+        'ux': '🎭',
+        'database': '🗄️',
+        'api': '🔗',
+        'cloud': '☁️',
+        'security': '🔒',
+        'performance': '🚀',
+        'testing': '🧪',
+        'deployment': '🚢',
+        'maintenance': '🔧',
+        'support': '🆘'
+      }
+      
+      const emojiIcon = iconMap[icon?.toLowerCase()] || '🚀'
+      
       return {
         title: title,
         subtitle: subtitle,
-        media: '🚀' // Icono por defecto
+        media: () => emojiIcon
       }
     }
   }
