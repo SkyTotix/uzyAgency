@@ -123,16 +123,23 @@ export interface Project extends SanityDocument {
   _type: 'project';
   title: string;
   slug: SanitySlug;
-  description: string;
-  content: SanityBlock[];
-  mainImage: SanityImage;
+  excerpt: string;
+  description?: string;
+  content?: SanityBlock[];
+  mainImage?: SanityImage;
   images?: SanityImage[];
-  technologies: string[];
+  technologies?: string[];
+  projectUrl?: string;
   liveUrl?: string;
   githubUrl?: string;
-  featured?: boolean;
-  completedAt: string;
-  seo: SEO;
+  featured: boolean;
+  publishedAt: string;
+  completedAt?: string;
+  category?: {
+    _ref: string;
+    title: string;
+  };
+  seo?: SEO;
 }
 
 export interface Testimonial extends SanityDocument {
