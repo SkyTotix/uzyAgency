@@ -1,6 +1,7 @@
 "use client";
 
 import { useSanity } from '@/lib/hooks/useSanity';
+import Link from 'next/link';
 
 export default function TestSanityPage() {
   const { data, loading, error } = useSanity({
@@ -84,7 +85,7 @@ export default function TestSanityPage() {
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                 <p className="text-yellow-800 font-medium mb-2">⚠️ No hay contenido todavía</p>
                 <p className="text-yellow-700">
-                  La conexión funciona, pero no se encontraron documentos de tipo "post".
+                  La conexión funciona, pero no se encontraron documentos de tipo &quot;post&quot;.
                 </p>
               </div>
 
@@ -92,7 +93,7 @@ export default function TestSanityPage() {
                 <p className="text-blue-800 font-medium mb-2">📝 Próximos pasos:</p>
                 <ol className="list-decimal list-inside space-y-2 text-blue-700">
                   <li>Ve a tu Sanity Studio</li>
-                  <li>Crea un documento de tipo "post"</li>
+                  <li>Crea un documento de tipo &quot;post&quot;</li>
                   <li>Publica el documento</li>
                   <li>Refresca esta página</li>
                 </ol>
@@ -129,12 +130,12 @@ export default function TestSanityPage() {
         </div>
 
         <div className="mt-8 text-center">
-          <a 
+          <Link 
             href="/"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
           >
             ← Volver al Inicio
-          </a>
+          </Link>
         </div>
       </div>
     </div>
