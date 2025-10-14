@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "studio": "sanity dev",
+    "studio": "cross-env SANITY_STUDIO=true sanity dev",
     "deploy-studio": "sanity deploy"
   },
   "dependencies": {
@@ -22,7 +22,9 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.65.0",
+    "react-is": "^19.2.0",
     "sanity": "^4.10.3",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.1.12"
   },
@@ -32,6 +34,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-is": "^19.2.0",
+    "autoprefixer": "^10.4.21",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4",
