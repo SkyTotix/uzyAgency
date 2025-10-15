@@ -222,7 +222,7 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
                 {/* Features */}
                 {service.features && service.features.length > 0 && (
                   <ul className="space-y-2 mb-6">
-                    {service.features.slice(0, 3).map((feature, featureIndex) => (
+                    {service.features.slice(0, 3).map((feature) => (
                       <li
                         key={feature._key}
                         className="service-feature flex items-start text-sm text-gray-600 group-hover:text-gray-300 transition-colors"

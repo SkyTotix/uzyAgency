@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
-import { getActiveBackground } from '@/lib/server/data/backgroundData';
-import { sanityUtils } from '@/lib/sanity';
+import Image from 'next/image';
 import type { Background } from '@/lib/types/sanity';
 
 interface BackgroundManagerProps {
@@ -94,7 +93,7 @@ export default function BackgroundManager({ background }: BackgroundManagerProps
 
   const containerStyle = {
     opacity,
-    mixBlendMode: blendMode as any
+    mixBlendMode: blendMode as 'normal' | 'multiply' | 'overlay' | 'soft-light' | 'hard-light' | 'difference'
   };
 
   switch (backgroundType) {
@@ -106,10 +105,12 @@ export default function BackgroundManager({ background }: BackgroundManagerProps
           style={containerStyle}
         >
           {background.svgFile?.asset?.url && (
-            <img
+            <Image
               src={background.svgFile.asset.url}
               alt={background.title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="100vw"
             />
           )}
         </div>
@@ -123,10 +124,12 @@ export default function BackgroundManager({ background }: BackgroundManagerProps
           style={containerStyle}
         >
           {background.imageFile?.asset?.url && (
-            <img
+            <Image
               src={background.imageFile.asset.url}
               alt={background.title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="100vw"
             />
           )}
         </div>
@@ -185,7 +188,7 @@ function DefaultBackground() {
 }
 
 // Componente para formas geométricas
-function ShapesBackground({ config }: { config?: any }) {
+function ShapesBackground({ config }: { config?: { shapeCount?: number; shapeTypes?: string[]; colors?: string[] } }) {
   if (!config) return null;
 
   const { shapeCount = 5, shapeTypes = ['circle'], colors = ['#f3f4f6'] } = config;

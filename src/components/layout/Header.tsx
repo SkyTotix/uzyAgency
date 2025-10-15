@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Button, Logo } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import GlobalSearch from '@/components/features/GlobalSearch';
 

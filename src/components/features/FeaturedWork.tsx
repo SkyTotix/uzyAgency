@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import Link from 'next/link';
-import Image from 'next/image';
 
 const projects = [
   {

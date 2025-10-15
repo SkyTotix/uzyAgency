@@ -125,7 +125,7 @@ export default function AboutTestimonials({ testimonials }: AboutTestimonialsPro
           <div className="testimonial-content bg-white p-10 md:p-16 relative">
             {/* Comillas decorativas */}
             <div className="text-8xl text-gray-200 absolute top-8 left-8 font-serif leading-none">
-              "
+              &ldquo;
             </div>
 
             {/* Contenido */}

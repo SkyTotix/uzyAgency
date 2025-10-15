@@ -152,7 +152,7 @@ export default function AboutTeam({ members }: AboutTeamProps) {
 
         {/* Team Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-px bg-gray-300" style={{ perspective: '2000px' }}>
-          {members.map((member, index) => (
+          {members.map((member) => (
             <div
               key={member._id}
               className="team-card group bg-white p-6 md:p-8 hover:bg-gray-900 transition-all duration-500 opacity-0 invisible relative overflow-hidden"
