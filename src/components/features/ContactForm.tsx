@@ -74,32 +74,10 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
   const messageValue = watch('message', '');
 
   useGSAP(() => {
-    // Timeline para animación de entrada
-    const tl = gsap.timeline();
-    
-    tl.fromTo(".contact-title",
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
-    )
-    .fromTo(".contact-subtitle",
+    // Animación simple y directa
+    gsap.fromTo(".contact-title, .contact-subtitle, .contact-form, .contact-info",
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-      "-=0.4"
-    )
-    .fromTo(".contact-info",
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" },
-      "-=0.3"
-    )
-    .fromTo(".contact-form",
-      { opacity: 0, x: 50 },
-      { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" },
-      "-=0.6"
-    )
-    .fromTo(".form-element",
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "power2.out" },
-      "-=0.4"
+      { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "power2.out" }
     );
   }, { scope: sectionRef });
 
@@ -206,17 +184,17 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header minimalista */}
         <div className="text-center mb-16">
-          <h2 className="contact-title text-3xl md:text-4xl font-bold text-gray-900 mb-4 opacity-0 invisible">
+          <h2 className="contact-title text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             ¿Listo para comenzar tu proyecto?
           </h2>
-          <p className="contact-subtitle text-lg text-gray-600 opacity-0 invisible">
+          <p className="contact-subtitle text-lg text-gray-600">
             Cuéntanos sobre tu idea y te ayudaremos a hacerla realidad
           </p>
         </div>
 
         {/* Formulario central */}
         <div className="max-w-2xl mx-auto">
-          <div className="contact-form opacity-0 invisible">
+          <div className="contact-form">
             <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
               {/* Mensaje de éxito */}
               {isSuccess && (
@@ -386,7 +364,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
           </div>
 
           {/* Información de contacto simple */}
-          <div className="contact-info mt-12 opacity-0 invisible">
+          <div className="contact-info mt-12">
             <div className="text-center">
               <h3 className="text-lg font-semibold text-gray-900 mb-6">Información de Contacto</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
