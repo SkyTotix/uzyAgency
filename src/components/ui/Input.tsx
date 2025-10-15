@@ -1,45 +1,65 @@
+import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
-import { forwardRef, useId } from 'react';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   helperText?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, helperText, className, id, ...props }, ref) => {
-    // useId genera IDs consistentes entre servidor y cliente
-    const generatedId = useId();
-    const inputId = id || generatedId;
+  ({ className, label, error, helperText, id, ...props }, ref) => {
+    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
 
     return (
-      <div className="space-y-2">
+      <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor={inputId}
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             {label}
           </label>
         )}
         
         <input
-          ref={ref}
           id={inputId}
+          ref={ref}
           className={cn(
-            "input w-full",
-            error && "border-red-500 focus:border-red-500 focus:ring-red-500",
+            // Estilos base
+            "block w-full rounded-md shadow-sm sm:text-sm",
+            // Border y fondo
+            "border-gray-300 bg-white",
+            // Focus states con nueva paleta
+            "focus:border-primary focus:ring-primary focus:ring-2 focus:ring-offset-0",
+            // Disabled state
+            "disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed",
+            // Error state
+            error && "border-red-300 focus:border-red-500 focus:ring-red-500",
+            // Transiciones
+            "transition-colors duration-200",
             className
           )}
+          aria-invalid={error ? 'true' : 'false'}
+          aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}
           {...props}
         />
-        
+
         {error && (
-          <p className="text-sm text-red-600">
+          <p
+            id={`${inputId}-error`}
+            className="mt-1 text-sm text-red-600"
+            role="alert"
+          >
             {error}
           </p>
         )}
-        
+
         {helperText && !error && (
-          <p className="text-sm text-gray-500">
+          <p
+            id={`${inputId}-helper`}
+            className="mt-1 text-sm text-gray-500"
+          >
             {helperText}
           </p>
         )}
@@ -48,6 +68,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input";
+Input.displayName = 'Input';
 
 export default Input;

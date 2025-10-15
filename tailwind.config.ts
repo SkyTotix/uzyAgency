@@ -10,25 +10,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Paleta de Rebranding - Estrategia 60-30-10
-        primary: {
-          DEFAULT: '#0081af', // BOLD BLUE - Color principal de marca
-          light: '#00abe7',   // SMOOTH BLUE - Variante clara
-          dark: '#006289',    // Variante oscura
-        },
-        accent: {
-          DEFAULT: '#00abe7', // SMOOTH BLUE - Color de acento (10%)
-          hover: '#00c4ff',   // Hover state
-        },
-        // Colores funcionales de la marca
+        // Paleta de Rebranding - Estrategia Cromática 60-30-10
+        primary: '#0081af',        // BOLD BLUE - Color principal de marca
+        accent: '#00abe7',         // LIGHT BLUE - Color de acento (10%)
+        'background-light': '#f6f8ff', // SMOOTH WHITE - Fondo dominante (60%)
+        'text-primary': '#272d2d', // SMOOTH DARK - Texto principal (30%)
+        
+        // Escalas de colores de marca
         brand: {
-          DEFAULT: '#0081af', // BOLD BLUE - Color de marca principal
-          light: '#00abe7',   // SMOOTH BLUE
-          dark: '#006289',
+          DEFAULT: '#0081af',      // BOLD BLUE
+          light: '#00abe7',        // LIGHT BLUE
+          dark: '#006289',         // BOLD BLUE oscuro
         },
-        // Colores de fondo personalizados
-        'smooth-white': '#f8f8f8',  // SMOOTH WHITE - Fondo dominante (60%)
-        // Colores base expandidos
+        
+        // Colores base de Tailwind (compatibilidad)
         white: '#ffffff',
         black: '#000000',
         gray: {
@@ -49,7 +44,7 @@ const config: Config = {
           200: '#bfdbfe',
           300: '#93c5fd',
           400: '#60a5fa',
-          500: '#00abe7',  // SMOOTH BLUE
+          500: '#00abe7',  // LIGHT BLUE
           600: '#0081af',  // BOLD BLUE
           700: '#006289',
           800: '#004d6d',
