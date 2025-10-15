@@ -114,9 +114,9 @@ export default function BlogPostHero({ post }: BlogPostHeroProps) {
         {/* Categorías */}
         {post.categories && post.categories.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
-            {post.categories.map((category) => (
+            {post.categories.map((category, index) => (
               <Link
-                key={category._id}
+                key={category._id || `category-${index}`}
                 href={`/blog?category=${category.slug.current}`}
                 className="post-category px-4 py-1 bg-gray-900 text-white text-xs font-medium uppercase tracking-wider hover:bg-gray-800 transition-colors opacity-0 invisible"
               >

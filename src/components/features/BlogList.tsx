@@ -104,19 +104,34 @@ export default function BlogList({ posts }: BlogListProps) {
                 )}
               >
                 {/* Imagen del post */}
-                {post.mainImage?.asset?._ref && (
-                  <div className="relative h-56 overflow-hidden">
-                    <Image
-                      src={sanityUtils.imageUrl(post.mainImage, 800, 600)}
-                      alt={post.mainImage.alt || post.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  </div>
-                )}
+                <div className="relative h-56 overflow-hidden bg-gray-200">
+                  {post.mainImage?.asset?._ref ? (
+                    <>
+                      <Image
+                        src={sanityUtils.imageUrl(post.mainImage, 800, 600)}
+                        alt={post.mainImage.alt || post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          console.error('Error loading post image:', e);
+                          // Fallback a placeholder si la imagen falla
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                      {/* Overlay gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    </>
+                  ) : (
+                    /* Placeholder cuando no hay imagen */
+                    <div className="flex items-center justify-center h-full bg-gradient-to-br from-gray-100 to-gray-200">
+                      <div className="text-center">
+                        <div className="text-4xl mb-2">📝</div>
+                        <p className="text-gray-500 text-sm">Sin imagen</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 {/* Contenido de la tarjeta */}
                 <div className="flex-1 flex flex-col p-6">
@@ -147,24 +162,44 @@ export default function BlogList({ posts }: BlogListProps) {
                   {/* Metadata */}
                   <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                     {/* Autor */}
-                    {post.author && (
-                      <div className="flex items-center gap-2">
-                        {post.author.image?.asset?._ref && (
-                          <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                            <Image
-                              src={sanityUtils.imageUrl(post.author.image, 64, 64)}
-                              alt={post.author.name}
-                              fill
-                              sizes="32px"
-                              className="object-cover"
-                            />
+                    <div className="flex items-center gap-2">
+                      {post.author ? (
+                        <>
+                          {/* Avatar del autor */}
+                          <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-300">
+                            {post.author.image?.asset?._ref ? (
+                              <Image
+                                src={sanityUtils.imageUrl(post.author.image, 64, 64)}
+                                alt={post.author.name}
+                                fill
+                                sizes="32px"
+                                className="object-cover"
+                                onError={(e) => {
+                                  console.error('Error loading author image:', e);
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              /* Placeholder para avatar */
+                              <div className="flex items-center justify-center w-full h-full bg-gray-400 text-white text-xs font-bold">
+                                {post.author.name.charAt(0).toUpperCase()}
+                              </div>
+                            )}
                           </div>
-                        )}
-                        <span className="text-sm text-gray-700 font-medium">
-                          {post.author.name}
-                        </span>
-                      </div>
-                    )}
+                          <span className="text-sm text-gray-700 font-medium">
+                            {post.author.name}
+                          </span>
+                        </>
+                      ) : (
+                        /* Fallback cuando no hay autor */
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                            <span className="text-gray-600 text-xs">👤</span>
+                          </div>
+                          <span className="text-sm text-gray-500">Autor no disponible</span>
+                        </div>
+                      )}
+                    </div>
 
                     {/* Fecha */}
                     <time className="text-sm text-gray-500">
