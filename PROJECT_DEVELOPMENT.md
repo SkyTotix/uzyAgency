@@ -1685,30 +1685,514 @@ import type { Project } from '@/lib/types/sanity';
 
 ---
 
+## 🆕 **FASE 13: Implementación Completa del Blog**
+
+### **13.1 Data Layer del Blog (Server)**
+
+#### **A. Funciones de Datos del Servidor (`src/lib/server/data/blogData.ts`)**
+
+```typescript
+import type { Post } from '@/lib/types/sanity';
+import { BLOG_POSTS_QUERY, BLOG_POST_QUERY } from '@/lib/queries/sanity';
+
+// Funciones implementadas con React cache:
+export const getAllBlogPosts = cache(async (): Promise<Post[]> => {});
+export const getBlogPostBySlug = cache(async (slug: string): Promise<Post | null> => {});
+export const getRecentBlogPosts = cache(async (limit: number = 5): Promise<Post[]> => {});
+export const getRelatedPosts = cache(async (categoryIds, currentPostId, limit): Promise<Post[]> => {});
+export const getBlogStats = cache(async () => {});
+```
+
+**Características:**
+- ✅ Usa queries predefinidas de Sanity
+- ✅ React cache en todas las funciones
+- ✅ Queries GROQ con relaciones completas (author, categories)
+- ✅ Manejo de errores robusto
+- ✅ Funciones para diferentes casos de uso
+
+### **13.2 Esquemas de Sanity para el Blog**
+
+#### **A. Post Schema (`sanity/schemas/post.ts`)**
+
+```typescript
+export const postSchema = defineType({
+  name: 'post',
+  title: 'Publicación del Blog',
+  type: 'document',
+  fields: [
+    title, slug, excerpt, mainImage, content (rich text),
+    author (referencia), categories (array de referencias),
+    publishedAt, featured, seo
+  ]
+})
+```
+
+**Características:**
+- ✅ Rich text con bloques (h1-h4, blockquote, listas)
+- ✅ Marcas de texto (strong, em, code, underline, strike)
+- ✅ Enlaces con target blank
+- ✅ Imágenes inline con alt y caption
+- ✅ Bloques de código con syntax highlighting (11 lenguajes)
+- ✅ Slugify personalizado (elimina acentos)
+- ✅ Validaciones exhaustivas
+- ✅ Preview con badge de destacado
+
+#### **B. Author Schema (`sanity/schemas/author.ts`)**
+
+```typescript
+export const authorSchema = defineType({
+  name: 'author',
+  title: 'Autor',
+  fields: [
+    name, slug, image, bio (rich text),
+    socialLinks (twitter, linkedin, github, website, email),
+    role, featured
+  ]
+})
+```
+
+**Características:**
+- ✅ Foto de perfil con alt
+- ✅ Biografía con formato
+- ✅ 5 tipos de enlaces sociales
+- ✅ Roles predefinidos (editor, writer, developer, etc.)
+- ✅ Preview con emoji y rol
+
+#### **C. Category Schema (`sanity/schemas/category.ts`)**
+
+```typescript
+export const categorySchema = defineType({
+  name: 'category',
+  title: 'Categoría',
+  fields: [
+    title, slug, description, color, icon, featured, order
+  ]
+})
+```
+
+**Características:**
+- ✅ Color para badges (9 opciones)
+- ✅ Iconos emoji (18 opciones)
+- ✅ Orden personalizado
+- ✅ Preview con icono emoji
+
+### **13.3 Página de Índice del Blog**
+
+#### **A. `src/app/blog/page.tsx`**
+
+```typescript
+export default async function BlogPage() {
+  const posts = await getAllBlogPosts();
+  
+  return (
+    <>
+      <script type="application/ld+json" {...} />
+      <Header />
+      <main>
+        <BlogList posts={posts} />
+      </main>
+      <Footer />
+    </>
+  );
+}
+```
+
+**Características:**
+- ✅ Server Component asíncrono
+- ✅ Metadata API completa para SEO
+- ✅ JSON-LD Schema.org para Blog
+- ✅ Keywords optimizados
+- ✅ OpenGraph y Twitter cards
+
+### **13.4 Componente BlogList**
+
+#### **A. `src/components/features/BlogList.tsx`**
+
+**Animaciones GSAP:**
+```typescript
+✅ "use client"
+✅ useGSAP(() => {...}, { scope: blogListRef })
+
+Animaciones:
+- Título: fade-in desde y: 50
+- Tarjetas: stagger effect (amount: 0.5)
+- Prevención FOUC: opacity-0 invisible + autoAlpha
+```
+
+**Características:**
+- ✅ Grid responsivo: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
+- ✅ Imágenes optimizadas con next/image
+- ✅ Categorías con badges de colores
+- ✅ Metadata del autor con foto
+- ✅ Fecha formateada
+- ✅ Line-clamp para excerpts
+- ✅ Indicador "Leer más" con flecha animada
+
+### **13.5 Página de Post Individual**
+
+#### **A. `src/app/blog/[slug]/page.tsx`**
+
+```typescript
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await getBlogPostBySlug(slug);
+  // Metadata dinámica por post
+}
+
+export default async function BlogPostPage({ params }) {
+  const post = await getBlogPostBySlug(slug);
+  const relatedPosts = await getRelatedPosts(...);
+  // Renderizado completo
+}
+```
+
+**Características:**
+- ✅ generateMetadata dinámica para SEO
+- ✅ JSON-LD Schema.org para BlogPosting
+- ✅ Imagen destacada full-width
+- ✅ Breadcrumb navigation
+- ✅ Renderizado de rich text con Tailwind
+- ✅ Soporta headings, párrafos, blockquotes, marcas
+- ✅ Metadata del autor con imagen
+- ✅ Botones de compartir (Twitter, LinkedIn)
+- ✅ Posts relacionados por categoría
+- ✅ notFound() si no existe el post
+
+### **13.6 Configuración Adicional**
+
+**Plugin de Código:**
+```typescript
+// sanity.config.ts
+import { codeInput } from '@sanity/code-input'
+
+plugins: [
+  structureTool({...}),
+  visionTool(),
+  codeInput() // Para bloques de código
+]
+```
+
+**Tailwind Typography:**
+```typescript
+// tailwind.config.ts
+plugins: [
+  require('@tailwindcss/typography')
+]
+```
+
+---
+
+## 🆕 **FASE 14: Página Sobre Nosotros con Animaciones Avanzadas**
+
+### **14.1 Data Layer de Equipo y Testimonios**
+
+#### **A. Team Data (`src/lib/server/data/teamData.ts`)**
+
+```typescript
+import type { TeamMember } from '@/lib/types/sanity';
+import { TEAM_QUERY } from '@/lib/queries/sanity';
+
+// Funciones con React cache:
+export const getAllTeamMembers = cache(async (): Promise<TeamMember[]> => {});
+export const getFeaturedTeamMembers = cache(async (limit): Promise<TeamMember[]> => {});
+export const getTeamMemberBySlug = cache(async (slug): Promise<TeamMember | null> => {});
+export const getTeamStats = cache(async () => {});
+```
+
+#### **B. Testimonial Data (`src/lib/server/data/testimonialData.ts`)**
+
+```typescript
+import type { Testimonial } from '@/lib/types/sanity';
+import { TESTIMONIALS_QUERY } from '@/lib/queries/sanity';
+
+// Funciones con React cache:
+export const getAllTestimonials = cache(async (): Promise<Testimonial[]> => {});
+export const getFeaturedTestimonials = cache(async (limit): Promise<Testimonial[]> => {});
+export const getTestimonialsByRating = cache(async (minRating): Promise<Testimonial[]> => {});
+export const getTestimonialStats = cache(async () => {});
+```
+
+**Características:**
+- ✅ React cache obligatorio
+- ✅ Queries GROQ optimizadas
+- ✅ Filtros por rating, featured
+- ✅ Estadísticas con average rating
+
+### **14.2 Esquemas de Sanity para About**
+
+#### **A. TeamMember Schema (`sanity/schemas/teamMember.ts`)**
+
+```typescript
+export const teamMemberSchema = defineType({
+  name: 'teamMember',
+  title: 'Miembro del Equipo',
+  fields: [
+    name, slug, position, image, bio (rich text),
+    socialLinks (twitter, linkedin, github, email),
+    expertise (array de habilidades),
+    featured, order, isActive
+  ]
+})
+```
+
+**Características:**
+- ✅ Foto profesional con hotspot
+- ✅ Bio con máximo 3 bloques
+- ✅ Expertise con tags (máx 8)
+- ✅ 4 tipos de enlaces sociales
+- ✅ Control de visibilidad (isActive)
+- ✅ Preview con badges de featured y activo
+
+#### **B. Testimonial Schema (`sanity/schemas/testimonial.ts`)**
+
+```typescript
+export const testimonialSchema = defineType({
+  name: 'testimonial',
+  title: 'Testimonio',
+  fields: [
+    name, company, position, content (texto),
+    avatar, rating (1-5 estrellas),
+    project, projectUrl, featured, order, publishedAt
+  ]
+})
+```
+
+**Características:**
+- ✅ Rating de 1-5 estrellas
+- ✅ Contenido de 50-500 caracteres
+- ✅ Avatar opcional
+- ✅ Link al proyecto relacionado
+- ✅ Preview con estrellas en el título
+- ✅ Ordenamientos por rating, fecha, featured
+
+### **14.3 TeamMemberGrid con ScrollTrigger Pin**
+
+#### **A. `src/components/features/TeamMemberGrid.tsx`**
+
+**Animación ScrollTrigger Pin:**
+```typescript
+"use client";
+
+useGSAP(() => {
+  // Pin del header mientras las tarjetas se animan
+  gsap.to(headerRef.current, {
+    scrollTrigger: {
+      trigger: teamSectionRef.current,
+      start: "top top",
+      end: "bottom center",
+      pin: headerRef.current,
+      pinSpacing: false,
+      scrub: 0.5
+    }
+  });
+
+  // Animación stagger con rotateY
+  gsap.fromTo(".team-card",
+    { opacity: 0, y: 100, scale: 0.9, rotateY: -15 },
+    { 
+      autoAlpha: 1, y: 0, scale: 1, rotateY: 0,
+      stagger: { amount: 0.8, grid: "auto" }
+    }
+  );
+}, { scope: teamSectionRef });
+```
+
+**Características:**
+- ✅ **ScrollTrigger Pin effect** - Header fijo
+- ✅ Stagger con transformación 3D (rotateY)
+- ✅ Grid: `grid-cols-1 md:grid-cols-2 lg:grid-cols-4`
+- ✅ Imágenes grayscale → color en hover
+- ✅ Scale de imagen en hover
+- ✅ Redes sociales con iconos SVG
+- ✅ Badge de destacado
+- ✅ Prevención de FOUC
+
+### **14.4 TestimonialCarousel**
+
+#### **A. `src/components/features/TestimonialCarousel.tsx`**
+
+**Características del Carrusel:**
+```typescript
+"use client";
+
+const [currentIndex, setCurrentIndex] = useState(0);
+
+// Auto-rotate cada 8 segundos
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  }, 8000);
+  return () => clearInterval(interval);
+}, [testimonials]);
+
+// Animación al cambiar
+useGSAP(() => {
+  gsap.fromTo(testimonialRef.current,
+    { opacity: 0, scale: 0.95, y: 20 },
+    { autoAlpha: 1, scale: 1, y: 0, duration: 0.6 }
+  );
+}, { scope: carouselRef, dependencies: [currentIndex] });
+```
+
+**Características:**
+- ✅ Auto-rotate automático cada 8 segundos
+- ✅ Animación GSAP al cambiar testimonio
+- ✅ Controles de navegación (prev/next)
+- ✅ Indicadores de posición (dots)
+- ✅ Contador "X de Y"
+- ✅ Rating con estrellas (1-5)
+- ✅ Avatar del cliente
+- ✅ Glassmorphism: `bg-white/10 backdrop-blur-md`
+- ✅ Fondo con gradiente: `from-blue-900 via-purple-900`
+- ✅ Botones de navegación responsivos
+
+### **14.5 Página About Completa**
+
+#### **A. `src/app/about/page.tsx`**
+
+**Estructura de la Página:**
+```typescript
+export default async function AboutPage() {
+  const teamMembers = await getAllTeamMembers();
+  const testimonials = await getAllTestimonials();
+  
+  return (
+    <>
+      {/* Hero Section */}
+      {/* Misión y Visión */}
+      {/* Valores */}
+      <TeamMemberGrid members={teamMembers} />
+      <TestimonialCarousel testimonials={testimonials} />
+      {/* CTA Section */}
+    </>
+  );
+}
+```
+
+**Secciones Implementadas:**
+
+**1. Hero Section:**
+- ✅ Gradiente impactante
+- ✅ Título "Sobre Nosotros"
+- ✅ Estadísticas en grid (50+ proyectos, equipo, 98% satisfacción, 5 años)
+- ✅ Scroll indicator animado
+
+**2. Misión y Visión:**
+- ✅ Grid de 2 columnas
+- ✅ Cards con gradientes diferenciados
+- ✅ Iconos emoji (🎯 Misión, 🚀 Visión)
+
+**3. Valores Corporativos:**
+- ✅ Grid de 3 columnas
+- ✅ Excelencia 💎, Colaboración 🤝, Innovación ⚡
+
+**4. Metadata SEO:**
+- ✅ Title y description
+- ✅ Keywords
+- ✅ OpenGraph
+- ✅ Twitter cards
+- ✅ JSON-LD Schema.org para Organization
+
+### **14.6 Navegación Actualizada**
+
+**Header actualizado con:**
+- ✅ Enlace "Blog" agregado
+- ✅ Enlace "Nosotros" agregado
+- ✅ Navegación completa: Inicio | Servicios | Blog | Nosotros | Contacto
+- ✅ Todos los enlaces usan `<Link>` de Next.js
+- ✅ Logo clickeable
+- ✅ Menú móvil actualizado
+
+### **14.7 Plugins y Configuración**
+
+**Plugins Agregados:**
+```bash
+npm install @tailwindcss/typography
+npm install @sanity/code-input
+```
+
+**Configuración:**
+```typescript
+// tailwind.config.ts
+plugins: [
+  require('@tailwindcss/typography')
+]
+
+// sanity.config.ts
+import { codeInput } from '@sanity/code-input'
+plugins: [
+  structureTool({...}),
+  visionTool(),
+  codeInput()
+]
+```
+
+### **14.8 Commits y Control de Versiones**
+
+**Commits realizados:**
+
+**1. docs: Actualizar PROJECT_DEVELOPMENT.md FASE 12 (9d671c7)**
+- Documentación de ProjectShowcase
+- Estadísticas actualizadas
+
+**2. feat: Implementar funcionalidad completa del Blog (e8ba194)**
+- blogData.ts con todas las funciones
+- Página /blog con Metadata
+- BlogList con animaciones GSAP
+- Página /blog/[slug] dinámica
+- Renderizado de rich text
+- @tailwindcss/typography instalado
+
+**3. feat: Crear esquemas de Sanity para Blog (01aa911)**
+- post.ts, author.ts, category.ts
+- Validaciones completas
+- Rich text con bloques de código
+- Slugify personalizado
+
+**4. fix: Agregar plugin @sanity/code-input (73210ce)**
+- Resolver error de tipo 'code'
+- Plugin codeInput agregado
+
+**5. feat: Agregar navegación al Blog (9787fe4)**
+- Header actualizado con enlace Blog
+- Links de Next.js en lugar de <a>
+
+**6. feat: Implementar página About completa (892eca3)**
+- teamData.ts y testimonialData.ts
+- TeamMemberGrid con ScrollTrigger Pin
+- TestimonialCarousel con auto-rotate
+- Página /about con Metadata
+
+**7. feat: Crear esquemas para Equipo y Testimonios (bb3548d)**
+- teamMember.ts con expertise y socialLinks
+- testimonial.ts con rating y avatar
+- Sanity Studio actualizado con secciones
+
+---
+
 ## 📊 **Estadísticas del Proyecto**
 
-### **Archivos Creados: 60** ⬆️ (+2 archivos desde FASE 11)
+### **Archivos Creados: 73** ⬆️ (+13 archivos desde FASE 12)
 
 **Desglose por categoría:**
 - **Componentes UI**: 5 archivos (Button, Card, Input, Textarea, index)
 - **Componentes Layout**: 3 archivos (Header, Footer, index)
-- **Componentes Features**: 6 archivos (HeroSection, ScrollSection, ContactForm, ServiceList, ProjectShowcase, index)
+- **Componentes Features**: 8 archivos (HeroSection, ScrollSection, ContactForm, ServiceList, ProjectShowcase, BlogList, TeamMemberGrid, TestimonialCarousel, index)
 - **Providers**: 2 archivos (GSAPProvider, AnalyticsProvider)
-- **Configuración**: 10 archivos (package.json, tsconfig, tailwind.config, sanity.config, next.config, etc.)
-- **Utilidades y Tipos**: 10 archivos (utils, gsap, sanity, hooks, queries, types, serviceData, projectData)
+- **Configuración**: 10 archivos (package.json, tsconfig, tailwind.config, sanity.config, next.config, postcss.config, etc.)
+- **Utilidades y Tipos**: 10 archivos (utils, gsap, sanity, hooks, queries, types, serviceData, projectData, blogData, teamData, testimonialData)
 - **Documentación**: 1 archivo (PROJECT_DEVELOPMENT)
 - **Reglas MDC**: 3 archivos (nextjs-architecture, gsap-best-practices, tailwind-conventions)
-- **App Files**: 6 archivos (layout, page, services/page, test-sanity/page, globals.css, favicon)
-- **Sanity Studio**: 5 archivos (sanity.config, schemas/service, schemas/settings, schemas/index, .sanity/)
+- **App Files**: 8 archivos (layout, page, services/page, blog/page, blog/[slug]/page, about/page, test-sanity/page, globals.css, favicon)
+- **Sanity Studio**: 10 archivos (sanity.config, schemas/service, schemas/settings, schemas/post, schemas/author, schemas/category, schemas/teamMember, schemas/testimonial, schemas/index, .sanity/)
 - **Assets**: 5 archivos SVG + 1 placeholder OG image
 
-### **Líneas de Código: ~14,200** ⬆️ (+700 líneas desde FASE 11)
+### **Líneas de Código: ~17,500** ⬆️ (+3,300 líneas desde FASE 12)
 
 **Distribución:**
-- TypeScript/TSX: ~12,000 líneas (85%)
-- CSS/Tailwind: ~650 líneas (4%)
-- Markdown: ~1,050 líneas (7%)
-- Configuración JSON/JS: ~500 líneas (4%)
+- TypeScript/TSX: ~15,000 líneas (86%)
+- CSS/Tailwind: ~700 líneas (4%)
+- Markdown: ~1,300 líneas (7%)
+- Configuración JSON/JS: ~500 líneas (3%)
 
 ---
 
@@ -1738,10 +2222,13 @@ import type { Project } from '@/lib/types/sanity';
 - **@sanity/client** 7.x
 - **sanity** 4.x (Sanity Studio completo)
 - **@sanity/vision** 4.x (Plugin de queries GROQ)
+- **@sanity/code-input** 4.x (Plugin de bloques de código)
+- **@tailwindcss/typography** 0.5.x (Estilos para contenido rich text)
 - Custom hooks para data fetching
 - Tipos TypeScript completos
-- Esquemas de contenido personalizados
+- **8 esquemas de contenido** (service, settings, post, author, category, teamMember, testimonial)
 - React cache para optimización
+- Queries GROQ con relaciones completas
 
 ### **Analítica:**
 - **@vercel/analytics** (GDPR compliant, cookieless)
@@ -1819,18 +2306,29 @@ import type { Project } from '@/lib/types/sanity';
 - [x] Tailwind CSS con utilidades personalizadas
 - [x] Formularios con validación Zod
 - [x] Integración con Sanity CMS
-- [x] **Sanity Studio completo con esquemas personalizados**
+- [x] **Sanity Studio completo con 8 esquemas personalizados**
 - [x] **Sistema de servicios con CMS**
 - [x] **Página de servicios con SEO optimizado**
+- [x] **Sistema completo de Blog** 🆕
+- [x] **Página /blog con lista de posts** 🆕
+- [x] **Página /blog/[slug] dinámica** 🆕
+- [x] **BlogList con animaciones stagger** 🆕
+- [x] **Renderizado de rich text con Tailwind** 🆕
+- [x] **Posts relacionados por categoría** 🆕
+- [x] **Página /about (Sobre Nosotros)** 🆕
+- [x] **TeamMemberGrid con ScrollTrigger Pin** 🆕
+- [x] **TestimonialCarousel con auto-rotate** 🆕
 - [x] **Componente ServiceList responsivo**
-- [x] **Componente ProjectShowcase con animaciones avanzadas** 🆕
-- [x] **Sistema de proyectos destacados** 🆕
-- [x] **Animaciones GSAP con ScrollTrigger y stagger** 🆕
-- [x] **Optimización de imágenes con next/image** 🆕
-- [x] **Configuración de remotePatterns para Sanity CDN** 🆕
+- [x] **Componente ProjectShowcase con animaciones avanzadas**
+- [x] **Sistema de proyectos destacados**
+- [x] **Animaciones GSAP con ScrollTrigger y stagger**
+- [x] **Optimización de imágenes con next/image**
+- [x] **Configuración de remotePatterns para Sanity CDN**
 - [x] **Funciones de datos del servidor con React cache**
+- [x] **Navegación completa en Header** (Inicio, Servicios, Blog, Nosotros, Contacto) 🆕
 - [x] Vercel Analytics configurado
-- [x] Metadata API completa
+- [x] Metadata API completa en todas las páginas
+- [x] JSON-LD Schema.org en todas las páginas
 - [x] Documentación exhaustiva actualizada
 - [x] Desplegado en Vercel
 - [x] Sin errores de build
@@ -1838,7 +2336,8 @@ import type { Project } from '@/lib/types/sanity';
 - [x] Arquitectura escalable
 - [x] **Resolución de conflictos PostCSS**
 - [x] **Sanity Studio funcional en desarrollo**
-- [x] **Correcciones de build para producción** 🆕
+- [x] **Correcciones de build para producción**
+- [x] **Plugins adicionales** (@tailwindcss/typography, @sanity/code-input) 🆕
 
 ### **📍 Próximos Pasos Sugeridos:**
 
@@ -1849,10 +2348,11 @@ import type { Project } from '@/lib/types/sanity';
 
 **2. Páginas Adicionales:**
 - [x] ✅ Página de servicios (COMPLETADO)
-- [ ] Página de portfolio/proyectos
-- [ ] Página de blog
+- [x] ✅ Página de blog (/blog) (COMPLETADO)
+- [x] ✅ Página de post individual (/blog/[slug]) (COMPLETADO)
+- [x] ✅ Página sobre nosotros (/about) (COMPLETADO)
+- [ ] Página de portfolio/proyectos completa
 - [ ] Página de contacto dedicada
-- [ ] Página sobre nosotros
 
 **3. Features Adicionales:**
 - [ ] Sistema de búsqueda
@@ -1896,10 +2396,21 @@ uziAgency/
 │   ├── schemas/
 │   │   ├── service.ts
 │   │   ├── settings.ts
+│   │   ├── post.ts
+│   │   ├── author.ts
+│   │   ├── category.ts
+│   │   ├── teamMember.ts
+│   │   ├── testimonial.ts
 │   │   └── index.ts
 │   └── sanity.config.ts
 ├── src/
 │   ├── app/
+│   │   ├── about/
+│   │   │   └── page.tsx
+│   │   ├── blog/
+│   │   │   ├── [slug]/
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
 │   │   ├── services/
 │   │   │   └── page.tsx
 │   │   ├── test-sanity/
@@ -1910,11 +2421,14 @@ uziAgency/
 │   │   └── page.tsx
 │   ├── components/
 │   │   ├── features/
+│   │   │   ├── BlogList.tsx
 │   │   │   ├── ContactForm.tsx
 │   │   │   ├── HeroSection.tsx
+│   │   │   ├── ProjectShowcase.tsx
 │   │   │   ├── ScrollSection.tsx
 │   │   │   ├── ServiceList.tsx
-│   │   │   ├── ProjectShowcase.tsx
+│   │   │   ├── TeamMemberGrid.tsx
+│   │   │   ├── TestimonialCarousel.tsx
 │   │   │   └── index.ts
 │   │   ├── layout/
 │   │   │   ├── Footer.tsx
@@ -1937,8 +2451,11 @@ uziAgency/
 │       ├── server/
 │       │   ├── contact.ts
 │       │   └── data/
+│       │       ├── blogData.ts
+│       │       ├── projectData.ts
 │       │       ├── serviceData.ts
-│       │       └── projectData.ts
+│       │       ├── teamData.ts
+│       │       └── testimonialData.ts
 │       ├── types/
 │       │   └── sanity.ts
 │       ├── gsap.ts
