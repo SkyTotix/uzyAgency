@@ -1,4 +1,5 @@
 // Feature Components exports
+export { default as BlogFilter } from './BlogFilter';
 export { default as BlogList } from './BlogList';
 export { default as ContactForm } from './ContactForm';
 export { default as ContactSection } from './ContactSection';

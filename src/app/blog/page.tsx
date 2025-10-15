@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Header, Footer } from '@/components/layout';
 import { BlogList } from '@/components/features';
-import { getAllBlogPosts } from '@/lib/server/data/blogData';
+import { getAllBlogPosts, getTotalBlogPosts, getAllCategories } from '@/lib/server/data/blogData';
+import PaginationControls from '@/components/ui/PaginationControls';
+import BlogFilter from '@/components/features/BlogFilter';
 
 // Metadata SEO para la página del blog
 export const metadata: Metadata = {
@@ -69,9 +71,32 @@ const jsonLd = {
   },
 };
 
-export default async function BlogPage() {
-  // Obtener todas las publicaciones del blog desde Sanity
-  const posts = await getAllBlogPosts();
+interface BlogPageProps {
+  searchParams: Promise<{
+    page?: string;
+    category?: string;
+  }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  // Extraer parámetros de búsqueda
+  const params = await searchParams;
+  const currentPage = Number(params.page) || 1;
+  const categorySlug = params.category || undefined;
+
+  // Configuración de paginación
+  const POSTS_PER_PAGE = 12;
+  const offset = (currentPage - 1) * POSTS_PER_PAGE;
+
+  // Obtener datos del servidor (paginados y filtrados)
+  const [posts, totalPosts, categories] = await Promise.all([
+    getAllBlogPosts(POSTS_PER_PAGE, offset, categorySlug),
+    getTotalBlogPosts(categorySlug),
+    getAllCategories()
+  ]);
+
+  // Calcular número total de páginas
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
 
   return (
     <>
@@ -83,7 +108,71 @@ export default async function BlogPage() {
 
       <Header />
       <main className="min-h-screen bg-gray-50">
-        <BlogList posts={posts} />
+        {/* Hero Section del Blog */}
+        <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-12 md:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Nuestro Blog
+            </h1>
+            <p className="text-xl text-blue-100 max-w-2xl">
+              Artículos, tutoriales y recursos sobre desarrollo web, diseño y tecnología.
+            </p>
+            <div className="mt-6 flex items-center space-x-6 text-blue-100">
+              <div className="flex items-center space-x-2">
+                <span className="text-2xl">📝</span>
+                <span className="text-lg font-medium">{totalPosts} artículos</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-2xl">🏷️</span>
+                <span className="text-lg font-medium">{categories.length} categorías</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Filtros de Categoría */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <BlogFilter categories={categories} />
+        </section>
+
+        {/* Lista de Posts con Paginación */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          {posts.length > 0 ? (
+            <>
+              <BlogList posts={posts} />
+              
+              {/* Controles de Paginación */}
+              {totalPages > 1 && (
+                <div className="mt-12">
+                  <PaginationControls 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center py-16">
+              <div className="text-6xl mb-4">📭</div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                No se encontraron artículos
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {categorySlug 
+                  ? 'No hay artículos en esta categoría. Prueba con otra categoría.'
+                  : 'Aún no hay artículos publicados. Vuelve pronto.'}
+              </p>
+              {categorySlug && (
+                <a
+                  href="/blog"
+                  className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Ver todos los artículos
+                </a>
+              )}
+            </div>
+          )}
+        </section>
       </main>
       <Footer />
     </>
