@@ -77,68 +77,65 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
       "-=0.6"
     );
 
-    // Hover effects con microinteracciones
+    // Hover effects sutiles y profesionales
     const items = document.querySelectorAll('.service-item');
     items.forEach((item) => {
       const icon = item.querySelector('.service-icon');
-      const number = item.querySelector('.service-number');
+      const title = item.querySelector('.service-title');
       const arrow = item.querySelector('.service-arrow');
-      const features = item.querySelectorAll('.service-feature');
       
       item.addEventListener('mouseenter', () => {
-        // Icono con rotation y scale
-        gsap.to(icon, {
-          rotation: 360,
-          scale: 1.2,
-          duration: 0.6,
-          ease: "back.out(1.7)"
-        });
-        
-        // Número con slide
-        gsap.to(number, {
-          x: -10,
-          opacity: 0.3,
+        // Elevación sutil de la card
+        gsap.to(item, {
+          y: -4,
           duration: 0.3,
           ease: "power2.out"
         });
         
-        // Flecha con magnetic
-        gsap.to(arrow, {
-          x: 10,
-          scale: 1.3,
-          duration: 0.4,
-          ease: "back.out(2)"
+        // Icono con escala sutil (sin rotación)
+        gsap.to(icon, {
+          scale: 1.08,
+          duration: 0.3,
+          ease: "power2.out"
         });
         
-        // Features con stagger
-        gsap.fromTo(features,
-          { x: -5 },
-          {
-            x: 0,
-            duration: 0.3,
-            stagger: 0.05,
-            ease: "power2.out"
-          }
-        );
+        // Título desliza sutilmente
+        gsap.to(title, {
+          x: 4,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        // Flecha se mueve
+        gsap.to(arrow, {
+          x: 6,
+          duration: 0.3,
+          ease: "power2.out"
+        });
       });
       
       item.addEventListener('mouseleave', () => {
-        gsap.to(icon, {
-          rotation: 0,
-          scale: 1,
-          duration: 0.6,
-          ease: "power2.out"
-        });
-        gsap.to(number, {
-          x: 0,
-          opacity: 1,
+        gsap.to(item, {
+          y: 0,
           duration: 0.3,
           ease: "power2.out"
         });
+        
+        gsap.to(icon, {
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        gsap.to(title, {
+          x: 0,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
         gsap.to(arrow, {
           x: 0,
-          scale: 1,
-          duration: 0.4,
+          duration: 0.3,
           ease: "power2.out"
         });
       });
@@ -150,7 +147,7 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
     return (
       <section className="py-24 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-lg text-gray-600">No hay servicios disponibles en este momento.</p>
+          <p className="font-sans text-lg text-gray-600 tracking-normal">No hay servicios disponibles en este momento.</p>
         </div>
       </section>
     );
@@ -178,76 +175,70 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="services-grid-header max-w-2xl mb-20 opacity-0 invisible">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
             Catálogo completo
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="font-sans text-lg text-gray-600 tracking-normal leading-relaxed">
             Explora todos nuestros servicios y encuentra la solución perfecta
           </p>
         </div>
 
         {/* Grid de servicios */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-300" style={{ perspective: '2000px' }}>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" style={{ perspective: '2000px' }}>
           {services.map((service, index) => (
             <Link
               key={service._id}
               href={`/services/${service.slug.current}`}
-              className="service-item group bg-white p-10 md:p-12 hover:bg-gray-900 transition-all duration-500 opacity-0 invisible relative overflow-hidden"
+              className="service-item bg-white p-8 md:p-10 hover:shadow-xl transition-shadow duration-300 opacity-0 invisible border border-gray-200 hover:border-[#0081af]/30"
             >
-              {/* Fondo gradiente en hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              {/* Contenido */}
-              <div className="relative z-10">
-                {/* Número del servicio */}
-                <div className="service-number text-xs font-mono text-gray-400 group-hover:text-gray-600 mb-6 transition-all">
-                  {String(index + 1).padStart(2, '0')}
-                </div>
+              {/* Número del servicio */}
+              <div className="service-number text-xs font-mono text-gray-400 mb-4 tracking-wider">
+                {String(index + 1).padStart(2, '0')}
+              </div>
 
-                {/* Icono */}
-                <div className="service-icon text-5xl mb-6">
-                  {getServiceIcon(service.icon)}
-                </div>
+              {/* Icono */}
+              <div className="service-icon text-4xl mb-4">
+                {getServiceIcon(service.icon)}
+              </div>
 
-                {/* Título */}
-                <h3 className="font-display text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-white mb-4 transition-colors">
-                  {service.title}
-                </h3>
+              {/* Título */}
+              <h3 className="service-title font-display text-xl md:text-2xl font-bold text-gray-900 mb-3 tracking-tight">
+                {service.title}
+              </h3>
 
-                {/* Resumen */}
-                <p className="text-gray-600 group-hover:text-gray-300 mb-6 transition-colors leading-relaxed">
-                  {service.summary}
-                </p>
+              {/* Resumen */}
+              <p className="font-sans text-gray-600 mb-4 leading-relaxed tracking-normal text-sm">
+                {service.summary}
+              </p>
 
-                {/* Features */}
-                {service.features && service.features.length > 0 && (
-                  <ul className="space-y-2 mb-6">
-                    {service.features.slice(0, 3).map((feature) => (
-                      <li
-                        key={feature._key}
-                        className="service-feature flex items-start text-sm text-gray-600 group-hover:text-gray-300 transition-colors"
-                      >
-                        <span className="text-gray-900 group-hover:text-white mr-2 font-bold">—</span>
-                        {feature.feature}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              {/* Features */}
+              {service.features && service.features.length > 0 && (
+                <ul className="space-y-2 mb-6">
+                  {service.features.slice(0, 3).map((feature) => (
+                    <li
+                      key={feature._key}
+                      className="service-feature flex items-start text-sm font-sans text-gray-700 tracking-normal"
+                    >
+                      <span className="text-[#0081af] mr-2 font-bold">✓</span>
+                      {feature.feature}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-                {/* Precio */}
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-2xl font-bold text-gray-900 group-hover:text-white transition-colors">
-                    {formatPrice(service.price)}
-                  </span>
-                </div>
+              {/* Precio */}
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-display text-2xl font-bold text-[#0081af] tracking-tight">
+                  {formatPrice(service.price)}
+                </span>
+              </div>
 
-                {/* Arrow */}
-                <div className="flex items-center text-gray-900 group-hover:text-white font-medium transition-colors">
-                  <span className="text-sm mr-2">Más detalles</span>
-                  <svg className="service-arrow w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
+              {/* Arrow */}
+              <div className="flex items-center text-gray-900 font-sans font-medium tracking-wide">
+                <span className="text-sm mr-2">Más detalles</span>
+                <svg className="service-arrow w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </div>
             </Link>
           ))}
@@ -255,16 +246,16 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
 
         {/* CTA Final */}
         <div className="mt-24 text-center">
-          <div className="inline-block p-12 border-2 border-gray-900">
-            <h3 className="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+          <div className="inline-block p-12 border-2 border-gray-200">
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-4 tracking-tight">
               ¿No encuentras lo que buscas?
             </h3>
-            <p className="text-gray-600 mb-8 max-w-md">
+            <p className="font-sans text-gray-600 mb-8 max-w-md tracking-normal leading-relaxed">
               Contáctanos para discutir soluciones personalizadas adaptadas a tus necesidades específicas
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors"
+              className="inline-flex items-center px-8 py-4 bg-[#0081af] text-white font-sans font-semibold hover:bg-[#00abe7] transition-colors tracking-wide"
             >
               Contactar ahora
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
