@@ -6,11 +6,11 @@
   }
   
   body {
-    @apply font-sans antialiased text-gray-900 bg-gray-50;
+    @apply font-sans antialiased text-text-secondary bg-background-light;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-gray-900;
+    @apply font-display font-bold text-text-secondary;
   }
   
   h1 {
@@ -33,7 +33,7 @@
   }
   
   .input {
-    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm;
   }
 }
 
