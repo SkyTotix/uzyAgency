@@ -71,35 +71,50 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
       "-=0.4"
     );
 
-    // Hover effects profesionales en las cards
+    // Hover effects sutiles en las cards
     const cards = document.querySelectorAll('.service-card');
     cards.forEach((card) => {
       const arrow = card.querySelector('.service-arrow');
-      const number = card.querySelector('.service-number');
+      const title = card.querySelector('.service-title');
       
       card.addEventListener('mouseenter', () => {
-        gsap.to(arrow, {
-          x: 8,
-          duration: 0.4,
+        // Elevación sutil de la card
+        gsap.to(card, {
+          y: -4,
+          duration: 0.3,
           ease: "power2.out"
         });
-        gsap.to(number, {
-          x: 5,
-          opacity: 0.5,
+        
+        // Flecha se mueve a la derecha
+        gsap.to(arrow, {
+          x: 6,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        // Título se desplaza ligeramente
+        gsap.to(title, {
+          x: 4,
           duration: 0.3,
           ease: "power2.out"
         });
       });
       
       card.addEventListener('mouseleave', () => {
-        gsap.to(arrow, {
-          x: 0,
-          duration: 0.4,
+        gsap.to(card, {
+          y: 0,
+          duration: 0.3,
           ease: "power2.out"
         });
-        gsap.to(number, {
+        
+        gsap.to(arrow, {
           x: 0,
-          opacity: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        gsap.to(title, {
+          x: 0,
           duration: 0.3,
           ease: "power2.out"
         });
@@ -112,7 +127,7 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
     return (
       <section className="py-24 md:py-32 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-lg text-gray-600">No hay servicios disponibles en este momento.</p>
+          <p className="font-sans text-lg text-gray-600 tracking-normal">No hay servicios disponibles en este momento.</p>
         </div>
       </section>
     );
@@ -124,51 +139,45 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
       className="py-24 md:py-32 bg-gray-50"
     >
       <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
+        {/* Header - Satoshi + Montserrat */}
         <div className="services-header max-w-2xl mb-20" style={{ perspective: '1000px' }}>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4 opacity-0 invisible">
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight opacity-0 invisible">
             Servicios
           </h2>
-          <p className="text-lg text-gray-600 opacity-0 invisible">
+          <p className="font-sans text-lg text-gray-600 tracking-normal opacity-0 invisible">
             Soluciones integrales para transformar tu presencia digital
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-px bg-gray-300" style={{ perspective: '1500px' }}>
+        <div className="grid md:grid-cols-2 gap-6" style={{ perspective: '1500px' }}>
           {services.map((service) => (
             <Link
               key={service.number}
               href={service.link}
-              className="service-card group bg-white p-8 md:p-12 hover:bg-gray-900 transition-colors duration-300 opacity-0 invisible relative overflow-hidden"
+              className="service-card bg-white p-8 md:p-12 hover:shadow-xl transition-all duration-300 opacity-0 invisible border border-gray-100"
             >
-              {/* Efecto de hover background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              {/* Contenido */}
-              <div className="relative z-10">
-                {/* Number */}
-                <div className="service-number text-sm font-mono text-gray-400 group-hover:text-gray-500 mb-6 transition-all">
-                  {service.number}
-                </div>
+              {/* Number - Monospace */}
+              <div className="service-number text-sm font-mono text-gray-400 mb-6 transition-all tracking-wider">
+                {service.number}
+              </div>
 
-                {/* Title */}
-                <h3 className="font-display text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-white mb-4 transition-colors">
-                  {service.title}
-                </h3>
+              {/* Title - Satoshi */}
+              <h3 className="service-title font-display text-2xl md:text-3xl font-bold text-gray-900 mb-4 transition-colors tracking-tight">
+                {service.title}
+              </h3>
 
-                {/* Description */}
-                <p className="text-gray-600 group-hover:text-gray-300 mb-6 transition-colors">
-                  {service.description}
-                </p>
+              {/* Description - Montserrat */}
+              <p className="font-sans text-gray-600 mb-6 transition-colors leading-relaxed tracking-normal">
+                {service.description}
+              </p>
 
-                {/* Arrow */}
-                <div className="inline-flex items-center text-gray-900 group-hover:text-white font-medium transition-colors">
-                  <span className="mr-2">Explorar</span>
-                  <svg className="service-arrow w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
+              {/* Arrow Link - Montserrat */}
+              <div className="inline-flex items-center text-gray-900 font-sans font-semibold transition-colors tracking-wide">
+                <span className="mr-2">Explorar</span>
+                <svg className="service-arrow w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </div>
             </Link>
           ))}
