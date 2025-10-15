@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Header, Footer } from '@/components/layout';
-import { ContactSection } from '@/components/features';
+import { ContactForm } from '@/components/features';
 
 export const metadata: Metadata = {
   title: 'Contacto | UziAgency - Ponte en Contacto con Nosotros',
@@ -114,7 +114,7 @@ export default function ContactPage() {
       
       <Header />
       <main>
-        <ContactSection />
+        <ContactForm />
       </main>
       <Footer />
     </>
