@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -9,7 +9,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, helperText, className, id, ...props }, ref) => {
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    // useId genera IDs consistentes entre servidor y cliente
+    const generatedId = useId();
+    const inputId = id || generatedId;
 
     return (
       <div className="space-y-2">

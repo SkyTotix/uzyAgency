@@ -7,6 +7,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { sanityUtils } from '@/lib/sanity';
 import type { Post } from '@/lib/types/sanity';
 
 interface BlogListProps {
@@ -103,10 +104,10 @@ export default function BlogList({ posts }: BlogListProps) {
                 )}
               >
                 {/* Imagen del post */}
-                {post.mainImage?.asset && (
+                {post.mainImage?.asset?._ref && (
                   <div className="relative h-56 overflow-hidden">
                     <Image
-                      src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${post.mainImage.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
+                      src={sanityUtils.imageUrl(post.mainImage, 800, 600)}
                       alt={post.mainImage.alt || post.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
