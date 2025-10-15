@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { Header, Footer } from '@/components/layout';
 import { SkeletonLoader } from '@/components/ui';
 import { getAllBlogPosts, getTotalBlogPosts, getAllCategories } from '@/lib/server/data/blogData';
@@ -173,12 +174,12 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   : 'Aún no hay artículos publicados. Vuelve pronto.'}
               </p>
               {categorySlug && (
-                <a
+                <Link
                   href="/blog"
                   className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   Ver todos los artículos
-                </a>
+                </Link>
               )}
             </div>
           )}

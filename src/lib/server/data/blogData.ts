@@ -1,8 +1,8 @@
 import 'server-only';
 import { cache } from 'react';
 import { sanityClientReadOnly } from '@/lib/sanity';
-import type { Post } from '@/lib/types/sanity';
-import { BLOG_POSTS_QUERY, BLOG_POST_QUERY } from '@/lib/queries/sanity';
+import type { Post, Category } from '@/lib/types/sanity';
+import { BLOG_POST_QUERY } from '@/lib/queries/sanity';
 
 /**
  * Obtiene todas las publicaciones del blog desde Sanity CMS con paginación y filtrado
@@ -250,7 +250,7 @@ export const getAllCategories = cache(async () => {
       }
     `;
 
-    const categories = await sanityClientReadOnly.fetch<any[]>(query);
+    const categories = await sanityClientReadOnly.fetch<Category[]>(query);
     return categories || [];
   } catch (error) {
     console.error('Error fetching categories:', error);
