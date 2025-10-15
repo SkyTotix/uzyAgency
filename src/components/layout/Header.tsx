@@ -30,7 +30,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center hover:opacity-80 transition-opacity" aria-label="Ir a inicio">
-              <Logo width={182} height={47} priority />
+              <Logo width={237} height={61} priority />
             </Link>
           </div>
 
