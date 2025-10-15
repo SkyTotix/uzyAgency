@@ -33,15 +33,15 @@ export default function HeroSection() {
       className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4"
     >
       <div className="text-center max-w-4xl mx-auto">
-        <h1 className="hero-title text-5xl md:text-7xl font-bold text-gray-900 mb-6 opacity-0 invisible">
+        <h1 className="hero-title font-display text-5xl md:text-7xl font-black text-gray-900 mb-6 opacity-0 invisible">
           Uzi Agency
         </h1>
         
-        <p className="hero-subtitle text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed opacity-0 invisible">
+        <p className="hero-subtitle font-sans text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed opacity-0 invisible">
           Creamos experiencias digitales extraordinarias con animaciones profesionales
         </p>
         
-        <button className="hero-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 opacity-0 invisible">
+        <button className="hero-button font-sans bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 opacity-0 invisible">
           Descubre Más
         </button>
       </div>

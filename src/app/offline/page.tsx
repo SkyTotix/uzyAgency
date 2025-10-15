@@ -31,7 +31,7 @@ export default function OfflinePage() {
         </div>
 
         {/* Título */}
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="font-display text-4xl font-black text-gray-900 mb-4">
           Sin Conexión
         </h1>
 
@@ -43,7 +43,7 @@ export default function OfflinePage() {
 
         {/* Información de PWA */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">
+          <h2 className="font-display text-xl font-bold text-gray-900 mb-3">
             💡 Consejo
           </h2>
           <p className="text-gray-600 text-sm">

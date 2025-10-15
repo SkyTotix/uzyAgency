@@ -107,7 +107,7 @@ export default async function AboutPage() {
           </div>
 
           <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6">
               Sobre Nosotros
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto">
@@ -150,7 +150,7 @@ export default async function AboutPage() {
               {/* Misión */}
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 md:p-12">
                 <div className="text-4xl mb-4">🎯</div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Nuestra Misión</h2>
+                <h2 className="font-display text-3xl font-black text-gray-900 mb-4">Nuestra Misión</h2>
                 <p className="text-gray-700 leading-relaxed text-lg">
                   Crear experiencias digitales extraordinarias que no solo cumplan con las expectativas de nuestros clientes, 
                   sino que las superen. Utilizamos las tecnologías más avanzadas y las mejores prácticas para entregar 
@@ -161,7 +161,7 @@ export default async function AboutPage() {
               {/* Visión */}
               <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 md:p-12">
                 <div className="text-4xl mb-4">🚀</div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Nuestra Visión</h2>
+                <h2 className="font-display text-3xl font-black text-gray-900 mb-4">Nuestra Visión</h2>
                 <p className="text-gray-700 leading-relaxed text-lg">
                   Ser la agencia digital líder reconocida por nuestra innovación, creatividad y compromiso con la excelencia. 
                   Queremos establecer nuevos estándares en la industria del desarrollo web y diseño digital, 
@@ -176,7 +176,7 @@ export default async function AboutPage() {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Nuestros Valores</h2>
+              <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 mb-6">Nuestros Valores</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Los principios que guían cada decisión y cada línea de código que escribimos
               </p>
@@ -186,7 +186,7 @@ export default async function AboutPage() {
               {/* Valor 1 */}
               <div className="text-center p-8">
                 <div className="text-5xl mb-4">💎</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Excelencia</h3>
+                <h3 className="font-display text-2xl font-bold text-gray-900 mb-4">Excelencia</h3>
                 <p className="text-gray-600 leading-relaxed">
                   No nos conformamos con lo bueno. Buscamos la perfección en cada detalle, desde el código hasta el diseño.
                 </p>
@@ -195,7 +195,7 @@ export default async function AboutPage() {
               {/* Valor 2 */}
               <div className="text-center p-8">
                 <div className="text-5xl mb-4">🤝</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Colaboración</h3>
+                <h3 className="font-display text-2xl font-bold text-gray-900 mb-4">Colaboración</h3>
                 <p className="text-gray-600 leading-relaxed">
                   Trabajamos codo a codo con nuestros clientes, entendiendo sus necesidades y superando sus expectativas.
                 </p>
@@ -204,7 +204,7 @@ export default async function AboutPage() {
               {/* Valor 3 */}
               <div className="text-center p-8">
                 <div className="text-5xl mb-4">⚡</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Innovación</h3>
+                <h3 className="font-display text-2xl font-bold text-gray-900 mb-4">Innovación</h3>
                 <p className="text-gray-600 leading-relaxed">
                   Siempre estamos aprendiendo y adoptando las últimas tecnologías para ofrecer soluciones de vanguardia.
                 </p>
@@ -222,7 +222,7 @@ export default async function AboutPage() {
         {/* CTA Section */}
         <section className="py-20 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 mb-6">
               ¿Listo para trabajar con nosotros?
             </h2>
             <p className="text-xl text-gray-600 mb-8">

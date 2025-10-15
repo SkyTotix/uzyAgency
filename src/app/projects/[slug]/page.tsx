@@ -206,7 +206,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </div>
 
                 {/* Título */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
                   {project.title}
                 </h1>
 
@@ -296,14 +296,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl border border-gray-200/50">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+              <h2 className="font-display text-3xl md:text-4xl font-black text-gray-900 mb-8 text-center">
                 Detalles del Proyecto
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Información Técnica */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Información Técnica</h3>
+                  <h3 className="font-display text-xl font-bold text-gray-900 mb-4">Información Técnica</h3>
                   
                   <div className="space-y-4">
                     <div>
@@ -335,7 +335,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
                 {/* Tecnologías Detalladas */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Stack Tecnológico</h3>
+                  <h3 className="font-display text-xl font-bold text-gray-900 mb-4">Stack Tecnológico</h3>
                   
                   {project.technologies && project.technologies.length > 0 ? (
                     <div className="grid grid-cols-2 gap-3">
@@ -361,7 +361,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         {/* Call to Action */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-purple-600">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6">
               ¿Te gusta lo que ves?
             </h2>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">

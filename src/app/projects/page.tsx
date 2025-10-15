@@ -151,7 +151,7 @@ export default async function ProjectsPage() {
               </span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-8">
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-8">
               Proyectos que
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
@@ -204,7 +204,7 @@ export default async function ProjectsPage() {
         {/* Call to Action */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-purple-600">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6">
               ¿Listo para tu próximo proyecto?
             </h2>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">

@@ -30,7 +30,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/">
-              <h1 className="text-2xl font-bold text-blue-600 cursor-pointer hover:text-blue-700 transition-colors">
+              <h1 className="font-display text-2xl font-black text-blue-600 cursor-pointer hover:text-blue-700 transition-colors">
                 Uzi Agency
               </h1>
             </Link>

@@ -69,7 +69,7 @@ export default function ContactSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="contact-hero text-center mb-16 opacity-0 invisible">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6">
             Contacta con Nosotros
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
@@ -83,7 +83,7 @@ export default function ContactSection() {
           <div className="contact-info opacity-0 invisible">
             <div className="space-y-8">
               <Card className="p-8 bg-white/80 backdrop-blur-sm border border-blue-100">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <h2 className="font-display text-2xl font-bold text-gray-900 mb-6 flex items-center">
                   <span className="text-3xl mr-3">📍</span>
                   Nuestra Ubicación
                 </h2>
@@ -100,7 +100,7 @@ export default function ContactSection() {
               </Card>
 
               <Card className="p-8 bg-white/80 backdrop-blur-sm border border-blue-100">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <h2 className="font-display text-2xl font-bold text-gray-900 mb-6 flex items-center">
                   <span className="text-3xl mr-3">📞</span>
                   Información de Contacto
                 </h2>
@@ -127,7 +127,7 @@ export default function ContactSection() {
               </Card>
 
               <Card className="p-8 bg-white/80 backdrop-blur-sm border border-blue-100">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <h2 className="font-display text-2xl font-bold text-gray-900 mb-6 flex items-center">
                   <span className="text-3xl mr-3">🕒</span>
                   Horarios de Atención
                 </h2>
@@ -148,7 +148,7 @@ export default function ContactSection() {
               </Card>
 
               <Card className="p-8 bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
-                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                <h2 className="font-display text-2xl font-bold mb-4 flex items-center">
                   <span className="text-3xl mr-3">⚡</span>
                   Respuesta Rápida
                 </h2>
@@ -167,7 +167,7 @@ export default function ContactSection() {
           <div className="contact-form-wrapper opacity-0 invisible">
             <Card className="p-8 bg-white/90 backdrop-blur-sm border border-blue-100 shadow-xl">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                <h2 className="font-display text-2xl font-bold text-gray-900 mb-2">
                   Envíanos un Mensaje
                 </h2>
                 <p className="text-gray-600">
@@ -185,7 +185,7 @@ export default function ContactSection() {
 
         {/* Sección de Redes Sociales */}
         <div className="mt-16 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8">
+          <h3 className="font-display text-2xl font-bold text-gray-900 mb-8">
             Síguenos en Redes Sociales
           </h3>
           <div className="flex justify-center space-x-6">

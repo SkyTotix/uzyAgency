@@ -173,7 +173,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
 
             {/* Título */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6">
               {post.title}
             </h1>
 
@@ -311,7 +311,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {relatedPosts.length > 0 && (
           <section className="py-16 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Artículos Relacionados</h2>
+              <h2 className="font-display text-3xl font-black text-gray-900 mb-8">Artículos Relacionados</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {relatedPosts.map((relatedPost) => (
                   <Link key={relatedPost._id} href={`/blog/${relatedPost.slug.current}`}>
@@ -328,7 +328,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         </div>
                       )}
                       <div className="p-6">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                        <h3 className="font-display text-xl font-bold text-gray-900 mb-2 line-clamp-2">
                           {relatedPost.title}
                         </h3>
                         <p className="text-gray-600 line-clamp-3">{relatedPost.excerpt}</p>

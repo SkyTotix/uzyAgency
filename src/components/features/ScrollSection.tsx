@@ -31,13 +31,13 @@ export default function ScrollSection() {
   return (
     <section ref={sectionRef} className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
+        <h2 className="font-display text-4xl font-black text-center text-gray-900 mb-12">
           Animaciones Scroll-Triggered
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="scroll-element bg-blue-100 p-8 rounded-lg text-center opacity-0 invisible">
-            <h3 className="text-xl font-semibold text-blue-900 mb-4">
+            <h3 className="font-display text-xl font-bold text-blue-900 mb-4">
               Elemento 1
             </h3>
             <p className="text-blue-700">
@@ -46,7 +46,7 @@ export default function ScrollSection() {
           </div>
           
           <div className="scroll-element bg-green-100 p-8 rounded-lg text-center opacity-0 invisible">
-            <h3 className="text-xl font-semibold text-green-900 mb-4">
+            <h3 className="font-display text-xl font-bold text-green-900 mb-4">
               Elemento 2
             </h3>
             <p className="text-green-700">
@@ -55,7 +55,7 @@ export default function ScrollSection() {
           </div>
           
           <div className="scroll-element bg-purple-100 p-8 rounded-lg text-center opacity-0 invisible">
-            <h3 className="text-xl font-semibold text-purple-900 mb-4">
+            <h3 className="font-display text-xl font-bold text-purple-900 mb-4">
               Elemento 3
             </h3>
             <p className="text-purple-700">
