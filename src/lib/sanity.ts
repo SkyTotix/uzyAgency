@@ -58,7 +58,10 @@ export interface SanityBlock {
 export const sanityUtils = {
   // Generar URL de imagen optimizada
   imageUrl: (image: SanityImage, width?: number, height?: number): string => {
-    if (!image?.asset?._ref) return '';
+    if (!image?.asset?._ref) {
+      console.warn('No image asset reference found');
+      return '';
+    }
     
     const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
     const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -68,18 +71,43 @@ export const sanityUtils = {
       return '';
     }
     
+    // Construir URL base de Sanity CDN
     const baseUrl = `https://cdn.sanity.io/images/${projectId}/${dataset}`;
-    const imageId = image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp');
+    
+    // Extraer el ID de la imagen del reference
+    // Formato: "image-abc123def-400x300-jpg" -> "abc123def-400x300-jpg"
+    let imageId = image.asset._ref.replace('image-', '');
+    
+    // Agregar extensión si no la tiene
+    if (!imageId.includes('.')) {
+      // Intentar detectar el formato por el nombre
+      if (imageId.includes('-jpg') || imageId.endsWith('jpg')) {
+        imageId = imageId.replace('-jpg', '') + '.jpg';
+      } else if (imageId.includes('-png') || imageId.endsWith('png')) {
+        imageId = imageId.replace('-png', '') + '.png';
+      } else if (imageId.includes('-webp') || imageId.endsWith('webp')) {
+        imageId = imageId.replace('-webp', '') + '.webp';
+      } else {
+        // Por defecto, asumir jpg
+        imageId = imageId + '.jpg';
+      }
+    }
     
     let url = `${baseUrl}/${imageId}`;
     
+    // Agregar parámetros de optimización
     if (width || height) {
-      url += '?';
-      if (width) url += `w=${width}`;
-      if (height) url += `${width ? '&' : ''}h=${height}`;
-      url += '&fit=crop&auto=format';
+      const params = new URLSearchParams();
+      if (width) params.append('w', width.toString());
+      if (height) params.append('h', height.toString());
+      params.append('fit', 'crop');
+      params.append('auto', 'format');
+      params.append('q', '80'); // Calidad de compresión
+      
+      url += `?${params.toString()}`;
     }
     
+    console.log('Generated image URL:', url); // Debug log
     return url;
   },
 
