@@ -85,9 +85,39 @@ export default defineConfig({
             // Divider
             S.divider(),
             
+            // Equipo y Testimonios
+            S.listItem()
+              .title('👥 Equipo y Testimonios')
+              .id('team-testimonials')
+              .child(
+                S.list()
+                  .title('Equipo y Testimonios')
+                  .items([
+                    S.listItem()
+                      .title('Miembros del Equipo')
+                      .icon(() => '👤')
+                      .child(
+                        S.documentTypeList('teamMember')
+                          .title('Miembros del Equipo')
+                          .filter('_type == "teamMember"')
+                      ),
+                    S.listItem()
+                      .title('Testimonios')
+                      .icon(() => '💬')
+                      .child(
+                        S.documentTypeList('testimonial')
+                          .title('Testimonios')
+                          .filter('_type == "testimonial"')
+                      )
+                  ])
+              ),
+            
+            // Divider
+            S.divider(),
+            
             // Otros tipos de contenido (para futuro)
             ...S.documentTypeListItems().filter(
-              (listItem) => !['settings', 'service', 'post', 'author', 'category'].includes(listItem.getId()!)
+              (listItem) => !['settings', 'service', 'post', 'author', 'category', 'teamMember', 'testimonial'].includes(listItem.getId()!)
             )
           ])
     }),
