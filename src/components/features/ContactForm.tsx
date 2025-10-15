@@ -180,22 +180,23 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
   ];
 
   return (
-    <section ref={sectionRef} className={cn("py-20 bg-white", className)}>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} className={cn("py-20 bg-gray-50", className)}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header minimalista */}
-        <div className="text-center mb-16">
-          <h2 className="contact-title text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-20">
+          <h2 className="contact-title text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             ¿Listo para comenzar tu proyecto?
           </h2>
-          <p className="contact-subtitle text-lg text-gray-600">
+          <p className="contact-subtitle text-xl text-gray-600 max-w-2xl mx-auto">
             Cuéntanos sobre tu idea y te ayudaremos a hacerla realidad
           </p>
         </div>
 
-        {/* Formulario central */}
-        <div className="max-w-2xl mx-auto">
+        {/* Layout de dos columnas: Formulario + Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Formulario */}
           <div className="contact-form">
-            <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
+            <div className="bg-white p-8">
               {/* Mensaje de éxito */}
               {isSuccess && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -220,133 +221,70 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                 </div>
               )}
 
-              <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                 {/* Campos básicos */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-6">
                   <div className="form-element">
                     <Input
-                      label="Nombre completo *"
+                      label="Nombre completo"
                       {...register('name')}
                       placeholder="Tu nombre completo"
                       error={errors.name?.message}
+                      className="border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-0 py-3 text-lg"
                     />
                   </div>
                   <div className="form-element">
                     <Input
                       type="email"
-                      label="Correo electrónico *"
+                      label="Correo electrónico"
                       {...register('email')}
                       placeholder="tu@email.com"
                       error={errors.email?.message}
+                      className="border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-0 py-3 text-lg"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="form-element">
                     <Input
                       label="Empresa"
                       {...register('company')}
                       placeholder="Nombre de tu empresa"
                       error={errors.company?.message}
+                      className="border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-0 py-3 text-lg"
                     />
-                  </div>
-                  <div className="form-element">
-                    <Input
-                      type="tel"
-                      label="Teléfono"
-                      {...register('phone')}
-                      placeholder="+1 (555) 123-4567"
-                      error={errors.phone?.message}
-                    />
-                  </div>
-                </div>
-
-                {/* Selectores */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="form-element">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Servicio de interés
-                    </label>
-                    <select
-                      {...register('service')}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                    >
-                      <option value="">Seleccionar servicio</option>
-                      {services.map((service) => (
-                        <option key={service} value={service}>
-                          {service}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="form-element">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Presupuesto
-                    </label>
-                    <select
-                      {...register('budget')}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                    >
-                      <option value="">Seleccionar presupuesto</option>
-                      {budgets.map((budget) => (
-                        <option key={budget} value={budget}>
-                          {budget}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="form-element">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Timeline
-                    </label>
-                    <select
-                      {...register('timeline')}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                    >
-                      <option value="">Seleccionar timeline</option>
-                      {timelines.map((timeline) => (
-                        <option key={timeline} value={timeline}>
-                          {timeline}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 </div>
 
                 {/* Mensaje */}
                 <div className="form-element">
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Mensaje *
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="block text-lg font-medium text-gray-900">
+                      Mensaje
                     </label>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-gray-400">
                       {messageValue.length}/1000
                     </span>
                   </div>
                   <Textarea
                     {...register('message')}
-                    rows={5}
+                    rows={6}
                     placeholder="Cuéntanos sobre tu proyecto, objetivos, ideas específicas..."
                     error={errors.message?.message}
-                    className="resize-none"
+                    className="resize-none border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-0 py-3 text-lg"
                   />
                 </div>
 
                 {/* Botón de envío */}
-                <div className="form-element">
+                <div className="form-element pt-6">
                   <Button
                     type="submit"
                     variant="primary"
                     size="lg"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200"
+                    className="w-full bg-gray-900 hover:bg-gray-800 text-white font-medium py-4 px-8 text-lg transition-colors duration-200"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <div className="flex items-center justify-center gap-3">
-                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                         Enviando mensaje...
                       </div>
                     ) : (
@@ -354,39 +292,46 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     )}
                   </Button>
                 </div>
-
-                <p className="text-sm text-gray-500 text-center">
-                  Al enviar este formulario, aceptas que procesemos tus datos según nuestra{' '}
-                  <a href="/privacy" className="text-blue-600 hover:underline">política de privacidad</a>.
-                </p>
               </form>
             </div>
           </div>
 
-          {/* Información de contacto simple */}
-          <div className="contact-info mt-12">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Información de Contacto</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">📧</div>
-                  <p className="text-sm text-gray-600 mb-1">Email</p>
-                  <a href="mailto:hola@uziagency.com" className="text-blue-600 hover:underline text-sm">
-                    hola@uziagency.com
-                  </a>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl mb-2">📱</div>
-                  <p className="text-sm text-gray-600 mb-1">Teléfono</p>
-                  <a href="tel:+15551234567" className="text-blue-600 hover:underline text-sm">
-                    +1 (555) 123-4567
-                  </a>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl mb-2">💼</div>
-                  <p className="text-sm text-gray-600 mb-1">Horario</p>
-                  <p className="text-gray-900 text-sm">Lun - Vie: 9:00 - 18:00</p>
-                </div>
+          {/* Información de contacto minimalista */}
+          <div className="contact-info">
+            <div className="space-y-12">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-8">Información de Contacto</h3>
+                <p className="text-lg text-gray-600 mb-8">
+                  Preferimos conversar directamente. Estamos aquí para responder tus preguntas y ayudarte con tu proyecto.
+                </p>
+              </div>
+
+              <div className="space-y-8">
+                {contactInfo.map((item, index) => (
+                  <div key={index} className="flex items-start gap-4">
+                    <div className="text-2xl">{item.icon}</div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-1">{item.title}</h4>
+                      {item.link ? (
+                        <a 
+                          href={item.link} 
+                          className="text-gray-600 hover:text-gray-900 transition-colors text-lg"
+                        >
+                          {item.content}
+                        </a>
+                      ) : (
+                        <p className="text-gray-600 text-lg">{item.content}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-8 border-t border-gray-200">
+                <p className="text-sm text-gray-500">
+                  Al enviar este formulario, aceptas que procesemos tus datos según nuestra{' '}
+                  <a href="/privacy" className="text-gray-900 hover:underline">política de privacidad</a>.
+                </p>
               </div>
             </div>
           </div>
