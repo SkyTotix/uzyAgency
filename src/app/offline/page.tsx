@@ -1,17 +1,15 @@
-import type { Metadata } from 'next';
+"use client";
+
 import Link from 'next/link';
 import { Button } from '@/components/ui';
 
-export const metadata: Metadata = {
-  title: 'Sin Conexión | UziAgency',
-  description: 'No hay conexión a internet disponible.',
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
-
 export default function OfflinePage() {
+  const handleReload = () => {
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
@@ -61,7 +59,7 @@ export default function OfflinePage() {
             variant="primary" 
             size="lg" 
             className="w-full"
-            onClick={() => window.location.reload()}
+            onClick={handleReload}
           >
             🔄 Reintentar Conexión
           </Button>
