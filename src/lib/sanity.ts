@@ -58,7 +58,37 @@ export interface SanityBlock {
 export const sanityUtils = {
   // Generar URL de imagen optimizada
   imageUrl: (image: SanityImage, width?: number, height?: number): string => {
-    if (!image?.asset?._ref) {
+    if (!image?.asset) {
+      console.warn('No image asset found:', image);
+      return '';
+    }
+
+    // Si el asset tiene una URL directa, usarla como base
+    const asset = image.asset as any;
+    if (asset.url) {
+      console.log('Using direct asset URL:', asset.url);
+      let url = asset.url;
+      
+      // Agregar parámetros de optimización si se especifican
+      if (width || height) {
+        const params = new URLSearchParams();
+        if (width) params.append('w', width.toString());
+        if (height) params.append('h', height.toString());
+        params.append('fit', 'crop');
+        params.append('auto', 'format');
+        params.append('q', '80');
+        
+        // Si la URL ya tiene parámetros, usar &
+        const separator = url.includes('?') ? '&' : '?';
+        url += `${separator}${params.toString()}`;
+      }
+      
+      console.log('Final URL with params:', url);
+      return url;
+    }
+    
+    // Fallback al método anterior si no hay URL directa
+    if (!asset._ref) {
       console.warn('No image asset reference found:', image);
       return '';
     }
@@ -76,9 +106,9 @@ export const sanityUtils = {
     
     // Extraer el ID de la imagen del reference
     // Formato: "image-abc123def-400x300-jpg" -> "abc123def-400x300-jpg"
-    let imageId = image.asset._ref.replace('image-', '');
+    let imageId = asset._ref.replace('image-', '');
     
-    console.log('Original asset ref:', image.asset._ref);
+    console.log('Original asset ref:', asset._ref);
     console.log('Processed image ID:', imageId);
     
     // Agregar extensión si no la tiene

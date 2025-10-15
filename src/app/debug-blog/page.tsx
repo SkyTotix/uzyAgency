@@ -43,21 +43,31 @@ export default function DebugBlogPage() {
       try {
         setLoading(true);
         
-        // Query para obtener posts con imágenes
+        // Query para obtener posts con imágenes (más detallada)
         const query = `
           *[_type == "post"] | order(publishedAt desc) [0...5] {
             _id,
             title,
             excerpt,
             mainImage {
-              asset->,
+              asset-> {
+                _id,
+                _type,
+                _ref,
+                url
+              },
               alt
             },
             author-> {
               _id,
               name,
               image {
-                asset->,
+                asset-> {
+                  _id,
+                  _type,
+                  _ref,
+                  url
+                },
                 alt
               }
             },
