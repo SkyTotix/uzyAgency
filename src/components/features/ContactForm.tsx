@@ -27,7 +27,12 @@ const contactFormSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
-export default function ContactForm() {
+interface ContactFormProps {
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
+}
+
+export default function ContactForm({ onSuccess, onError }: ContactFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
   
   const {
@@ -62,19 +67,35 @@ export default function ContactForm() {
       if (result.success) {
         console.log('Formulario enviado exitosamente:', result);
         reset(); // Limpiar formulario
-        // Aquí podrías mostrar un toast de éxito
+        
+        // Llamar callback de éxito si existe
+        if (onSuccess) {
+          onSuccess(result.message || 'Mensaje enviado correctamente');
+        }
       } else {
-        setError('root', {
-          type: 'manual',
-          message: result.message
-        });
+        // Llamar callback de error si existe
+        if (onError) {
+          onError(result.message);
+        } else {
+          setError('root', {
+            type: 'manual',
+            message: result.message
+          });
+        }
       }
     } catch (error) {
       console.error('Error enviando formulario:', error);
-      setError('root', {
-        type: 'manual',
-        message: 'Error interno del servidor. Por favor, inténtalo de nuevo.'
-      });
+      const errorMessage = 'Error interno del servidor. Por favor, inténtalo de nuevo.';
+      
+      // Llamar callback de error si existe
+      if (onError) {
+        onError(errorMessage);
+      } else {
+        setError('root', {
+          type: 'manual',
+          message: errorMessage
+        });
+      }
     }
   };
 
