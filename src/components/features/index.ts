@@ -2,6 +2,7 @@
 export { default as BlogList } from './BlogList';
 export { default as ContactForm } from './ContactForm';
 export { default as ContactSection } from './ContactSection';
+export { default as GlobalSearch } from './GlobalSearch';
 export { default as HeroSection } from './HeroSection';
 export { default as ProjectGrid } from './ProjectGrid';
 export { default as ProjectShowcase } from './ProjectShowcase';

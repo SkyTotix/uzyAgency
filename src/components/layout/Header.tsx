@@ -1,12 +1,27 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import GlobalSearch from '@/components/features/GlobalSearch';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Atajo de teclado global para abrir búsqueda (Ctrl+K o Cmd+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
@@ -43,8 +58,22 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* Search Button */}
+          <div className="hidden md:flex items-center space-x-4">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors group"
+              aria-label="Abrir búsqueda"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span className="hidden lg:inline">Buscar</span>
+              <kbd className="hidden lg:inline-flex items-center px-2 py-0.5 text-xs font-mono bg-white border border-gray-300 rounded shadow-sm">
+                ⌘K
+              </kbd>
+            </button>
+
             <Button variant="primary" size="sm">
               Comenzar Proyecto
             </Button>
@@ -69,6 +98,17 @@ export default function Header() {
           isMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
         )}>
           <div className="py-4 space-y-2">
+            {/* Búsqueda móvil */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="w-full flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span className="font-medium">Buscar</span>
+            </button>
+
             <Link href="/" className="block px-3 py-2 text-gray-900 hover:text-blue-600 font-medium">
               Inicio
             </Link>
@@ -95,6 +135,12 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Global Search Modal */}
+      <GlobalSearch 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+      />
     </header>
   );
 }
