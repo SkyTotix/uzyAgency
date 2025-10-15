@@ -149,10 +149,10 @@ export default function BlogList({ posts }: BlogListProps) {
                     {/* Autor */}
                     {post.author && (
                       <div className="flex items-center gap-2">
-                        {post.author.image?.asset && (
+                        {post.author.image?.asset?._ref && (
                           <div className="relative w-8 h-8 rounded-full overflow-hidden">
                             <Image
-                              src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${post.author.image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
+                              src={sanityUtils.imageUrl(post.author.image, 64, 64)}
                               alt={post.author.name}
                               fill
                               sizes="32px"

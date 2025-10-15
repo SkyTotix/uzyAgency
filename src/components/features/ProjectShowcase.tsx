@@ -7,6 +7,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { sanityUtils } from '@/lib/sanity';
 import type { Project } from '@/lib/types/sanity';
 
 interface ProjectShowcaseProps {
@@ -148,11 +149,11 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
               )}
             >
               {/* Imagen del proyecto */}
-              {project.mainImage?.asset && (
+              {project.mainImage?.asset?._ref && (
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
                   <Image
-                    src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${project.mainImage.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
+                    src={sanityUtils.imageUrl(project.mainImage, 1200, 800)}
                     alt={project.mainImage.alt || project.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

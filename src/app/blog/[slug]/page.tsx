@@ -123,10 +123,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Hero Section del Post */}
         <article className="bg-white">
           {/* Imagen destacada */}
-          {post.mainImage?.asset && (
+          {post.mainImage?.asset?._ref && (
             <div className="relative h-[60vh] max-h-[600px] w-full overflow-hidden">
               <Image
-                src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${post.mainImage.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
+                src={sanityUtils.imageUrl(post.mainImage, 1920, 1080)}
                 alt={post.mainImage.alt || post.title}
                 fill
                 priority
@@ -187,10 +187,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {/* Autor */}
               {post.author && (
                 <div className="flex items-center gap-4">
-                  {post.author.image?.asset && (
+                  {post.author.image?.asset?._ref && (
                     <div className="relative w-16 h-16 rounded-full overflow-hidden">
                       <Image
-                        src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${post.author.image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
+                        src={sanityUtils.imageUrl(post.author.image, 128, 128)}
                         alt={post.author.name}
                         fill
                         sizes="64px"
@@ -316,10 +316,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {relatedPosts.map((relatedPost) => (
                   <Link key={relatedPost._id} href={`/blog/${relatedPost.slug.current}`}>
                     <Card className="h-full hover:shadow-lg transition-shadow duration-300">
-                      {relatedPost.mainImage?.asset && (
+                      {relatedPost.mainImage?.asset?._ref && (
                         <div className="relative h-48 overflow-hidden rounded-t-lg">
                           <Image
-                            src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${relatedPost.mainImage.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
+                            src={sanityUtils.imageUrl(relatedPost.mainImage, 800, 600)}
                             alt={relatedPost.mainImage.alt || relatedPost.title}
                             fill
                             sizes="(max-width: 768px) 100vw, 33vw"

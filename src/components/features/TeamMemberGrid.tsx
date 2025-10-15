@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { sanityUtils } from '@/lib/sanity';
 import type { TeamMember } from '@/lib/types/sanity';
 
 interface TeamMemberGridProps {
@@ -126,10 +127,10 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
               )}
             >
               {/* Imagen del miembro */}
-              {member.image?.asset && (
+              {member.image?.asset?._ref && (
                 <div className="relative h-64 overflow-hidden rounded-t-lg">
                   <Image
-                    src={`https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${member.image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}`}
+                    src={sanityUtils.imageUrl(member.image, 600, 800)}
                     alt={member.image.alt || member.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
