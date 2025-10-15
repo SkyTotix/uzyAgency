@@ -189,7 +189,7 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
             <Link
               key={service._id}
               href={`/services/${service.slug.current}`}
-              className="service-item bg-white p-8 md:p-10 hover:shadow-xl transition-shadow duration-300 opacity-0 invisible border border-gray-200 hover:border-[#0081af]/30"
+              className="service-item bg-white p-8 md:p-10 hover:shadow-xl transition-shadow duration-300 opacity-0 invisible border border-gray-200 hover:border-gray-400"
             >
               {/* Número del servicio */}
               <div className="service-number text-xs font-mono text-gray-400 mb-4 tracking-wider">
@@ -219,7 +219,7 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
                       key={feature._key}
                       className="service-feature flex items-start text-sm font-sans text-gray-700 tracking-normal"
                     >
-                      <span className="text-[#0081af] mr-2 font-bold">✓</span>
+                      <span className="text-gray-900 mr-2 font-bold">✓</span>
                       {feature.feature}
                     </li>
                   ))}
@@ -228,7 +228,7 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
 
               {/* Precio */}
               <div className="flex items-center justify-between mb-4">
-                <span className="font-display text-2xl font-bold text-[#0081af] tracking-tight">
+                <span className="font-display text-2xl font-bold text-gray-900 tracking-tight">
                   {formatPrice(service.price)}
                 </span>
               </div>
@@ -255,7 +255,7 @@ export default function ServicesPageGrid({ services }: ServicesPageGridProps) {
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#0081af] text-white font-sans font-semibold hover:bg-[#00abe7] transition-colors tracking-wide"
+              className="inline-flex items-center px-8 py-4 bg-gray-900 text-white font-sans font-semibold hover:bg-gray-800 transition-colors tracking-wide"
             >
               Contactar ahora
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
