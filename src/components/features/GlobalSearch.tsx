@@ -7,6 +7,21 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import type { SearchResponse, SearchResult, SearchResultType } from '@/lib/types/sanity';
 
+// Tipos para bloques de Sanity
+interface SanitySpan {
+  _type: 'span';
+  text: string;
+  marks?: string[];
+}
+
+interface SanityBlock {
+  _type: 'block';
+  _key: string;
+  children?: SanitySpan[];
+  style?: string;
+  markDefs?: unknown[];
+}
+
 interface GlobalSearchProps {
   isOpen: boolean;
   onClose: () => void;
@@ -121,7 +136,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   };
 
   // Manejar selección de resultado
-  const handleSelectResult = (result: SearchResult) => {
+  const handleSelectResult = useCallback((result: SearchResult) => {
     const urlMap: Record<SearchResultType, string> = {
       post: '/blog',
       project: '/projects',
@@ -131,7 +146,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     const baseUrl = urlMap[result._type];
     router.push(`${baseUrl}/${result.slug}`);
     onClose();
-  };
+  }, [router, onClose]);
 
   // Navegación con teclado
   useEffect(() => {
@@ -166,7 +181,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, results, selectedIndex, onClose]);
+  }, [isOpen, results, selectedIndex, onClose, handleSelectResult]);
 
   // Cerrar al hacer click fuera
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -204,18 +219,18 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   };
 
   // Extraer texto de campos que pueden ser string o bloques de Sanity
-  const extractText = (field: string | any): string => {
+  const extractText = (field: string | SanityBlock[] | undefined): string => {
     if (!field) return '';
     if (typeof field === 'string') return field;
     // Si es un array de bloques de Sanity, extraer el texto
     if (Array.isArray(field)) {
       return field
-        .filter(block => block._type === 'block')
+        .filter((block): block is SanityBlock => block._type === 'block')
         .map(block => 
           block.children
-            ?.filter((child: any) => child._type === 'span')
-            .map((child: any) => child.text)
-            .join('')
+            ?.filter((child): child is SanitySpan => child._type === 'span')
+            .map((child) => child.text)
+            .join('') || ''
         )
         .join(' ')
         .substring(0, 200);
