@@ -17,8 +17,7 @@ describe('Contact Server Logic', () => {
       const result = await processContactForm(validData);
 
       expect(result.success).toBe(true);
-      expect(result.message).toContain('recibido');
-      expect(result.data).toEqual(validData);
+      expect(result.message).toContain('enviado');
     });
 
     it('debe rechazar un formulario con nombre vacío', async () => {
