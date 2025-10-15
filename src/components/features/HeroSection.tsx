@@ -197,16 +197,16 @@ export default function HeroSection({ background }: HeroSectionProps) {
       <BackgroundManager background={background} />
 
       <div className="max-w-5xl mx-auto w-full relative z-10">
-        {/* Badge */}
+        {/* Badge - Montserrat (font-sans) */}
         <div className="flex justify-center mb-8 hero-badge opacity-0 invisible">
-          <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-medium">
+          <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-sans font-medium tracking-wide">
             <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse"></span>
             Disponible para nuevos proyectos
           </span>
         </div>
 
-        {/* Title con caracteres separados */}
-        <h1 className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight">
+        {/* Title con caracteres separados - Satoshi (font-display) */}
+        <h1 className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight tracking-tight">
           <div className="mb-2" style={{ perspective: '1000px' }}>
             <span className="char inline-block opacity-0 invisible">U</span>
             <span className="char inline-block opacity-0 invisible">Z</span>
@@ -227,17 +227,17 @@ export default function HeroSection({ background }: HeroSectionProps) {
           <div className="hero-line w-24 h-0.5 bg-gray-900"></div>
         </div>
 
-        {/* Subtitle */}
-        <p className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed opacity-0 invisible">
+        {/* Subtitle - Montserrat (font-sans) */}
+        <p className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal opacity-0 invisible">
           Creamos experiencias web limpias, funcionales y memorables. 
           Menos ruido, más impacto.
         </p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons - Montserrat (font-sans) */}
         <div className="hero-cta flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
           <Link
             href="/projects"
-            className="cta-button group inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white font-medium rounded-none hover:bg-gray-800 transition-all duration-200 opacity-0 invisible"
+            className="cta-button group inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white font-sans font-semibold rounded-none hover:bg-gray-800 transition-all duration-200 opacity-0 invisible tracking-wide"
           >
             Ver proyectos
             <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,31 +247,31 @@ export default function HeroSection({ background }: HeroSectionProps) {
           
           <Link
             href="/contact"
-            className="cta-button inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-medium border-2 border-gray-900 rounded-none hover:bg-gray-900 hover:text-white transition-all duration-200 opacity-0 invisible"
+            className="cta-button inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-sans font-semibold border-2 border-gray-900 rounded-none hover:bg-gray-900 hover:text-white transition-all duration-200 opacity-0 invisible tracking-wide"
           >
             Contactar
           </Link>
         </div>
 
-        {/* Stats con contadores animados */}
+        {/* Stats con contadores animados - Satoshi para números, Montserrat para labels */}
         <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
           <div className="hero-stats text-center opacity-0 invisible">
-            <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+            <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
               <span className="counter-value" data-target="50">0</span>
             </div>
-            <div className="text-sm text-gray-600 font-medium">Proyectos</div>
+            <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Proyectos</div>
           </div>
           <div className="hero-stats text-center opacity-0 invisible">
-            <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+            <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
               <span className="counter-value percentage" data-target="98">0</span>
             </div>
-            <div className="text-sm text-gray-600 font-medium">Satisfacción</div>
+            <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Satisfacción</div>
           </div>
           <div className="hero-stats text-center opacity-0 invisible">
-            <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+            <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
               <span className="counter-value" data-target="5">0</span>
             </div>
-            <div className="text-sm text-gray-600 font-medium">Años</div>
+            <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Años</div>
           </div>
         </div>
       </div>
