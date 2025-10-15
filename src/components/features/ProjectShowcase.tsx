@@ -99,15 +99,73 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
         }
       }
     );
+
+    // Hover effects sutiles para las tarjetas de proyectos
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach((card) => {
+      const image = card.querySelector('img');
+      const title = card.querySelector('h3');
+      
+      card.addEventListener('mouseenter', () => {
+        // Elevación sutil de la card
+        gsap.to(card, {
+          y: -4,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        // Imagen con escala sutil
+        if (image) {
+          gsap.to(image, {
+            scale: 1.05,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        }
+        
+        // Título desliza sutilmente
+        if (title) {
+          gsap.to(title, {
+            x: 4,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        }
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        if (image) {
+          gsap.to(image, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        }
+        
+        if (title) {
+          gsap.to(title, {
+            x: 0,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        }
+      });
+    });
   }, { scope: showcaseRef });
 
   // Si no hay proyectos, mostrar mensaje
   if (!projects || projects.length === 0) {
     return (
-      <section className="py-20 bg-gradient-to-br from-[#f6f8ff] via-white to-[#f6f8ff]">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-xl text-[#272d2d]">
+            <p className="font-sans text-xl text-gray-600 tracking-normal">
               No hay proyectos destacados disponibles en este momento.
             </p>
           </div>
@@ -119,21 +177,16 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   return (
     <section 
       ref={showcaseRef}
-      className="py-20 bg-gradient-to-br from-[#f6f8ff] via-white to-[#f6f8ff] relative overflow-hidden"
+      className="py-20 bg-gray-50 relative overflow-hidden"
     >
-      {/* Efectos de fondo decorativos */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#0081af] to-[#00abe7] rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#00abe7] to-[#0081af] rounded-full blur-3xl"></div>
-      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header de la sección */}
         <div className="text-center mb-16">
-          <h2 className="showcase-title text-4xl md:text-5xl lg:text-6xl font-bold text-[#0081af] mb-6 opacity-0 invisible">
+          <h2 className="showcase-title font-display text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight opacity-0 invisible">
             Proyectos Destacados
           </h2>
-          <p className="showcase-subtitle text-xl md:text-2xl text-[#272d2d] max-w-3xl mx-auto opacity-0 invisible">
+          <p className="showcase-subtitle font-sans text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto tracking-normal leading-relaxed opacity-0 invisible">
             Explora nuestros trabajos más recientes y descubre cómo transformamos ideas en experiencias digitales excepcionales
           </p>
         </div>
@@ -144,8 +197,8 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
             <Card
               key={project._id}
               className={cn(
-                "project-card group relative overflow-hidden bg-gradient-to-br from-[#0081af]/10 to-[#00abe7]/10 backdrop-blur-sm border border-[#0081af]/20 hover:border-[#00abe7]/50 transition-all duration-300 opacity-0 invisible",
-                "hover:shadow-2xl hover:shadow-[#0081af]/20 hover:-translate-y-2"
+                "project-card group relative overflow-hidden bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300 opacity-0 invisible",
+                "hover:shadow-xl"
               )}
             >
               {/* Imagen del proyecto */}
@@ -162,7 +215,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                   {/* Badge de categoría */}
                   {project.category && (
                     <div className="absolute top-4 right-4 z-20">
-                      <span className="px-3 py-1 bg-gradient-to-r from-[#0081af] to-[#00abe7] text-[#272d2d] text-xs font-semibold rounded-full border border-[#0081af]">
+                      <span className="px-3 py-1 bg-gray-900 text-white text-xs font-sans font-semibold rounded-full tracking-wide">
                         {project.category.title}
                       </span>
                     </div>
@@ -172,11 +225,11 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
 
               {/* Contenido de la tarjeta */}
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-[#272d2d] mb-3 group-hover:text-[#0081af] transition-colors duration-300">
+                <h3 className="font-display text-2xl font-bold text-gray-900 mb-3 tracking-tight">
                   {project.title}
                 </h3>
                 
-                <p className="text-[#272d2d] mb-4 line-clamp-3">
+                <p className="font-sans text-gray-600 mb-4 line-clamp-3 tracking-normal leading-relaxed">
                   {project.excerpt}
                 </p>
 
@@ -186,13 +239,13 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                     {project.technologies.slice(0, 4).map((tech, techIndex) => (
                       <span
                         key={techIndex}
-                        className="px-2 py-1 bg-gradient-to-r from-[#0081af]/20 to-[#00abe7]/20 text-[#272d2d] text-xs rounded-md border border-[#0081af]/30"
+                        className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-sans rounded-md tracking-wide"
                       >
                         {tech}
                       </span>
                     ))}
                     {project.technologies.length > 4 && (
-                      <span className="px-2 py-1 bg-gradient-to-r from-[#0081af]/20 to-[#00abe7]/20 text-[#272d2d] text-xs rounded-md border border-[#0081af]/30">
+                      <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-sans rounded-md tracking-wide">
                         +{project.technologies.length - 4}
                       </span>
                     )}
@@ -206,7 +259,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                       href={project.projectUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 text-center px-4 py-2 bg-gradient-to-r from-[#0081af] to-[#00abe7] hover:from-[#00abe7] hover:to-[#0081af] text-[#272d2d] font-medium rounded-md transition-all duration-300 border border-[#0081af]"
+                      className="flex-1 text-center px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white font-sans font-semibold rounded-md transition-colors duration-300 tracking-wide"
                     >
                       Ver Proyecto
                     </a>
@@ -216,7 +269,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-gradient-to-r from-[#0081af]/20 to-[#00abe7]/20 hover:from-[#0081af]/30 hover:to-[#00abe7]/30 text-[#272d2d] font-medium rounded-md transition-all duration-300 border border-[#0081af]/30"
+                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 font-sans font-medium rounded-md transition-colors duration-300 tracking-wide"
                       aria-label="Ver código en GitHub"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -227,10 +280,6 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                 </div>
               </div>
 
-              {/* Efecto de brillo en hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000"></div>
-              </div>
             </Card>
           ))}
         </div>
@@ -239,7 +288,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
         <div className="text-center">
           <Link
             href="/projects"
-            className="showcase-cta inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#0081af] to-[#00abe7] hover:from-[#00abe7] hover:to-[#0081af] text-[#272d2d] font-bold rounded-lg text-lg transition-all duration-300 hover:shadow-xl hover:shadow-[#0081af]/30 hover:scale-105 opacity-0 invisible border-2 border-[#0081af]"
+            className="showcase-cta inline-flex items-center gap-2 px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white font-sans font-semibold rounded-lg text-lg transition-colors duration-300 tracking-wide opacity-0 invisible"
           >
             Ver Todos los Proyectos
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
