@@ -16,21 +16,9 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
   const teamSectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  // Animación GSAP avanzada con ScrollTrigger Pin
+  // Animación GSAP simple sin Pin
   useGSAP(() => {
     if (!members || members.length === 0) return;
-
-    // Pin del header mientras las tarjetas se animan
-    gsap.to(headerRef.current, {
-      scrollTrigger: {
-        trigger: teamSectionRef.current,
-        start: "top top",
-        end: "bottom center",
-        pin: headerRef.current,
-        pinSpacing: false,
-        scrub: 0.5,
-      }
-    });
 
     // Animación del título con fade-in
     gsap.fromTo(".team-title",
@@ -65,7 +53,7 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
       }
     );
 
-    // Animación de las tarjetas de miembros con stagger avanzado
+    // Animación de las tarjetas de miembros con stagger
     gsap.fromTo(".team-card",
       { 
         opacity: 0, 
@@ -113,8 +101,8 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
       ref={teamSectionRef}
       className="py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden"
     >
-      {/* Header de la sección (con Pin) */}
-      <div ref={headerRef} className="text-center mb-16 relative z-30">
+      {/* Header de la sección */}
+      <div ref={headerRef} className="text-center mb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="team-title text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 opacity-0 invisible">
             Nuestro Equipo
@@ -132,7 +120,7 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
             <Card
               key={member._id}
               className={cn(
-                "team-card group relative overflow-hidden text-center z-10",
+                "team-card group relative overflow-hidden text-center",
                 "hover:shadow-xl transition-all duration-300",
                 "opacity-0 invisible"
               )}
