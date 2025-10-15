@@ -63,13 +63,13 @@ function ServiceCard({ service }: ServiceCardProps) {
           <div className="text-4xl mb-3">
             {getServiceIcon(service.icon)}
           </div>
-          <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+          <h3 className="text-xl font-bold text-gray-900 group-hover:text-brand-700 transition-colors duration-200">
             {service.title}
           </h3>
         </div>
 
         {/* Resumen */}
-        <p className="text-gray-600 mb-4 flex-grow">
+        <p className="text-gray-700 mb-4 flex-grow">
           {service.summary}
         </p>
 
@@ -78,13 +78,13 @@ function ServiceCard({ service }: ServiceCardProps) {
           <div className="mb-4">
             <ul className="space-y-2">
               {service.features.slice(0, 3).map((feature, index) => (
-                <li key={index} className="flex items-center text-sm text-gray-600">
-                  <span className="text-green-500 mr-2">✓</span>
+                <li key={index} className="flex items-center text-sm text-gray-700">
+                  <span className="text-brand-600 mr-2 font-bold">✓</span>
                   {feature.feature}
                 </li>
               ))}
               {service.features.length > 3 && (
-                <li className="text-sm text-gray-500">
+                <li className="text-sm text-gray-600">
                   +{service.features.length - 3} más...
                 </li>
               )}
@@ -96,7 +96,7 @@ function ServiceCard({ service }: ServiceCardProps) {
         <div className="mt-auto">
           {service.price && (
             <div className="mb-4">
-              <span className="text-2xl font-bold text-blue-600">
+              <span className="text-2xl font-bold text-brand-700">
                 {formatPrice(service.price)}
               </span>
             </div>
@@ -104,7 +104,7 @@ function ServiceCard({ service }: ServiceCardProps) {
           
           <Link 
             href={`/services/${service.slug.current}`}
-            className="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 group-hover:bg-blue-700"
+            className="inline-flex items-center justify-center w-full bg-brand-600 hover:bg-brand-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 group-hover:bg-brand-700 shadow-md hover:shadow-lg"
           >
             Ver Detalles
             <svg 
@@ -146,10 +146,10 @@ export default async function ServiceList() {
       <div className="space-y-8">
         {/* Header de la sección */}
         <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-brand-700 mb-4">
             Nuestros Servicios
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-800 max-w-2xl mx-auto">
             Ofrecemos soluciones digitales completas para llevar tu negocio al siguiente nivel
           </p>
         </div>

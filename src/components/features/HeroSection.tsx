@@ -33,7 +33,7 @@ export default function HeroSection() {
       className="min-h-screen flex items-center justify-center bg-gray-50 px-4"
     >
       <div className="text-center max-w-4xl mx-auto">
-        <h1 className="hero-title font-display text-5xl md:text-7xl font-black text-brand-600 mb-6 opacity-0 invisible">
+        <h1 className="hero-title font-display text-5xl md:text-7xl font-black text-brand-700 mb-6 opacity-0 invisible">
           Uzi Agency
         </h1>
         
@@ -41,7 +41,7 @@ export default function HeroSection() {
           Creamos experiencias digitales extraordinarias con animaciones profesionales
         </p>
         
-        <button className="hero-button font-sans bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:ring-offset-2 shadow-lg hover:shadow-xl opacity-0 invisible">
+        <button className="hero-button font-sans bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 shadow-lg hover:shadow-xl opacity-0 invisible">
           Descubre Más
         </button>
       </div>

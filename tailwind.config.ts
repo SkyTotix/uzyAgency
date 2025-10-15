@@ -14,19 +14,19 @@ const config: Config = {
         primary: '#0081af',            // BOLD BLUE - Color principal
         accent: '#00abe7',             // LIGHT BLUE - Color de acento
         
-        // Escalas de colores de marca
+        // Escalas de colores de marca (oscuro a claro)
         brand: {
           DEFAULT: '#0081af',          // BOLD BLUE
-          50: '#e6f7ff',
-          100: '#bae7ff',
-          200: '#91d5ff',
-          300: '#69c0ff',
-          400: '#40a9ff',
-          500: '#00abe7',              // LIGHT BLUE
-          600: '#0081af',              // BOLD BLUE
-          700: '#006289',
-          800: '#004d6d',
-          900: '#003a52',
+          50: '#e6f3f7',              // Muy claro
+          100: '#cce7ef',
+          200: '#99cfe0',
+          300: '#66b7d0',
+          400: '#339fc1',
+          500: '#0081af',              // BOLD BLUE - Color principal
+          600: '#006d95',              // Más oscuro (mejor contraste)
+          700: '#00597a',
+          800: '#004560',
+          900: '#003145',
         },
         
         // Colores base de Tailwind (compatibilidad)

@@ -103,7 +103,7 @@ export default function ContactForm({ onSuccess, onError }: ContactFormProps) {
     <section className="py-20 bg-gray-50">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-brand-600 mb-4">
+          <h2 className="text-4xl font-bold text-brand-700 mb-4">
             ¿Listo para comenzar tu proyecto?
           </h2>
           <p className="text-xl text-gray-800">
