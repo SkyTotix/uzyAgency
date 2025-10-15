@@ -15,7 +15,7 @@ interface BlogPost {
   mainImage?: {
     asset: {
       _ref: string;
-      _type: string;
+      _type: 'reference';
     };
     alt?: string;
   };
@@ -25,7 +25,7 @@ interface BlogPost {
     image?: {
       asset: {
         _ref: string;
-        _type: string;
+        _type: 'reference';
       };
       alt?: string;
     };
@@ -43,31 +43,21 @@ export default function DebugBlogPage() {
       try {
         setLoading(true);
         
-        // Query para obtener posts con imágenes (más detallada)
+        // Query para obtener posts con imágenes (corregida)
         const query = `
           *[_type == "post"] | order(publishedAt desc) [0...5] {
             _id,
             title,
             excerpt,
             mainImage {
-              asset-> {
-                _id,
-                _type,
-                _ref,
-                url
-              },
+              asset,
               alt
             },
             author-> {
               _id,
               name,
               image {
-                asset-> {
-                  _id,
-                  _type,
-                  _ref,
-                  url
-                },
+                asset,
                 alt
               }
             },

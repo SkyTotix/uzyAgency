@@ -28,7 +28,7 @@ export const getAllBlogPosts = cache(async (
         slug,
         excerpt,
         mainImage {
-          asset->,
+          asset,
           alt
         },
         "author": author-> {
@@ -36,7 +36,7 @@ export const getAllBlogPosts = cache(async (
           name,
           slug,
           image {
-            asset->,
+            asset,
             alt
           }
         },
@@ -112,10 +112,16 @@ export const getRecentBlogPosts = cache(async (limit: number = 5): Promise<Post[
           name,
           slug,
           bio,
-          image,
+          image {
+            asset,
+            alt
+          },
           socialLinks
         },
-        mainImage,
+        mainImage {
+          asset,
+          alt
+        },
         categories[]-> {
           _id,
           _type,
@@ -178,10 +184,16 @@ export const getRelatedPosts = cache(async (
           name,
           slug,
           bio,
-          image,
+          image {
+            asset,
+            alt
+          },
           socialLinks
         },
-        mainImage,
+        mainImage {
+          asset,
+          alt
+        },
         categories[]-> {
           _id,
           _type,
