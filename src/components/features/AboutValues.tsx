@@ -74,35 +74,52 @@ export default function AboutValues() {
       "-=0.6"
     );
 
-    // Hover effects
+    // Hover effects sutiles
     const cards = document.querySelectorAll('.value-card');
     cards.forEach((card) => {
       const number = card.querySelector('.value-number');
+      const title = card.querySelector('.value-title');
       
       card.addEventListener('mouseenter', () => {
+        // Elevación sutil
         gsap.to(card, {
-          y: -10,
-          duration: 0.4,
+          y: -4,
+          duration: 0.3,
           ease: "power2.out"
         });
+        
+        // Escala sutil del número
         gsap.to(number, {
-          scale: 1.2,
-          rotation: 5,
-          duration: 0.4,
-          ease: "back.out(1.7)"
+          scale: 1.05,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        // Deslizamiento sutil del título
+        gsap.to(title, {
+          x: 8,
+          duration: 0.3,
+          ease: "power2.out"
         });
       });
       
       card.addEventListener('mouseleave', () => {
+        // Reset a posición original
         gsap.to(card, {
           y: 0,
-          duration: 0.4,
+          duration: 0.3,
           ease: "power2.out"
         });
+        
         gsap.to(number, {
           scale: 1,
-          rotation: 0,
-          duration: 0.4,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+        
+        gsap.to(title, {
+          x: 0,
+          duration: 0.3,
           ease: "power2.out"
         });
       });
@@ -126,26 +143,29 @@ export default function AboutValues() {
         </div>
 
         {/* Values Grid */}
-        <div className="grid md:grid-cols-3 gap-px bg-gray-300" style={{ perspective: '2000px' }}>
+        <div className="grid md:grid-cols-3 gap-8" style={{ perspective: '2000px' }}>
           {values.map((value) => (
             <div
               key={value.id}
-              className="value-card bg-white p-10 md:p-12 hover:bg-gray-900 transition-all duration-500 opacity-0 invisible group"
+              className="value-card bg-white p-10 md:p-12 hover:shadow-lg transition-all duration-300 opacity-0 invisible group border border-gray-100"
             >
               {/* Número */}
-              <div className="value-number text-6xl font-bold text-gray-200 group-hover:text-gray-800 mb-6 transition-colors">
+              <div className="value-number text-6xl font-bold text-gray-100 mb-6 transition-colors duration-300">
                 {value.number}
               </div>
 
               {/* Título */}
-              <h3 className="font-display text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-white mb-4 transition-colors">
+              <h3 className="value-title font-display text-2xl md:text-3xl font-bold text-gray-900 mb-4 transition-colors duration-300">
                 {value.title}
               </h3>
 
               {/* Descripción */}
-              <p className="text-gray-600 group-hover:text-gray-300 leading-relaxed transition-colors">
+              <p className="text-gray-600 leading-relaxed transition-colors duration-300">
                 {value.description}
               </p>
+              
+              {/* Línea decorativa sutil */}
+              <div className="mt-6 w-12 h-1 bg-gray-900 transform transition-transform duration-300 group-hover:scale-x-150"></div>
             </div>
           ))}
         </div>
