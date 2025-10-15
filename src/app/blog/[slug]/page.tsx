@@ -220,7 +220,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Contenido del post con Tailwind Typography */}
             <div className="prose prose-lg prose-blue max-w-none">
-              {post.content && post.content.map((block, index) => {
+              {post.content && post.content.map((block) => {
                 // Renderizar bloques de texto
                 if (block._type === 'block') {
                   const style = block.style || 'normal';

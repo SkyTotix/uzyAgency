@@ -5,13 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card, ToastNotification } from '@/components/ui';
 import ContactForm from './ContactForm';
-import { processContactForm } from '@/lib/server/contact';
-
-interface ContactSectionProps {
-  // Props opcionales para personalización futura
-}
-
-export default function ContactSection({}: ContactSectionProps) {
+export default function ContactSection() {
   const contactRef = useRef<HTMLElement>(null);
   const [toast, setToast] = useState<{
     show: boolean;

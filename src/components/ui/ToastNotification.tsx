@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ToastNotificationProps {
@@ -22,6 +22,11 @@ export default function ToastNotification({
 }: ToastNotificationProps) {
   const [isVisible, setIsVisible] = useState(false);
 
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(onClose, 300); // Wait for animation to complete
+  }, [onClose]);
+
   useEffect(() => {
     if (show) {
       setIsVisible(true);
@@ -31,12 +36,7 @@ export default function ToastNotification({
 
       return () => clearTimeout(timer);
     }
-  }, [show, duration]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(onClose, 300); // Wait for animation to complete
-  };
+  }, [show, duration, handleClose]);
 
   const typeStyles = {
     success: "bg-green-50 border-green-200 text-green-800",

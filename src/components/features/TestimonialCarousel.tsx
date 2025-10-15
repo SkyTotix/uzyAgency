@@ -114,7 +114,7 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
           <Card className="bg-white/10 backdrop-blur-md border border-white/20 p-8 md:p-12">
             {/* Icono de comillas */}
             <div className="text-6xl text-blue-400 mb-6 opacity-50">
-              "
+              &ldquo;
             </div>
 
             {/* Contenido del testimonio */}
