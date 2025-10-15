@@ -6,11 +6,11 @@
   }
   
   body {
-    @apply font-sans antialiased text-content bg-bg-light;
+    @apply font-sans antialiased text-gray-700 bg-gray-50;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold text-content;
+    @apply font-bold text-gray-900;
   }
   
   h1 {

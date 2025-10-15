@@ -37,11 +37,11 @@ export default function HeroSection() {
           Uzi Agency
         </h1>
         
-        <p className="hero-subtitle font-sans text-xl md:text-2xl text-content mb-8 leading-relaxed opacity-0 invisible">
+        <p className="hero-subtitle font-sans text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed opacity-0 invisible">
           Creamos experiencias digitales extraordinarias con animaciones profesionales
         </p>
         
-        <button className="hero-button font-sans bg-primary hover:bg-accent text-on-dark font-semibold py-4 px-8 rounded-lg text-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 opacity-0 invisible">
+        <button className="hero-button font-sans bg-primary hover:bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 opacity-0 invisible">
           Descubre Más
         </button>
       </div>

@@ -1,20 +1,26 @@
 import localFont from 'next/font/local';
 
-// Montserrat Variable Font - Fuente principal
-// Geométrica, moderna y altamente versátil con soporte completo de pesos
+/**
+ * Montserrat - Fuente principal (Sans-serif)
+ * Variable font para optimización de rendimiento
+ */
 export const montserrat = localFont({
-  src: '../assets/fonts/Montserrat-VariableFont_wght.ttf',
+  src: [
+    {
+      path: '../assets/fonts/Montserrat-VariableFont_wght.ttf',
+      style: 'normal',
+    },
+  ],
   variable: '--font-montserrat',
   display: 'swap',
-  weight: '100 900', // Variable font soporta todo el rango
-  style: 'normal',
   preload: true,
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
-  adjustFontFallback: 'Arial',
+  fallback: ['system-ui', 'arial', 'sans-serif'],
 });
 
-// Satoshi - Fuente secundaria para acentos y elementos especiales
-// Moderna, limpia y con personalidad única
+/**
+ * Satoshi - Fuente display (Títulos y elementos destacados)
+ * Optimizada para headers y elementos de marca
+ */
 export const satoshi = localFont({
   src: [
     {
@@ -30,10 +36,12 @@ export const satoshi = localFont({
   ],
   variable: '--font-satoshi',
   display: 'swap',
-  preload: false, // No precargar (solo para acentos)
-  fallback: ['system-ui', 'sans-serif'],
+  preload: true,
+  fallback: ['system-ui', 'arial', 'sans-serif'],
 });
 
-// Exportar variables CSS para uso en Tailwind
-export const fontVariables = `${montserrat.variable} ${satoshi.variable}`;
-
+/**
+ * Exportaciones nombradas para facilitar el uso
+ */
+export const FontPrimary = montserrat;
+export const FontSecondary = satoshi;
