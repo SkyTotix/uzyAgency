@@ -23,7 +23,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Animación de entrada del modal
   useGSAP(() => {
@@ -203,6 +203,26 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     return labels[type] || type;
   };
 
+  // Extraer texto de campos que pueden ser string o bloques de Sanity
+  const extractText = (field: string | any): string => {
+    if (!field) return '';
+    if (typeof field === 'string') return field;
+    // Si es un array de bloques de Sanity, extraer el texto
+    if (Array.isArray(field)) {
+      return field
+        .filter(block => block._type === 'block')
+        .map(block => 
+          block.children
+            ?.filter((child: any) => child._type === 'span')
+            .map((child: any) => child.text)
+            .join('')
+        )
+        .join(' ')
+        .substring(0, 200);
+    }
+    return '';
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -374,7 +394,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                       
                       {(result.excerpt || result.description) && (
                         <p className="text-sm text-gray-600 line-clamp-2">
-                          {result.excerpt || result.description}
+                          {extractText(result.excerpt || result.description)}
                         </p>
                       )}
 
