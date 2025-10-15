@@ -204,3 +204,33 @@ export interface TeamMember extends SanityDocument {
   };
   featured?: boolean;
 }
+
+// Tipos para búsqueda global
+export type SearchResultType = 'post' | 'project' | 'service';
+
+export interface SearchResult {
+  _id: string;
+  _type: SearchResultType;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  description?: string;
+  mainImage?: SanityImage;
+  category?: {
+    title: string;
+    slug: SanitySlug;
+  };
+  publishedAt?: string;
+  featured?: boolean;
+}
+
+export interface SearchResponse {
+  results: SearchResult[];
+  total: number;
+  query: string;
+  types: {
+    posts: number;
+    projects: number;
+    services: number;
+  };
+}
