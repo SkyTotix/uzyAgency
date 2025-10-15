@@ -47,6 +47,21 @@ export default defineConfig({
             // Divider
             S.divider(),
             
+            // Proyectos (Portfolio)
+            S.listItem()
+              .title('Portfolio')
+              .id('projects')
+              .icon(() => '💼')
+              .child(
+                S.documentTypeList('project')
+                  .title('Proyectos')
+                  .filter('_type == "project"')
+                  .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }])
+              ),
+            
+            // Divider
+            S.divider(),
+            
             // Blog
             S.listItem()
               .title('📝 Blog')
@@ -117,7 +132,7 @@ export default defineConfig({
             
             // Otros tipos de contenido (para futuro)
             ...S.documentTypeListItems().filter(
-              (listItem) => !['settings', 'service', 'post', 'author', 'category', 'teamMember', 'testimonial'].includes(listItem.getId()!)
+              (listItem) => !['settings', 'service', 'project', 'post', 'author', 'category', 'teamMember', 'testimonial'].includes(listItem.getId()!)
             )
           ])
     }),

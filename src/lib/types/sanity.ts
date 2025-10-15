@@ -136,26 +136,46 @@ export interface Service extends SanityDocument {
   seo: SEO;
 }
 
+export interface ProjectFeature {
+  title: string;
+  description?: string;
+}
+
+export interface ProjectChallenge {
+  challenge: string;
+  solution: string;
+}
+
+export interface ProjectResult {
+  metric: string;
+  value: string;
+}
+
 export interface Project extends SanityDocument {
   _type: 'project';
   title: string;
   slug: SanitySlug;
-  excerpt: string;
+  excerpt?: string;
   description?: string;
-  content?: SanityBlock[];
   mainImage?: SanityImage;
-  images?: SanityImage[];
+  gallery?: SanityImage[];
   technologies?: string[];
-  projectUrl?: string;
-  liveUrl?: string;
-  githubUrl?: string;
-  featured: boolean;
-  publishedAt: string;
-  completedAt?: string;
   category?: {
     _ref: string;
-    title: string;
+    title?: string;
   };
+  projectUrl?: string;
+  githubUrl?: string;
+  client?: string;
+  duration?: string;
+  role?: string;
+  features?: ProjectFeature[];
+  challenges?: ProjectChallenge[];
+  results?: ProjectResult[];
+  featured: boolean;
+  status: 'completed' | 'in-progress' | 'planned' | 'maintenance';
+  publishedAt: string;
+  order?: number;
   seo?: SEO;
 }
 
