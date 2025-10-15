@@ -59,7 +59,7 @@ export const sanityUtils = {
   // Generar URL de imagen optimizada
   imageUrl: (image: SanityImage, width?: number, height?: number): string => {
     if (!image?.asset?._ref) {
-      console.warn('No image asset reference found');
+      console.warn('No image asset reference found:', image);
       return '';
     }
     
@@ -67,7 +67,7 @@ export const sanityUtils = {
     const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
     
     if (!projectId || !dataset) {
-      console.warn('Missing Sanity environment variables for image URL generation');
+      console.warn('Missing Sanity environment variables:', { projectId, dataset });
       return '';
     }
     
@@ -77,6 +77,9 @@ export const sanityUtils = {
     // Extraer el ID de la imagen del reference
     // Formato: "image-abc123def-400x300-jpg" -> "abc123def-400x300-jpg"
     let imageId = image.asset._ref.replace('image-', '');
+    
+    console.log('Original asset ref:', image.asset._ref);
+    console.log('Processed image ID:', imageId);
     
     // Agregar extensión si no la tiene
     if (!imageId.includes('.')) {
@@ -107,7 +110,8 @@ export const sanityUtils = {
       url += `?${params.toString()}`;
     }
     
-    console.log('Generated image URL:', url); // Debug log
+    console.log('Generated image URL:', url);
+    console.log('Image object:', image);
     return url;
   },
 
