@@ -24,58 +24,47 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center hover:opacity-80 transition-opacity" aria-label="Ir a inicio">
-              <Logo width={237} height={61} priority />
-            </Link>
-          </div>
+          <Link href="/" className="text-2xl font-bold text-gray-900" aria-label="Ir a inicio">
+            Uzi
+          </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            <Link href="/" prefetch={true} className="text-gray-800 hover:text-brand-700 font-medium transition-colors">
-              Inicio
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link href="/projects" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+              Proyectos
             </Link>
-            <Link href="/services" prefetch={true} className="text-gray-800 hover:text-brand-700 font-medium transition-colors">
+            <Link href="/services" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
               Servicios
             </Link>
-            <Link href="/projects" prefetch={true} className="text-gray-800 hover:text-brand-700 font-medium transition-colors">
-              Portfolio
+            <Link href="/about" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+              Acerca
             </Link>
-            <Link href="/blog" prefetch={true} className="text-gray-800 hover:text-brand-700 font-medium transition-colors">
+            <Link href="/blog" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
               Blog
             </Link>
-            <Link href="/about" prefetch={true} className="text-gray-800 hover:text-brand-700 font-medium transition-colors">
-              Nosotros
-            </Link>
-            <Link href="/contact" prefetch={true} className="text-gray-800 hover:text-brand-700 font-medium transition-colors">
-              Contacto
-            </Link>
-          </nav>
-
-          {/* Search Button */}
-          <div className="hidden md:flex items-center space-x-4">
+            
+            {/* Search Button */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors group"
+              className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors group"
               aria-label="Abrir búsqueda"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span className="hidden lg:inline">Buscar</span>
-              <kbd className="hidden lg:inline-flex items-center px-2 py-0.5 text-xs font-mono bg-white border border-gray-300 rounded shadow-sm">
+              <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 text-xs font-mono bg-gray-100 border border-gray-300 rounded text-gray-600">
                 ⌘K
               </kbd>
             </button>
-
-            <Button variant="primary" size="sm">
-              Comenzar Proyecto
-            </Button>
-          </div>
+            
+            <Link href="/contact" className="px-6 py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors">
+              Contactar
+            </Link>
+          </nav>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -93,42 +82,25 @@ export default function Header() {
         {/* Mobile Navigation */}
         <div className={cn(
           "md:hidden transition-all duration-300 ease-in-out",
-          isMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
+          isMenuOpen ? "max-h-80 opacity-100 pb-6" : "max-h-0 opacity-0 overflow-hidden"
         )}>
-          <div className="py-4 space-y-2">
-            {/* Búsqueda móvil */}
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="w-full flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <span className="font-medium">Buscar</span>
-            </button>
-
-            <Link href="/" prefetch={true} className="block px-3 py-2 text-gray-800 hover:text-brand-700 font-medium">
-              Inicio
+          <div className="py-4 space-y-1">
+            <Link href="/projects" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
+              Proyectos
             </Link>
-            <Link href="/services" prefetch={true} className="block px-3 py-2 text-gray-800 hover:text-brand-700 font-medium">
+            <Link href="/services" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
               Servicios
             </Link>
-            <Link href="/projects" prefetch={true} className="block px-3 py-2 text-gray-800 hover:text-brand-700 font-medium">
-              Portfolio
+            <Link href="/about" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
+              Acerca
             </Link>
-            <Link href="/blog" prefetch={true} className="block px-3 py-2 text-gray-800 hover:text-brand-700 font-medium">
+            <Link href="/blog" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
               Blog
             </Link>
-            <Link href="/about" prefetch={true} className="block px-3 py-2 text-gray-800 hover:text-brand-700 font-medium">
-              Nosotros
-            </Link>
-            <Link href="/contact" prefetch={true} className="block px-3 py-2 text-gray-800 hover:text-brand-700 font-medium">
-              Contacto
-            </Link>
-            <div className="px-3 py-2">
-              <Button variant="primary" size="sm" className="w-full">
-                Comenzar Proyecto
-              </Button>
+            <div className="pt-4 px-3">
+              <Link href="/contact" className="block text-center py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800">
+                Contactar
+              </Link>
             </div>
           </div>
         </div>

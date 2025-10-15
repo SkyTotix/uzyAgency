@@ -35,7 +35,6 @@ export default function Button({
         sizeClasses[size],
         className
       )}
-      style={variant === 'primary' ? { backgroundColor: '#0081af', color: '#272d2d', borderColor: '#0081af' } : undefined}
       {...props}
     >
       {children}

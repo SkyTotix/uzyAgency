@@ -68,7 +68,7 @@ export const categorySchema = defineType({
       options: {
         list: [
           { title: '💻 Code', value: 'code' },
-          { title: '🎨 Design', value: 'design' },
+          { title: 'Design', value: 'design' },
           { title: '📈 Marketing', value: 'marketing' },
           { title: '🔍 SEO', value: 'seo' },
           { title: '📱 Mobile', value: 'mobile' },
@@ -162,12 +162,11 @@ export const categorySchema = defineType({
         'devops': '🔧'
       }
       
-      const emojiIcon = icon ? iconMap[icon] || '📁' : '📁'
-      const featuredBadge = featured ? '⭐ ' : ''
+      const featuredBadge = featured ? '★ ' : ''
       const orderLabel = order !== undefined ? `#${order}` : ''
       
       return {
-        title: `${featuredBadge}${emojiIcon} ${title}`,
+        title: `${featuredBadge}${title}`,
         subtitle: `${orderLabel} ${description || 'Sin descripción'}`.trim()
       }
     }

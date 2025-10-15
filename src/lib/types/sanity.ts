@@ -234,3 +234,60 @@ export interface SearchResponse {
     services: number;
   };
 }
+
+// Tipos para Backgrounds
+export interface BackgroundAnimation {
+  enabled: boolean;
+  type?: 'float' | 'rotate' | 'pulse' | 'slide';
+  duration?: number;
+}
+
+export interface GradientColor {
+  color: string;
+  position: number;
+}
+
+export interface ShapesConfig {
+  shapeCount: number;
+  shapeTypes: string[];
+  colors: string[];
+}
+
+export interface Background extends SanityDocument {
+  _type: 'background';
+  title: string;
+  slug: SanitySlug;
+  isActive: boolean;
+  backgroundType: 'svg' | 'image' | 'gradient' | 'shapes';
+  svgFile?: {
+    asset: {
+      _id: string;
+      url: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        };
+      };
+    };
+  };
+  imageFile?: {
+    asset: {
+      _id: string;
+      url: string;
+      metadata: {
+        dimensions: {
+          width: number;
+          height: number;
+        };
+      };
+    };
+  };
+  gradientColors?: GradientColor[];
+  gradientDirection?: string;
+  shapesConfig?: ShapesConfig;
+  opacity?: number;
+  blendMode?: 'normal' | 'multiply' | 'overlay' | 'soft-light' | 'hard-light' | 'difference';
+  animation?: BackgroundAnimation;
+  description?: string;
+}

@@ -217,12 +217,9 @@ export const serviceSchema = defineType({
         'support': '🆘'
       }
       
-      const emojiIcon = iconMap[icon?.toLowerCase()] || '🚀'
-      
       return {
         title: title,
-        subtitle: subtitle,
-        media: () => emojiIcon
+        subtitle: subtitle
       }
     }
   }

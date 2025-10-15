@@ -104,10 +104,10 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   // Si no hay proyectos, mostrar mensaje
   if (!projects || projects.length === 0) {
     return (
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
+      <section className="py-20 bg-gradient-to-br from-[#f6f8ff] via-white to-[#f6f8ff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-xl text-gray-300">
+            <p className="text-xl text-[#272d2d]">
               No hay proyectos destacados disponibles en este momento.
             </p>
           </div>
@@ -119,21 +119,21 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   return (
     <section 
       ref={showcaseRef}
-      className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 relative overflow-hidden"
+      className="py-20 bg-gradient-to-br from-[#f6f8ff] via-white to-[#f6f8ff] relative overflow-hidden"
     >
       {/* Efectos de fondo decorativos */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#0081af] to-[#00abe7] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#00abe7] to-[#0081af] rounded-full blur-3xl"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header de la sección */}
         <div className="text-center mb-16">
-          <h2 className="showcase-title text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 opacity-0 invisible">
+          <h2 className="showcase-title text-4xl md:text-5xl lg:text-6xl font-bold text-[#0081af] mb-6 opacity-0 invisible">
             Proyectos Destacados
           </h2>
-          <p className="showcase-subtitle text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto opacity-0 invisible">
+          <p className="showcase-subtitle text-xl md:text-2xl text-[#272d2d] max-w-3xl mx-auto opacity-0 invisible">
             Explora nuestros trabajos más recientes y descubre cómo transformamos ideas en experiencias digitales excepcionales
           </p>
         </div>
@@ -144,8 +144,8 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
             <Card
               key={project._id}
               className={cn(
-                "project-card group relative overflow-hidden bg-white/5 backdrop-blur-sm border border-white/10 hover:border-blue-400/50 transition-all duration-300 opacity-0 invisible",
-                "hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-2"
+                "project-card group relative overflow-hidden bg-gradient-to-br from-[#0081af]/10 to-[#00abe7]/10 backdrop-blur-sm border border-[#0081af]/20 hover:border-[#00abe7]/50 transition-all duration-300 opacity-0 invisible",
+                "hover:shadow-2xl hover:shadow-[#0081af]/20 hover:-translate-y-2"
               )}
             >
               {/* Imagen del proyecto */}
@@ -162,7 +162,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                   {/* Badge de categoría */}
                   {project.category && (
                     <div className="absolute top-4 right-4 z-20">
-                      <span className="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">
+                      <span className="px-3 py-1 bg-gradient-to-r from-[#0081af] to-[#00abe7] text-[#272d2d] text-xs font-semibold rounded-full border border-[#0081af]">
                         {project.category.title}
                       </span>
                     </div>
@@ -172,11 +172,11 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
 
               {/* Contenido de la tarjeta */}
               <div className="p-6">
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">
+                <h3 className="text-2xl font-bold text-[#272d2d] mb-3 group-hover:text-[#0081af] transition-colors duration-300">
                   {project.title}
                 </h3>
                 
-                <p className="text-gray-300 mb-4 line-clamp-3">
+                <p className="text-[#272d2d] mb-4 line-clamp-3">
                   {project.excerpt}
                 </p>
 
@@ -186,13 +186,13 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                     {project.technologies.slice(0, 4).map((tech, techIndex) => (
                       <span
                         key={techIndex}
-                        className="px-2 py-1 bg-white/10 text-gray-300 text-xs rounded-md"
+                        className="px-2 py-1 bg-gradient-to-r from-[#0081af]/20 to-[#00abe7]/20 text-[#272d2d] text-xs rounded-md border border-[#0081af]/30"
                       >
                         {tech}
                       </span>
                     ))}
                     {project.technologies.length > 4 && (
-                      <span className="px-2 py-1 bg-white/10 text-gray-300 text-xs rounded-md">
+                      <span className="px-2 py-1 bg-gradient-to-r from-[#0081af]/20 to-[#00abe7]/20 text-[#272d2d] text-xs rounded-md border border-[#0081af]/30">
                         +{project.technologies.length - 4}
                       </span>
                     )}
@@ -206,7 +206,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                       href={project.projectUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200"
+                      className="flex-1 text-center px-4 py-2 bg-gradient-to-r from-[#0081af] to-[#00abe7] hover:from-[#00abe7] hover:to-[#0081af] text-[#272d2d] font-medium rounded-md transition-all duration-300 border border-[#0081af]"
                     >
                       Ver Proyecto
                     </a>
@@ -216,7 +216,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-medium rounded-md transition-colors duration-200"
+                      className="px-4 py-2 bg-gradient-to-r from-[#0081af]/20 to-[#00abe7]/20 hover:from-[#0081af]/30 hover:to-[#00abe7]/30 text-[#272d2d] font-medium rounded-md transition-all duration-300 border border-[#0081af]/30"
                       aria-label="Ver código en GitHub"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -239,7 +239,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
         <div className="text-center">
           <Link
             href="/projects"
-            className="showcase-cta inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 opacity-0 invisible"
+            className="showcase-cta inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#0081af] to-[#00abe7] hover:from-[#00abe7] hover:to-[#0081af] text-[#272d2d] font-bold rounded-lg text-lg transition-all duration-300 hover:shadow-xl hover:shadow-[#0081af]/30 hover:scale-105 opacity-0 invisible border-2 border-[#0081af]"
           >
             Ver Todos los Proyectos
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

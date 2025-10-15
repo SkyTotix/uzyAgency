@@ -100,13 +100,13 @@ export default function ContactForm({ onSuccess, onError }: ContactFormProps) {
   };
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gradient-to-b from-white to-[#f6f8ff]">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-brand-700 mb-4">
+          <h2 className="text-4xl font-bold text-[#0081af] mb-4">
             ¿Listo para comenzar tu proyecto?
           </h2>
-          <p className="text-xl text-gray-800">
+          <p className="text-xl text-[#272d2d]">
             Cuéntanos sobre tu idea y te ayudaremos a hacerla realidad
           </p>
         </div>

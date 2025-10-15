@@ -130,9 +130,23 @@ export default defineConfig({
             // Divider
             S.divider(),
             
+            // Fondos
+            S.listItem()
+              .title('Fondos')
+              .id('backgrounds')
+              .child(
+                S.documentTypeList('background')
+                  .title('Fondos')
+                  .filter('_type == "background"')
+                  .defaultOrdering([{ field: 'isActive', direction: 'desc' }, { field: 'title', direction: 'asc' }])
+              ),
+            
+            // Divider
+            S.divider(),
+            
             // Otros tipos de contenido (para futuro)
             ...S.documentTypeListItems().filter(
-              (listItem) => !['settings', 'service', 'project', 'post', 'author', 'category', 'teamMember', 'testimonial'].includes(listItem.getId()!)
+              (listItem) => !['settings', 'service', 'project', 'post', 'author', 'category', 'teamMember', 'testimonial', 'background'].includes(listItem.getId()!)
             )
           ])
     }),

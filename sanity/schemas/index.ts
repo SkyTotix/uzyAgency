@@ -7,6 +7,7 @@ export { authorSchema } from './author'
 export { categorySchema } from './category'
 export { teamMemberSchema } from './teamMember'
 export { testimonialSchema } from './testimonial'
+export { default as backgroundSchema } from './background'
 
 // Lista de esquemas para el config de Sanity
 import projectSchema from './project'
@@ -17,6 +18,7 @@ import { authorSchema } from './author'
 import { categorySchema } from './category'
 import { teamMemberSchema } from './teamMember'
 import { testimonialSchema } from './testimonial'
+import backgroundSchema from './background'
 
 export const schemaTypes = [
   // Configuración del sitio
@@ -36,4 +38,7 @@ export const schemaTypes = [
   // Equipo y Testimonios
   teamMemberSchema,
   testimonialSchema,
+  
+  // Fondos
+  backgroundSchema,
 ]

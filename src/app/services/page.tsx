@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Header, Footer } from '@/components/layout'
-import ServiceList from '@/components/features/ServiceList'
+import { getServicesList } from '@/lib/server/data/serviceData'
+import ServicesPageHero from '@/components/features/ServicesPageHero'
+import ServicesPageGrid from '@/components/features/ServicesPageGrid'
 
 // Metadata específica para SEO de la página de servicios
 export const metadata: Metadata = {
@@ -125,7 +127,10 @@ const jsonLd = {
   }
 }
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  // Obtener servicios desde Sanity
+  const services = await getServicesList();
+
   return (
     <>
       {/* JSON-LD para SEO estructurado */}
@@ -136,70 +141,9 @@ export default function ServicesPage() {
       
       <Header />
       
-      <main className="min-h-screen">
-        {/* Hero Section para Servicios */}
-        <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="text-center mb-12">
-              <h1 className="font-display text-4xl md:text-6xl font-black text-gray-900 mb-6">
-                Nuestros Servicios
-              </h1>
-              <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Transformamos ideas en realidad digital con soluciones profesionales 
-                que impulsan el crecimiento de tu negocio
-              </p>
-            </div>
-
-            {/* Estadísticas rápidas */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-              <div className="text-center bg-white rounded-lg p-6 shadow-sm">
-                <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
-                <div className="text-gray-600">Proyectos Completados</div>
-              </div>
-              <div className="text-center bg-white rounded-lg p-6 shadow-sm">
-                <div className="text-3xl font-bold text-blue-600 mb-2">3+</div>
-                <div className="text-gray-600">Años de Experiencia</div>
-              </div>
-              <div className="text-center bg-white rounded-lg p-6 shadow-sm">
-                <div className="text-3xl font-bold text-blue-600 mb-2">100%</div>
-                <div className="text-gray-600">Clientes Satisfechos</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Lista de Servicios */}
-        <section className="py-20">
-          <div className="max-w-6xl mx-auto px-4">
-            <ServiceList />
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="bg-blue-600 py-20">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <h2 className="font-display text-3xl md:text-4xl font-black text-white mb-6">
-              ¿Listo para comenzar tu proyecto?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Cuéntanos sobre tu idea y te ayudaremos a hacerla realidad con nuestros servicios profesionales
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="/contact"
-                className="inline-flex items-center justify-center bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                Contactar Ahora
-              </a>
-              <a 
-                href="/portfolio"
-                className="inline-flex items-center justify-center border-2 border-white text-white font-semibold py-3 px-8 rounded-lg hover:bg-white hover:text-blue-600 transition-colors duration-200"
-              >
-                Ver Portfolio
-              </a>
-            </div>
-          </div>
-        </section>
+      <main className="min-h-screen bg-white">
+        <ServicesPageHero totalServices={services.length} />
+        <ServicesPageGrid services={services} />
       </main>
       
       <Footer />

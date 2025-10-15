@@ -93,7 +93,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover, user-scalable=yes" 
         />
       </head>
-      <body className={`${montserrat.variable} ${satoshi.variable} font-sans antialiased`}>
+      <body className={`${montserrat.variable} ${satoshi.variable} font-sans antialiased pt-20`}>
         <GSAPProvider>
           <AnalyticsProvider>
             {children}
