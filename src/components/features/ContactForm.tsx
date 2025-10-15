@@ -202,80 +202,27 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
   ];
 
   return (
-    <section ref={sectionRef} className={cn("relative py-20 overflow-hidden", className)}>
-      {/* Background con gradientes y elementos decorativos */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-50"></div>
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section ref={sectionRef} className={cn("py-20 bg-white", className)}>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header minimalista */}
         <div className="text-center mb-16">
-          <h2 className="contact-title text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 opacity-0 invisible">
-            ¿Listo para <span className="text-blue-600">comenzar</span> tu proyecto?
+          <h2 className="contact-title text-3xl md:text-4xl font-bold text-gray-900 mb-4 opacity-0 invisible">
+            ¿Listo para comenzar tu proyecto?
           </h2>
-          <p className="contact-subtitle text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto opacity-0 invisible">
-            Transformamos ideas en experiencias digitales extraordinarias. Cuéntanos sobre tu proyecto y te ayudaremos a hacerlo realidad.
+          <p className="contact-subtitle text-lg text-gray-600 opacity-0 invisible">
+            Cuéntanos sobre tu idea y te ayudaremos a hacerla realidad
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Información de contacto */}
-          <div className="contact-info opacity-0 invisible">
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Información de Contacto</h3>
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <div key={index} className="flex items-start gap-4 group">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-xl group-hover:bg-blue-200 transition-colors duration-200">
-                      {info.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 mb-1">{info.title}</h4>
-                      {info.link ? (
-                        <a 
-                          href={info.link}
-                          className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                        >
-                          {info.content}
-                        </a>
-                      ) : (
-                        <p className="text-gray-600">{info.content}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Beneficios */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">¿Por qué elegirnos?</h4>
-              <ul className="space-y-3">
-                {[
-                  'Respuesta en menos de 24 horas',
-                  'Consultoría gratuita inicial',
-                  'Desarrollo con tecnologías modernas',
-                  'Soporte post-lanzamiento incluido'
-                ].map((benefit, index) => (
-                  <li key={index} className="flex items-center gap-3 text-gray-600">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Formulario */}
+        {/* Formulario central */}
+        <div className="max-w-2xl mx-auto">
           <div className="contact-form opacity-0 invisible">
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
+            <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
               {/* Mensaje de éxito */}
               {isSuccess && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                       ✓
                     </div>
                     <div>
@@ -338,14 +285,14 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                 </div>
 
                 {/* Selectores */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="form-element">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Servicio de interés
                     </label>
                     <select
                       {...register('service')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     >
                       <option value="">Seleccionar servicio</option>
                       {services.map((service) => (
@@ -362,7 +309,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     </label>
                     <select
                       {...register('budget')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     >
                       <option value="">Seleccionar presupuesto</option>
                       {budgets.map((budget) => (
@@ -379,7 +326,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     </label>
                     <select
                       {...register('timeline')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     >
                       <option value="">Seleccionar timeline</option>
                       {timelines.map((timeline) => (
@@ -403,7 +350,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                   </div>
                   <Textarea
                     {...register('message')}
-                    rows={6}
+                    rows={5}
                     placeholder="Cuéntanos sobre tu proyecto, objetivos, ideas específicas..."
                     error={errors.message?.message}
                     className="resize-none"
@@ -416,21 +363,16 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     type="submit"
                     variant="primary"
                     size="lg"
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-4 px-8 rounded-lg transition-all duration-200 transform hover:scale-105 focus:scale-105"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <div className="flex items-center justify-center gap-3">
-                        <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
                         Enviando mensaje...
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center gap-3">
-                        Enviar mensaje
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                        </svg>
-                      </div>
+                      'Enviar mensaje'
                     )}
                   </Button>
                 </div>
@@ -440,7 +382,35 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                   <a href="/privacy" className="text-blue-600 hover:underline">política de privacidad</a>.
                 </p>
               </form>
-            </Card>
+            </div>
+          </div>
+
+          {/* Información de contacto simple */}
+          <div className="contact-info mt-12 opacity-0 invisible">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">Información de Contacto</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📧</div>
+                  <p className="text-sm text-gray-600 mb-1">Email</p>
+                  <a href="mailto:hola@uziagency.com" className="text-blue-600 hover:underline text-sm">
+                    hola@uziagency.com
+                  </a>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📱</div>
+                  <p className="text-sm text-gray-600 mb-1">Teléfono</p>
+                  <a href="tel:+15551234567" className="text-blue-600 hover:underline text-sm">
+                    +1 (555) 123-4567
+                  </a>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">💼</div>
+                  <p className="text-sm text-gray-600 mb-1">Horario</p>
+                  <p className="text-gray-900 text-sm">Lun - Vie: 9:00 - 18:00</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
