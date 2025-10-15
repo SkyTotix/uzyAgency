@@ -88,14 +88,14 @@ export default function ContactSection() {
                   Nuestra Ubicación
                 </h2>
                 <div className="space-y-4 text-gray-700">
-                  <p className="flex items-start">
+                  <div className="flex items-start">
                     <span className="text-blue-600 mr-3 mt-1">🏢</span>
                     <div>
                       <strong>UziAgency</strong><br />
                       Av. Principal 123, Oficina 456<br />
                       Ciudad, País 12345
                     </div>
-                  </p>
+                  </div>
                 </div>
               </Card>
 
