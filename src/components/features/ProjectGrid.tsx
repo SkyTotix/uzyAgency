@@ -5,7 +5,6 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Card } from '@/components/ui';
-import { cn } from '@/lib/utils';
 import type { Project } from '@/lib/types/sanity';
 import Image from 'next/image';
 import Link from 'next/link';

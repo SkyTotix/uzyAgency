@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card } from '@/components/ui';
@@ -235,7 +236,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
 
         {/* CTA para ver todos los proyectos */}
         <div className="text-center">
-          <a
+          <Link
             href="/projects"
             className="showcase-cta inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/50 hover:scale-105 opacity-0 invisible"
           >
@@ -243,7 +244,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

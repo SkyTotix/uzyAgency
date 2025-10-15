@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Header, Footer } from '@/components/layout';
 import { getAllProjects, getProjectBySlug } from '@/lib/server/data/projectData';
-import type { Project } from '@/lib/types/sanity';
 
 interface ProjectPageProps {
   params: {
@@ -369,18 +368,18 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               Trabajemos juntos para crear tu próximo proyecto extraordinario.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/contact"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-lg text-lg font-semibold bg-white text-blue-600 hover:bg-gray-50 transition-colors duration-200 shadow-lg hover:shadow-xl"
               >
                 Iniciar Proyecto
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/projects"
                 className="inline-flex items-center justify-center px-8 py-4 rounded-lg text-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-blue-600 transition-all duration-200"
               >
                 Ver Más Proyectos
-              </a>
+              </Link>
             </div>
           </div>
         </section>
