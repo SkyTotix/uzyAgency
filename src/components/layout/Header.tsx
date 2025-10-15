@@ -26,30 +26,30 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-gray-900" aria-label="Ir a inicio">
+          {/* Logo - Satoshi (font-display) */}
+          <Link href="/" className="text-2xl font-display font-bold text-gray-900 tracking-tight" aria-label="Ir a inicio">
             Uzi
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Montserrat (font-sans) */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/projects" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/projects" prefetch={true} className="text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors tracking-wide">
               Proyectos
             </Link>
-            <Link href="/services" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/services" prefetch={true} className="text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors tracking-wide">
               Servicios
             </Link>
-            <Link href="/about" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/about" prefetch={true} className="text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors tracking-wide">
               Acerca
             </Link>
-            <Link href="/blog" prefetch={true} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/blog" prefetch={true} className="text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors tracking-wide">
               Blog
             </Link>
             
             {/* Search Button */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors group"
+              className="flex items-center space-x-2 px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors group tracking-wide"
               aria-label="Abrir búsqueda"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@ export default function Header() {
               </kbd>
             </button>
             
-            <Link href="/contact" className="px-6 py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors">
+            <Link href="/contact" className="px-6 py-2 bg-gray-900 text-white text-sm font-sans font-semibold hover:bg-gray-800 transition-colors tracking-wide">
               Contactar
             </Link>
           </nav>
@@ -78,26 +78,26 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Montserrat (font-sans) */}
         <div className={cn(
           "md:hidden transition-all duration-300 ease-in-out",
           isMenuOpen ? "max-h-80 opacity-100 pb-6" : "max-h-0 opacity-0 overflow-hidden"
         )}>
           <div className="py-4 space-y-1">
-            <Link href="/projects" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/projects" prefetch={true} className="block px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 tracking-wide">
               Proyectos
             </Link>
-            <Link href="/services" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/services" prefetch={true} className="block px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 tracking-wide">
               Servicios
             </Link>
-            <Link href="/about" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/about" prefetch={true} className="block px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 tracking-wide">
               Acerca
             </Link>
-            <Link href="/blog" prefetch={true} className="block px-3 py-2 text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/blog" prefetch={true} className="block px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 tracking-wide">
               Blog
             </Link>
             <div className="pt-4 px-3">
-              <Link href="/contact" className="block text-center py-2 bg-gray-900 text-white text-sm font-medium hover:bg-gray-800">
+              <Link href="/contact" className="block text-center py-2 bg-gray-900 text-white text-sm font-sans font-semibold hover:bg-gray-800 tracking-wide">
                 Contactar
               </Link>
             </div>
