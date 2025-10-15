@@ -11,16 +11,25 @@ const config: Config = {
     extend: {
       colors: {
         // Paleta de Rebranding - Estrategia Cromática 60-30-10
-        primary: '#0081af',        // BOLD BLUE - Color principal de marca
-        accent: '#00abe7',         // LIGHT BLUE - Color de acento (10%)
-        'background-light': '#f6f8ff', // SMOOTH WHITE - Fondo dominante (60%)
-        'text-primary': '#272d2d', // SMOOTH DARK - Texto principal (30%)
+        // 60% - Color Dominante (Fondos)
+        'smooth-white': '#f6f8ff',     // SMOOTH WHITE - Fondo dominante
+        
+        // 30% - Color Secundario (Texto)
+        'smooth-dark': '#272d2d',      // SMOOTH DARK - Texto principal
+        
+        // 10% - Colores de Acento (Interactivos)
+        'bold-blue': '#0081af',        // BOLD BLUE - Color principal de marca
+        'light-blue': '#00abe7',       // LIGHT BLUE - Color de acento
+        
+        // Alias para facilitar uso
+        primary: '#0081af',            // BOLD BLUE
+        accent: '#00abe7',             // LIGHT BLUE
         
         // Escalas de colores de marca
         brand: {
-          DEFAULT: '#0081af',      // BOLD BLUE
-          light: '#00abe7',        // LIGHT BLUE
-          dark: '#006289',         // BOLD BLUE oscuro
+          DEFAULT: '#0081af',          // BOLD BLUE
+          light: '#00abe7',            // LIGHT BLUE
+          dark: '#006289',             // BOLD BLUE oscuro
         },
         
         // Colores base de Tailwind (compatibilidad)

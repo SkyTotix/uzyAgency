@@ -24,7 +24,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="bg-smooth-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -36,22 +36,22 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="/" prefetch={true} className="text-gray-700 hover:text-primary font-medium transition-colors">
+            <Link href="/" prefetch={true} className="text-smooth-dark hover:text-bold-blue font-medium transition-colors">
               Inicio
             </Link>
-            <Link href="/services" prefetch={true} className="text-gray-500 hover:text-primary font-medium transition-colors">
+            <Link href="/services" prefetch={true} className="text-smooth-dark hover:text-bold-blue font-medium transition-colors">
               Servicios
             </Link>
-            <Link href="/projects" prefetch={true} className="text-gray-500 hover:text-primary font-medium transition-colors">
+            <Link href="/projects" prefetch={true} className="text-smooth-dark hover:text-bold-blue font-medium transition-colors">
               Portfolio
             </Link>
-            <Link href="/blog" prefetch={true} className="text-gray-500 hover:text-primary font-medium transition-colors">
+            <Link href="/blog" prefetch={true} className="text-smooth-dark hover:text-bold-blue font-medium transition-colors">
               Blog
             </Link>
-            <Link href="/about" prefetch={true} className="text-gray-500 hover:text-primary font-medium transition-colors">
+            <Link href="/about" prefetch={true} className="text-smooth-dark hover:text-bold-blue font-medium transition-colors">
               Nosotros
             </Link>
-            <Link href="/contact" prefetch={true} className="text-gray-500 hover:text-primary font-medium transition-colors">
+            <Link href="/contact" prefetch={true} className="text-smooth-dark hover:text-bold-blue font-medium transition-colors">
               Contacto
             </Link>
           </nav>
@@ -107,22 +107,22 @@ export default function Header() {
               <span className="font-medium">Buscar</span>
             </button>
 
-            <Link href="/" prefetch={true} className="block px-3 py-2 text-gray-700 hover:text-primary font-medium">
+            <Link href="/" prefetch={true} className="block px-3 py-2 text-smooth-dark hover:text-bold-blue font-medium">
               Inicio
             </Link>
-            <Link href="/services" prefetch={true} className="block px-3 py-2 text-gray-500 hover:text-primary font-medium">
+            <Link href="/services" prefetch={true} className="block px-3 py-2 text-smooth-dark hover:text-bold-blue font-medium">
               Servicios
             </Link>
-            <Link href="/projects" prefetch={true} className="block px-3 py-2 text-gray-500 hover:text-primary font-medium">
+            <Link href="/projects" prefetch={true} className="block px-3 py-2 text-smooth-dark hover:text-bold-blue font-medium">
               Portfolio
             </Link>
-            <Link href="/blog" prefetch={true} className="block px-3 py-2 text-gray-500 hover:text-primary font-medium">
+            <Link href="/blog" prefetch={true} className="block px-3 py-2 text-smooth-dark hover:text-bold-blue font-medium">
               Blog
             </Link>
-            <Link href="/about" prefetch={true} className="block px-3 py-2 text-gray-500 hover:text-primary font-medium">
+            <Link href="/about" prefetch={true} className="block px-3 py-2 text-smooth-dark hover:text-bold-blue font-medium">
               Nosotros
             </Link>
-            <Link href="/contact" prefetch={true} className="block px-3 py-2 text-gray-500 hover:text-primary font-medium">
+            <Link href="/contact" prefetch={true} className="block px-3 py-2 text-smooth-dark hover:text-bold-blue font-medium">
               Contacto
             </Link>
             <div className="px-3 py-2">
