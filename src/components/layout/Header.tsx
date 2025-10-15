@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Button from '@/components/ui/Button';
+import { Button, Logo } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import GlobalSearch from '@/components/features/GlobalSearch';
 
@@ -29,10 +29,8 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/">
-              <h1 className="font-display text-2xl font-black text-blue-600 cursor-pointer hover:text-blue-700 transition-colors">
-                Uzi Agency
-              </h1>
+            <Link href="/" className="flex items-center hover:opacity-80 transition-opacity" aria-label="Ir a inicio">
+              <Logo width={140} height={36} priority />
             </Link>
           </div>
 
