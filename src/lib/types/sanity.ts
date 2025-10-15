@@ -13,6 +13,14 @@ export interface SanityImage {
   asset: {
     _ref: string;
     _type: 'reference';
+    url?: string;
+    metadata?: {
+      dimensions: {
+        width: number;
+        height: number;
+        aspectRatio: number;
+      };
+    };
   };
   alt?: string;
   caption?: string;
