@@ -144,6 +144,48 @@ test.describe('Homepage', () => {
     await expect(viewport).toHaveAttribute('content', /width=device-width/);
   });
 
+  test('debe tener manifest.json accesible para PWA', async ({ page }) => {
+    // Verificar que el manifest está linkeado en el head
+    const manifestLink = page.locator('link[rel="manifest"]');
+    await expect(manifestLink).toHaveAttribute('href', '/manifest.json');
+
+    // Verificar que el manifest.json es accesible
+    const manifestResponse = await page.goto(`${page.url().split('/').slice(0, 3).join('/')}/manifest.json`);
+    expect(manifestResponse?.status()).toBe(200);
+
+    // Verificar que el contenido es JSON válido
+    const manifestContent = await manifestResponse?.json();
+    expect(manifestContent).toHaveProperty('name');
+    expect(manifestContent).toHaveProperty('short_name');
+    expect(manifestContent).toHaveProperty('start_url');
+    expect(manifestContent).toHaveProperty('display');
+    expect(manifestContent).toHaveProperty('theme_color');
+    expect(manifestContent).toHaveProperty('icons');
+    expect(Array.isArray(manifestContent.icons)).toBe(true);
+    expect(manifestContent.icons.length).toBeGreaterThan(0);
+
+    // Volver a la homepage
+    await page.goto('/');
+  });
+
+  test('debe tener meta tags PWA correctos', async ({ page }) => {
+    // Verificar theme-color
+    const themeColor = page.locator('meta[name="theme-color"]');
+    await expect(themeColor).toHaveAttribute('content', '#2563eb');
+
+    // Verificar apple-mobile-web-app-capable
+    const appleMobileCapable = page.locator('meta[name="apple-mobile-web-app-capable"]');
+    await expect(appleMobileCapable).toHaveAttribute('content', 'yes');
+
+    // Verificar apple-mobile-web-app-title
+    const appleTitle = page.locator('meta[name="apple-mobile-web-app-title"]');
+    await expect(appleTitle).toHaveAttribute('content', 'UziAgency');
+
+    // Verificar apple-touch-icon
+    const appleTouchIcon = page.locator('link[rel="apple-touch-icon"]').first();
+    await expect(appleTouchIcon).toHaveAttribute('href', /\/icons\//);
+  });
+
   test('debe cargar assets críticos', async ({ page }) => {
     // Verificar que la página está completamente cargada
     await page.waitForLoadState('domcontentloaded');
