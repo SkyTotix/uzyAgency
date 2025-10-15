@@ -114,7 +114,7 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
       className="py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden"
     >
       {/* Header de la sección (con Pin) */}
-      <div ref={headerRef} className="text-center mb-16 relative z-10">
+      <div ref={headerRef} className="text-center mb-16 relative z-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="team-title text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 opacity-0 invisible">
             Nuestro Equipo
@@ -132,7 +132,7 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
             <Card
               key={member._id}
               className={cn(
-                "team-card group relative overflow-hidden text-center z-20",
+                "team-card group relative overflow-hidden text-center z-10",
                 "hover:shadow-xl transition-all duration-300",
                 "opacity-0 invisible"
               )}
