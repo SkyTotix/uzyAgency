@@ -104,7 +104,7 @@ function ServiceCard({ service }: ServiceCardProps) {
           
           <Link 
             href={`/services/${service.slug.current}`}
-            className="inline-flex items-center justify-center w-full bg-brand-700 hover:bg-brand-800 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 group-hover:bg-brand-800 shadow-lg hover:shadow-xl border-2 border-brand-800"
+            className="inline-flex items-center justify-center w-full bg-brand-800 hover:bg-black text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 group-hover:bg-black shadow-2xl hover:shadow-2xl border-2 border-black"
           >
             Ver Detalles
             <svg 

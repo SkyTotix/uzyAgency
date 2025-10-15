@@ -41,7 +41,7 @@ export default function HeroSection() {
           Creamos experiencias digitales extraordinarias con animaciones profesionales
         </p>
         
-        <button className="hero-button font-sans bg-brand-700 hover:bg-brand-800 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 shadow-xl hover:shadow-2xl border-2 border-brand-800 opacity-0 invisible">
+        <button className="hero-button font-sans bg-brand-800 hover:bg-black text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 shadow-2xl hover:shadow-2xl border-2 border-black opacity-0 invisible">
           Descubre Más
         </button>
       </div>

@@ -247,10 +247,10 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     >
       <div 
         ref={modalRef}
-        className="w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden opacity-0"
+        className="w-full max-w-3xl bg-gray-900 rounded-2xl shadow-2xl overflow-hidden opacity-0 border-2 border-brand-800"
       >
         {/* Header con input de búsqueda */}
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border-b border-gray-700">
           <div className="flex items-center space-x-4">
             <div className="flex-1 relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
@@ -264,13 +264,13 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Buscar en blog, proyectos y servicios..."
-                className="w-full pl-12 pr-4 py-3 text-lg bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full pl-12 pr-4 py-3 text-lg bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all text-white placeholder-gray-400"
               />
             </div>
             
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
               aria-label="Cerrar búsqueda"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

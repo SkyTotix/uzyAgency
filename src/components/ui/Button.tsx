@@ -16,7 +16,7 @@ export default function Button({
   const baseClasses = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variantClasses = {
-    primary: "bg-brand-700 text-white hover:bg-brand-800 focus:ring-brand-500 shadow-lg hover:shadow-xl font-bold border-2 border-brand-800",
+    primary: "bg-brand-800 text-white hover:bg-brand-900 focus:ring-brand-500 shadow-2xl hover:shadow-2xl font-bold border-2 border-black",
     secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500",
     danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
   };
