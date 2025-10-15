@@ -20,17 +20,15 @@ const config: Config = {
           DEFAULT: '#00abe7', // SMOOTH BLUE - Color de acento (10%)
           hover: '#00c4ff',   // Hover state
         },
-        background: {
-          light: '#f8f8f8',   // SMOOTH WHITE - Fondo dominante (60%)
-          dark: '#1a1a1a',    // Fondo oscuro
-          card: '#ffffff',    // Fondo de cards
-        },
-        text: {
-          primary: '#0081af',  // BOLD BLUE - Texto de marca
-          secondary: '#374151', // Gris oscuro - Texto secundario (30%)
-          muted: '#6b7280',    // Gris medio - Texto terciario
-          light: '#f8f8f8',    // SMOOTH WHITE - Texto sobre fondos oscuros
-        },
+        // Colores de fondo
+        'bg-light': '#f8f8f8',   // SMOOTH WHITE - Fondo dominante (60%)
+        'bg-dark': '#1a1a1a',    // Fondo oscuro
+        'bg-card': '#ffffff',    // Fondo de cards
+        // Colores de texto
+        'brand': '#0081af',      // BOLD BLUE - Texto de marca
+        'content': '#374151',    // Gris oscuro - Texto secundario (30%)
+        'muted': '#6b7280',      // Gris medio - Texto terciario
+        'on-dark': '#f8f8f8',    // SMOOTH WHITE - Texto sobre fondos oscuros
         // Colores funcionales (mantener compatibilidad)
         blue: {
           50: '#eff6ff',
@@ -43,6 +41,18 @@ const config: Config = {
           700: '#006289',
           800: '#004d6d',
           900: '#003a52',
+        },
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
         },
       },
       fontFamily: {
