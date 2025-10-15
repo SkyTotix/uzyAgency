@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import GSAPProvider from "@/components/providers/GSAPProvider";
 import AnalyticsProvider from "@/components/providers/AnalyticsProvider";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
+import { montserrat, satoshi } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "UziAgency | High-Performance Digital Development",
@@ -98,7 +93,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover, user-scalable=yes" 
         />
       </head>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${montserrat.variable} ${satoshi.variable} font-sans antialiased`}>
         <GSAPProvider>
           <AnalyticsProvider>
             {children}
