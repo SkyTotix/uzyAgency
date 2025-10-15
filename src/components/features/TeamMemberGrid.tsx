@@ -132,7 +132,7 @@ export default function TeamMemberGrid({ members }: TeamMemberGridProps) {
             <Card
               key={member._id}
               className={cn(
-                "team-card group relative overflow-hidden text-center",
+                "team-card group relative overflow-hidden text-center z-20",
                 "hover:shadow-xl transition-all duration-300",
                 "opacity-0 invisible"
               )}
