@@ -1,9 +1,19 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Header, Footer } from '@/components/layout';
-import { BlogList } from '@/components/features';
+import { SkeletonLoader } from '@/components/ui';
 import { getAllBlogPosts, getTotalBlogPosts, getAllCategories } from '@/lib/server/data/blogData';
 import PaginationControls from '@/components/ui/PaginationControls';
 import BlogFilter from '@/components/features/BlogFilter';
+
+// Lazy loading de BlogList (componente pesado con animaciones GSAP stagger)
+const BlogList = dynamic(
+  () => import('@/components/features/BlogList'),
+  {
+    loading: () => <SkeletonLoader variant="blog-list" />,
+    ssr: true // Mantener SSR para SEO
+  }
+);
 
 // Metadata SEO para la página del blog
 export const metadata: Metadata = {

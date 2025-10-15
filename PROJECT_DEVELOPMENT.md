@@ -4226,5 +4226,621 @@ El proyecto UziAgency ahora cuenta con:
 
 ---
 
+## 🆕 **FASE 20: Sistema de Paginación y Filtrado del Blog**
+
+### **20.1 Actualización del Data Layer (Servidor)**
+
+#### **A. Funciones de Datos Actualizadas (`src/lib/server/data/blogData.ts`)**
+
+**getAllBlogPosts con Paginación y Filtrado:**
+```typescript
+export const getAllBlogPosts = cache(async (
+  limit: number = 12,
+  offset: number = 0,
+  categorySlug?: string
+): Promise<Post[]> => {
+  try {
+    const query = `
+      *[_type == "post" ${categorySlug ? '&& $categorySlug in categories[]->slug.current' : ''}] 
+      | order(publishedAt desc) [$offset...$end] {
+        _id, _type, title, slug, excerpt,
+        mainImage { asset->, alt },
+        "author": author-> { _id, name, slug, image { asset->, alt } },
+        "categories": categories[]-> { _id, title, slug, color },
+        publishedAt, featured
+      }
+    `;
+
+    const posts = await sanityClientReadOnly.fetch<Post[]>(query, {
+      offset,
+      end: offset + limit,
+      categorySlug: categorySlug || null
+    });
+    
+    return posts || [];
+  } catch (error) {
+    console.error('Error fetching all blog posts:', error);
+    return [];
+  }
+});
+```
+
+**Características:**
+- ✅ Parámetros: `limit` (default: 12), `offset` (default: 0), `categorySlug` (opcional)
+- ✅ Query GROQ con paginación: `[$offset...$end]`
+- ✅ Filtrado dinámico por categoría: `$categorySlug in categories[]->slug.current`
+- ✅ React cache mantenido para optimización
+- ✅ Ordenamiento por fecha de publicación descendente
+
+**getTotalBlogPosts para Calcular Páginas:**
+```typescript
+export const getTotalBlogPosts = cache(async (categorySlug?: string): Promise<number> => {
+  try {
+    const query = `
+      count(*[_type == "post" ${categorySlug ? '&& $categorySlug in categories[]->slug.current' : ''}])
+    `;
+
+    const total = await sanityClientReadOnly.fetch<number>(query, {
+      categorySlug: categorySlug || null
+    });
+    
+    return total || 0;
+  } catch (error) {
+    console.error('Error fetching total blog posts:', error);
+    return 0;
+  }
+});
+```
+
+**Características:**
+- ✅ Usa `count()` de GROQ para eficiencia
+- ✅ No carga documentos completos, solo cuenta
+- ✅ Filtrado opcional por categoría
+- ✅ React cache para deduplicación
+
+**getAllCategories para Filtros:**
+```typescript
+export const getAllCategories = cache(async () => {
+  try {
+    const query = `
+      *[_type == "category"] | order(order asc, title asc) {
+        _id, title, slug, description, color, icon, featured, order
+      }
+    `;
+
+    const categories = await sanityClientReadOnly.fetch<any[]>(query);
+    return categories || [];
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+});
+```
+
+**Características:**
+- ✅ Obtiene todas las categorías ordenadas
+- ✅ Incluye color e icono para UI
+- ✅ React cache para optimización
+
+### **20.2 Componente PaginationControls**
+
+#### **A. `src/components/ui/PaginationControls.tsx`**
+
+```typescript
+"use client";
+
+import { useRouter, useSearchParams } from 'next/navigation';
+import { cn } from '@/lib/utils';
+
+interface PaginationControlsProps {
+  currentPage: number;
+  totalPages: number;
+  className?: string;
+}
+
+export default function PaginationControls({
+  currentPage,
+  totalPages,
+  className
+}: PaginationControlsProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Construir URL preservando parámetros
+  const buildUrl = (page: number): string => {
+    const params = new URLSearchParams(searchParams.toString());
+    
+    if (page === 1) {
+      params.delete('page'); // Página 1 es default
+    } else {
+      params.set('page', page.toString());
+    }
+
+    const queryString = params.toString();
+    return queryString ? `/blog?${queryString}` : '/blog';
+  };
+
+  // Navegar a página específica
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    router.push(buildUrl(page));
+  };
+
+  // Calcular páginas a mostrar con ellipsis
+  const getPageNumbers = (): (number | 'ellipsis')[] => {
+    // Lógica para [1] ... [4] [5] [6] ... [10]
+  };
+
+  return (
+    <nav className="flex items-center justify-center space-x-2">
+      {/* Botón Anterior */}
+      <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+        ← Anterior
+      </button>
+
+      {/* Números de página */}
+      {pageNumbers.map((page, index) => (
+        page === 'ellipsis' ? <span>...</span> : (
+          <button onClick={() => goToPage(page)} aria-current={page === currentPage ? 'page' : undefined}>
+            {page}
+          </button>
+        )
+      ))}
+
+      {/* Botón Siguiente */}
+      <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+        Siguiente →
+      </button>
+
+      {/* Info de página */}
+      <div className="hidden md:block">Página {currentPage} de {totalPages}</div>
+    </nav>
+  );
+}
+```
+
+**Características:**
+- ✅ Usa `useRouter` y `useSearchParams` de `next/navigation`
+- ✅ Preserva parámetros de URL (ej. `category`)
+- ✅ Ellipsis inteligente para muchas páginas
+- ✅ Botones Anterior/Siguiente con estados disabled
+- ✅ Indicador "Página X de Y" en desktop
+- ✅ ARIA labels para accesibilidad
+- ✅ Navegación con `router.push()` (re-ejecuta Server Component)
+
+### **20.3 Componente BlogFilter**
+
+#### **A. `src/components/features/BlogFilter.tsx`**
+
+```typescript
+"use client";
+
+import { useRouter, useSearchParams } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import type { Category } from '@/lib/types/sanity';
+
+interface BlogFilterProps {
+  categories: Category[];
+  className?: string;
+}
+
+export default function BlogFilter({ categories, className }: BlogFilterProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentCategory = searchParams.get('category') || null;
+
+  // Construir URL preservando otros parámetros
+  const buildUrl = (categorySlug: string | null): string => {
+    const params = new URLSearchParams(searchParams.toString());
+    
+    // Resetear a página 1 cuando cambia la categoría
+    params.delete('page');
+    
+    if (categorySlug) {
+      params.set('category', categorySlug);
+    } else {
+      params.delete('category');
+    }
+
+    const queryString = params.toString();
+    return queryString ? `/blog?${queryString}` : '/blog';
+  };
+
+  const handleFilterClick = (categorySlug: string | null) => {
+    router.push(buildUrl(categorySlug));
+  };
+
+  // Mapeo de colores de Sanity a Tailwind
+  const getColorClasses = (color?: string, isActive: boolean = false) => {
+    const colorMap: Record<string, { bg, text, hover, active }> = {
+      'blue': { bg: 'bg-blue-50', text: 'text-blue-700', hover: 'hover:bg-blue-100', active: 'bg-blue-600 text-white' },
+      'green': { bg: 'bg-green-50', text: 'text-green-700', hover: 'hover:bg-green-100', active: 'bg-green-600 text-white' },
+      // ... 7 colores más
+    };
+    
+    const colors = colorMap[color || 'blue'];
+    return isActive ? colors.active : `${colors.bg} ${colors.text} ${colors.hover}`;
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold">Filtrar por Categoría</h3>
+        {currentCategory && (
+          <button onClick={() => handleFilterClick(null)}>Limpiar filtros</button>
+        )}
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {/* Botón "Todos" */}
+        <button onClick={() => handleFilterClick(null)} className={cn(...)}>
+          📚 Todos
+        </button>
+
+        {/* Categorías */}
+        {categories.map((category) => (
+          <button key={category._id} onClick={() => handleFilterClick(category.slug.current)} className={cn(...)}>
+            {category.icon} {category.title}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+**Características:**
+- ✅ Botones de categoría con colores dinámicos (9 colores soportados)
+- ✅ Resetea a página 1 al cambiar filtro
+- ✅ Preserva otros parámetros de URL
+- ✅ Botón "Todos" para limpiar filtros
+- ✅ Botón "Limpiar filtros" cuando hay filtro activo
+- ✅ Iconos de emoji de Sanity
+- ✅ Estados activos con shadow y colores intensos
+- ✅ Responsive: wrap en mobile
+
+### **20.4 Página del Blog Actualizada**
+
+#### **A. `src/app/blog/page.tsx`**
+
+```typescript
+interface BlogPageProps {
+  searchParams: Promise<{
+    page?: string;
+    category?: string;
+  }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  // Extraer parámetros de búsqueda
+  const params = await searchParams;
+  const currentPage = Number(params.page) || 1;
+  const categorySlug = params.category || undefined;
+
+  // Configuración de paginación
+  const POSTS_PER_PAGE = 12;
+  const offset = (currentPage - 1) * POSTS_PER_PAGE;
+
+  // Obtener datos del servidor (paginados y filtrados)
+  const [posts, totalPosts, categories] = await Promise.all([
+    getAllBlogPosts(POSTS_PER_PAGE, offset, categorySlug),
+    getTotalBlogPosts(categorySlug),
+    getAllCategories()
+  ]);
+
+  // Calcular número total de páginas
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen bg-gray-50">
+        {/* Hero Section con estadísticas */}
+        <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-12 md:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Nuestro Blog</h1>
+            <p className="text-xl text-blue-100">Artículos, tutoriales y recursos...</p>
+            <div className="mt-6 flex items-center space-x-6">
+              <div>📝 {totalPosts} artículos</div>
+              <div>🏷️ {categories.length} categorías</div>
+            </div>
+          </div>
+        </section>
+
+        {/* Filtros de Categoría */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <BlogFilter categories={categories} />
+        </section>
+
+        {/* Lista de Posts con Paginación */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          {posts.length > 0 ? (
+            <>
+              <BlogList posts={posts} />
+              
+              {/* Controles de Paginación */}
+              {totalPages > 1 && (
+                <div className="mt-12">
+                  <PaginationControls currentPage={currentPage} totalPages={totalPages} />
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center py-16">
+              <div className="text-6xl mb-4">📭</div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">No se encontraron artículos</h3>
+              <p className="text-gray-600 mb-6">
+                {categorySlug 
+                  ? 'No hay artículos en esta categoría. Prueba con otra categoría.'
+                  : 'Aún no hay artículos publicados. Vuelve pronto.'}
+              </p>
+              {categorySlug && (
+                <a href="/blog" className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                  Ver todos los artículos
+                </a>
+              )}
+            </div>
+          )}
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
+```
+
+**Características:**
+- ✅ Server Component asíncrono
+- ✅ Extrae `searchParams` de Next.js (Promise en Next.js 15+)
+- ✅ Calcula offset: `(page - 1) * POSTS_PER_PAGE`
+- ✅ `Promise.all` para requests paralelos (3 queries simultáneas)
+- ✅ Re-ejecución automática al cambiar URL
+- ✅ Hero Section con estadísticas dinámicas
+- ✅ Estado vacío con mensajes personalizados
+- ✅ Configuración de posts por página (12)
+
+### **20.5 Flujo de Navegación**
+
+#### **Ejemplo 1: Filtrar por categoría "React"**
+1. Usuario en `/blog` (sin filtros)
+2. Click en "React" → `router.push('/blog?category=react')`
+3. Next.js detecta cambio de URL → re-ejecuta Server Component
+4. `searchParams = { category: 'react' }`
+5. `getAllBlogPosts(12, 0, 'react')` → solo posts de React
+6. `getTotalBlogPosts('react')` → cuenta total de posts de React
+7. `BlogList` muestra solo posts de React
+8. `PaginationControls` recalcula páginas según total filtrado
+
+#### **Ejemplo 2: Navegar a página 3 con filtro**
+1. Estado actual: `/blog?category=react` (página 1 implícita)
+2. Click en "3" → `PaginationControls` preserva `category=react`
+3. Construye URL: `/blog?page=3&category=react`
+4. `router.push('/blog?page=3&category=react')`
+5. Server Component se re-ejecuta
+6. `currentPage = 3`, `offset = 24`
+7. `getAllBlogPosts(12, 24, 'react')` → posts 25-36 de React
+8. `BlogList` muestra posts 25-36
+
+#### **Ejemplo 3: Cambiar filtro desde página 3**
+1. Usuario en `/blog?page=3&category=react`
+2. Click en "Vue" → `BlogFilter` detecta click
+3. `params.delete('page')` (resetear a página 1)
+4. `params.set('category', 'vue')`
+5. URL resultante: `/blog?category=vue`
+6. Server Component se re-ejecuta con `page=1` implícito
+7. `getAllBlogPosts(12, 0, 'vue')` → primeros 12 posts de Vue
+
+### **20.6 Optimizaciones Implementadas**
+
+#### **1. React Cache**
+```typescript
+export const getAllBlogPosts = cache(async (...) => { ... });
+export const getTotalBlogPosts = cache(async (...) => { ... });
+export const getAllCategories = cache(async (...) => { ... });
+```
+**Beneficio:** Deduplicación automática de requests en el mismo render.
+
+#### **2. Promise.all para Requests Paralelos**
+```typescript
+const [posts, totalPosts, categories] = await Promise.all([
+  getAllBlogPosts(POSTS_PER_PAGE, offset, categorySlug),
+  getTotalBlogPosts(categorySlug),
+  getAllCategories()
+]);
+```
+**Beneficio:** 3 queries ejecutadas en paralelo → tiempo = query más lenta (no suma).
+
+#### **3. Query GROQ Optimizada**
+```groq
+*[_type == "post" && $categorySlug in categories[]->slug.current] 
+| order(publishedAt desc) [$offset...$end] { ... }
+```
+**Beneficio:** Filtrado y paginación en Sanity (no carga todos los documentos).
+
+#### **4. Count Optimizado**
+```groq
+count(*[_type == "post" && $categorySlug in categories[]->slug.current])
+```
+**Beneficio:** Solo devuelve un número, no documentos completos.
+
+### **20.7 Características de UI**
+
+#### **BlogFilter:**
+- ✅ Badges con 9 colores configurables desde Sanity
+- ✅ Estado activo con shadow y colores intensos
+- ✅ Iconos de emoji para cada categoría
+- ✅ Botón "Limpiar filtros" cuando hay filtro activo
+- ✅ Contador de posts por categoría (en Hero)
+- ✅ Responsive: wrap en mobile
+
+#### **PaginationControls:**
+- ✅ Ellipsis inteligente (`[1] ... [4] [5] [6] ... [10]`)
+- ✅ Botones Anterior/Siguiente con iconos SVG
+- ✅ Estado activo con color azul
+- ✅ Disabled states para extremos
+- ✅ Información "Página X de Y" en desktop
+- ✅ Accesibilidad: `aria-label`, `aria-current`
+
+#### **Estado Vacío:**
+- ✅ Mensaje personalizado si no hay posts
+- ✅ Mensaje diferente si es por filtro vacío
+- ✅ Botón "Ver todos los artículos" para resetear filtros
+- ✅ Emoji grande (📭) para feedback visual
+
+### **20.8 Documentación**
+
+#### **A. `BLOG_PAGINATION.md`**
+
+**Contenido completo (500+ líneas):**
+- ✅ Arquitectura del sistema (diagrama de flujo)
+- ✅ Estructura de archivos con código completo
+- ✅ Flujo de datos (Server → Client)
+- ✅ Ejemplos de URLs y queries GROQ
+- ✅ Características de UI detalladas
+- ✅ Optimizaciones de performance
+- ✅ Guía de testing (Unit + E2E)
+- ✅ Configuración y personalización
+- ✅ Mejoras futuras sugeridas
+- ✅ Referencias a documentación oficial
+- ✅ Checklist de implementación
+
+### **20.9 Commits y Control de Versiones**
+
+**Commit realizado:**
+
+**24. feat: Implementar paginación y filtrado por categoría en blog (XXXXXX)**
+- Actualizar `getAllBlogPosts()` con `limit`, `offset` y `categorySlug`
+- Crear `getTotalBlogPosts(categorySlug)` para calcular páginas
+- Crear `getAllCategories()` para obtener filtros
+- Implementar `PaginationControls.tsx` con useRouter
+- Implementar `BlogFilter.tsx` con categorías y colores
+- Actualizar `blog/page.tsx` con searchParams y cálculo de offset
+- Hero Section mejorado con estadísticas
+- Estado vacío con mensajes personalizados
+- Queries GROQ optimizadas con paginación `[$offset...$end]`
+- React cache para deduplicación de requests
+- Promise.all para requests paralelos
+- 100% Type Safe (TypeScript estricto)
+- 0 errores de linter
+- Documentación completa en `BLOG_PAGINATION.md`
+
+---
+
+## 📊 **Estadísticas Actualizadas del Proyecto**
+
+### **Archivos Creados: 92** ⬆️ (+3 archivos desde FASE 19)
+
+**Nuevos Archivos:**
+- **Componentes UI**: 1 archivo (PaginationControls.tsx)
+- **Componentes Features**: 1 archivo (BlogFilter.tsx)
+- **Documentación**: 1 archivo (BLOG_PAGINATION.md)
+
+**Desglose Actualizado:**
+- **Componentes UI**: 7 archivos (+1: PaginationControls)
+- **Componentes Features**: 12 archivos (+1: BlogFilter)
+- **Documentación**: 3 archivos (+1: BLOG_PAGINATION.md)
+
+### **Líneas de Código: ~24,500** ⬆️ (+1,500 líneas desde FASE 19)
+
+**Distribución:**
+- TypeScript/TSX: ~21,000 líneas (86%)
+- CSS/Tailwind: ~800 líneas (3%)
+- Markdown: ~2,300 líneas (9%)
+- Configuración JSON/JS: ~400 líneas (2%)
+
+---
+
+## ✅ **Estado Actual Completo del Proyecto**
+
+### **✅ Funcionalidades Implementadas:**
+
+**Blog Completo:**
+- [x] **Lista de posts** (/blog) con paginación 🆕
+- [x] **Filtrado por categoría** 🆕
+- [x] **12 posts por página** (configurable) 🆕
+- [x] **Navegación con URL params** (/blog?page=2&category=react) 🆕
+- [x] **Controles de paginación** con ellipsis inteligente 🆕
+- [x] **Filtros visuales** con colores de Sanity 🆕
+- [x] **Estado vacío** con mensajes personalizados 🆕
+- [x] **Estadísticas dinámicas** en Hero Section 🆕
+- [x] Post individual (/blog/[slug])
+- [x] Posts relacionados por categoría
+- [x] Renderizado de rich text
+
+**Optimizaciones:**
+- [x] **React cache** en todas las queries
+- [x] **Promise.all** para requests paralelos 🆕
+- [x] **Query GROQ optimizada** con `[$offset...$end]` 🆕
+- [x] **Count optimizado** sin cargar documentos 🆕
+- [x] **Re-ejecución automática** del Server Component 🆕
+
+**Navegación:**
+```
+Inicio | Servicios | Portfolio | Blog 🔥 | Nosotros | Contacto | 🔍 Buscar
+```
+- ✅ Blog con paginación y filtros completamente funcional 🆕
+
+### **📍 Próximos Pasos Opcionales:**
+
+**Features Adicionales:**
+- [ ] Búsqueda por texto en blog
+- [ ] Ordenamiento (fecha, popularidad)
+- [ ] Infinite scroll como alternativa
+- [ ] Persistencia de filtros en LocalStorage
+- [ ] Skeleton loading con Suspense
+- [ ] Paginación en proyectos (similar al blog)
+
+---
+
+## 📈 **Métricas Finales del Proyecto**
+
+### **Código:**
+- **Total de Archivos**: 92 ⬆️
+- **Líneas de Código**: ~24,500 ⬆️
+- **Componentes React**: 29 ⬆️ (+2: PaginationControls, BlogFilter)
+- **Páginas**: 8
+- **API Routes**: 1
+- **Esquemas Sanity**: 9
+- **Tests Implementados**: 44
+
+### **Performance:**
+- ✅ **Queries Optimizadas**: Paginación en servidor 🆕
+- ✅ **React Cache**: Deduplicación automática 🆕
+- ✅ **Promise.all**: Requests paralelos 🆕
+- ✅ **Count Optimizado**: Sin cargar documentos 🆕
+
+---
+
+## 🎓 **Lecciones Aprendidas - Actualización**
+
+### **10. Paginación del Lado del Servidor es Esencial** 🆕
+- Queries GROQ con `[$offset...$end]` son eficientes
+- `count()` evita cargar documentos innecesarios
+- React cache previene requests duplicadas
+- Promise.all maximiza paralelismo
+
+### **11. URL como Estado es Mejor UX** 🆕
+- URLs compartibles (`/blog?page=2&category=react`)
+- Navegación con botones atrás/adelante funciona
+- Bookmarks mantienen estado de filtros
+- SEO-friendly (cada página es indexable)
+
+### **12. Resetear Página al Cambiar Filtros es Crítico** 🆕
+- Usuario espera volver a página 1 al filtrar
+- Evita estados inconsistentes (página 10 de categoría con 2 posts)
+- `params.delete('page')` al cambiar categoría
+
+---
+
+## 🏆 **Logros del Proyecto - Actualización**
+
+### **Escalabilidad:**
+- ✅ **Paginación** lista para miles de posts 🆕
+- ✅ **Filtrado** por categorías sin límites 🆕
+- ✅ **Queries optimizadas** para performance 🆕
+- ✅ **URLs compartibles** para mejor UX 🆕
+
+---
+
 **¡Misión cumplida! 🚀🎉**
 

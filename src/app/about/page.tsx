@@ -1,8 +1,19 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Header, Footer } from '@/components/layout';
-import { TeamMemberGrid, TestimonialCarousel } from '@/components/features';
+import { TeamMemberGrid } from '@/components/features';
+import { SkeletonLoader } from '@/components/ui';
 import { getAllTeamMembers } from '@/lib/server/data/teamData';
 import { getAllTestimonials } from '@/lib/server/data/testimonialData';
+
+// Lazy loading de TestimonialCarousel (componente pesado con animaciones)
+const TestimonialCarousel = dynamic(
+  () => import('@/components/features/TestimonialCarousel'),
+  {
+    loading: () => <SkeletonLoader variant="testimonial" />,
+    ssr: true // Mantener SSR para SEO
+  }
+);
 
 // Metadata SEO para la página About
 export const metadata: Metadata = {

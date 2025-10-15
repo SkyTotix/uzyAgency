@@ -1,7 +1,17 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Header, Footer } from '@/components/layout';
-import { ProjectGrid } from '@/components/features';
+import { SkeletonLoader } from '@/components/ui';
 import { getAllProjects, getProjectsStats } from '@/lib/server/data/projectData';
+
+// Lazy loading de ProjectGrid (componente pesado con animaciones GSAP y 3D)
+const ProjectGrid = dynamic(
+  () => import('@/components/features/ProjectGrid'),
+  {
+    loading: () => <SkeletonLoader variant="project-grid" />,
+    ssr: true // Mantener SSR para SEO y performance
+  }
+);
 
 export const metadata: Metadata = {
   title: 'Portfolio | UziAgency - Proyectos de Desarrollo Web y Diseño',
