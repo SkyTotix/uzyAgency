@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { sanityUtils } from '@/lib/sanity';
 import { sanityClientReadOnly } from '@/lib/sanity';
 
@@ -277,18 +278,18 @@ export default function DebugBlogPage() {
 
         {/* Enlaces de navegación */}
         <div className="text-center">
-          <a
+          <Link
             href="/blog"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors mr-4"
           >
             Ver Blog
-          </a>
-          <a
+          </Link>
+          <Link
             href="/"
             className="inline-block bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
           >
             ← Volver al Inicio
-          </a>
+          </Link>
         </div>
       </div>
     </div>

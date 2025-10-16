@@ -64,7 +64,7 @@ export const sanityUtils = {
     }
 
     // Si el asset tiene una URL directa, usarla como base
-    const asset = image.asset as any;
+    const asset = image.asset as { url?: string; _ref?: string };
     if (asset.url) {
       console.log('Using direct asset URL:', asset.url);
       let url = asset.url;

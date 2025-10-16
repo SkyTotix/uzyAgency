@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
-import { Button, Card, Input, Textarea } from '@/components/ui';
+import { Button, Input, Textarea } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { processContactForm } from '@/lib/server/contact';
 
@@ -222,33 +222,6 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
     }
   ];
 
-  // Opciones para los selectores
-  const services = [
-    'Desarrollo Web',
-    'Diseño UI/UX',
-    'Animaciones GSAP',
-    'Consultoría Técnica',
-    'E-commerce',
-    'Aplicaciones Móviles',
-    'Otro'
-  ];
-
-  const budgets = [
-    'Menos de $5,000 USD',
-    '$5,000 - $10,000 USD',
-    '$10,000 - $25,000 USD',
-    '$25,000 - $50,000 USD',
-    'Más de $50,000 USD',
-    'Por discutir'
-  ];
-
-  const timelines = [
-    'Urgente (1-2 semanas)',
-    'Rápido (1 mes)',
-    'Normal (2-3 meses)',
-    'Flexible (3+ meses)',
-    'Por definir'
-  ];
 
   return (
     <section ref={sectionRef} className={cn("py-20 bg-gray-50", className)}>
