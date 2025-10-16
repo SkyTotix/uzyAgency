@@ -3,68 +3,83 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
+import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
 import Link from 'next/link';
 
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
+  
+  // Efectos de parallax optimizados para performance
+  const contentParallaxRef = useParallaxEffect<HTMLDivElement>();
+  const buttonsParallaxRef = useParallaxEffect<HTMLDivElement>();
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 80%",
-        toggleActions: "play none none none"
-      }
-    });
-
-    // Animación sutil del título
-    tl.fromTo(".cta-title",
+    // Optimización: Usar scrub en lugar de timeline para mejor performance
+    gsap.fromTo(".cta-title",
       { 
         opacity: 0,
-        y: 40
+        y: 30,
+        scale: 0.98
       },
       {
-        autoAlpha: 1,
+        opacity: 1,
         y: 0,
-        duration: 0.8,
-        ease: "power2.out"
+        scale: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          end: "top 60%",
+          scrub: 0.8, // Suavizado optimizado
+          invalidateOnRefresh: true
+        }
       }
-    )
-    
-    // Subtítulo con animación simple
-    .fromTo(".cta-subtitle",
+    );
+
+    gsap.fromTo(".cta-subtitle",
       { 
         opacity: 0,
         y: 20
       },
       {
-        autoAlpha: 1,
+        opacity: 1,
         y: 0,
-        duration: 0.6,
-        ease: "power2.out"
-      },
-      "-=0.4"
-    )
-    
-    // Botones con animación sutil
-    .fromTo(".cta-btn",
-      { 
-        opacity: 0,
-        y: 30
-      },
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power2.out"
-      },
-      "-=0.2"
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "top 50%",
+          scrub: 0.6,
+          invalidateOnRefresh: true
+        }
+      }
     );
 
-    // Hover effects sutiles
+    gsap.fromTo(".cta-btn",
+      { 
+        opacity: 0,
+        y: 15
+      },
+      {
+        opacity: 1,
+        y: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          end: "top 40%",
+          scrub: 0.5,
+          invalidateOnRefresh: true
+        }
+      }
+    );
+
+    // Hover effects optimizados con will-change
     const buttons = document.querySelectorAll('.cta-btn');
     buttons.forEach(button => {
+      // Aplicar will-change para mejor performance
+      (button as HTMLElement).style.willChange = 'transform';
+      
       button.addEventListener('mouseenter', () => {
         gsap.to(button, {
           scale: 1.02,
@@ -98,7 +113,12 @@ export default function CTASection() {
              style={{ animation: 'float 8s ease-in-out infinite' }} />
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+      <div 
+        ref={contentParallaxRef}
+        data-speed="0.95" 
+        data-lag="0.2"
+        className="max-w-4xl mx-auto px-4 text-center relative z-10"
+      >
         <h2 className="cta-title font-display text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight opacity-0 invisible">
           ¿Tienes un proyecto
           <br />
@@ -109,7 +129,12 @@ export default function CTASection() {
           Trabajemos juntos para crear algo extraordinario
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div 
+          ref={buttonsParallaxRef}
+          data-speed="1.05" 
+          data-lag="0.3"
+          className="flex flex-col sm:flex-row gap-4 justify-center"
+        >
           <Link
             href="/contact"
             className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-sans font-semibold rounded-none hover:bg-gray-100 transition-colors tracking-wide opacity-0 invisible"

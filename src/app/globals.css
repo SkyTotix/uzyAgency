@@ -38,6 +38,28 @@
     text-wrap: balance;
   }
   
+  /* Optimizaciones de performance para ScrollSmoother */
+  [data-speed], [data-lag] {
+    will-change: transform;
+    transform: translateZ(0); /* Force hardware acceleration */
+  }
+  
+  /* Optimización para glassmorphism */
+  .backdrop-blur-md {
+    will-change: backdrop-filter;
+  }
+  
+  /* Optimización para animaciones GSAP */
+  .gsap-animate {
+    will-change: transform, opacity;
+  }
+  
+  /* Reducir repaints en hover */
+  .hover-optimized {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
   /* Animaciones para elementos decorativos */
   .animate-blob {
     animation: blob 7s infinite;

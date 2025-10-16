@@ -19,16 +19,30 @@ export default function ScrollSmootherProvider({ children }: ScrollSmootherProvi
     if (typeof window !== 'undefined' && 'ScrollSmoother' in gsap) {
       const ScrollSmoother = (gsap as any).ScrollSmoother;
       
-      // Crear ScrollSmoother con configuración optimizada según documentación oficial
+      // Crear ScrollSmoother con configuración optimizada para performance
       const smoother = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
         content: "#smooth-content",
-        smooth: 1.2, // Suavidad del scroll (más bajo = más natural)
+        smooth: 1.0, // Suavidad más natural (reducido de 1.2)
         effects: true, // Habilitar data-speed y data-lag
-        smoothTouch: 0.1, // Scroll suave en dispositivos táctiles
+        smoothTouch: 0.05, // Scroll más suave en móviles (reducido de 0.1)
         normalizeScroll: true, // Normalizar scroll entre navegadores
         ignoreMobileResize: true, // Ignorar cambios de tamaño en móviles
         preventDefault: true, // Prevenir scroll default
+        onUpdate: (self: any) => {
+          // Optimización: Solo actualizar elementos visibles
+          const elements = document.querySelectorAll('[data-speed], [data-lag]');
+          elements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const element = el as HTMLElement;
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              // Solo procesar elementos en viewport
+              element.style.willChange = 'transform';
+            } else {
+              element.style.willChange = 'auto';
+            }
+          });
+        }
       });
 
       // Refrescar ScrollSmoother cuando el contenido cambie
