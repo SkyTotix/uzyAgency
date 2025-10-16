@@ -5,14 +5,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 // Registrar plugins de GSAP
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-// SplitText es un plugin premium - verificar si está disponible
-let SplitText: any = null;
-if (typeof window !== 'undefined' && 'SplitText' in gsap) {
-  SplitText = gsap.SplitText;
-  gsap.registerPlugin(SplitText);
-} else {
-  console.warn('SplitText no está disponible. Es un plugin premium de GSAP.');
-}
+// SplitText es un plugin premium - usando alternativa gratuita personalizada
 
 // Configuración global de GSAP
 gsap.config({
@@ -20,4 +13,4 @@ gsap.config({
 });
 
 // Exportar instancia configurada de GSAP
-export { gsap, ScrollTrigger, MotionPathPlugin, SplitText };
+export { gsap, ScrollTrigger, MotionPathPlugin };

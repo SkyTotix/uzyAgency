@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
-import { useSplitTextFadeIn, useSplitTextSlideUp } from '@/lib/hooks/useSplitText';
+import { useTextFadeIn, useTextSlideUp } from '@/lib/hooks/useTextAnimations';
 import Link from 'next/link';
 import BackgroundManager from './BackgroundManager';
 import type { Background } from '@/lib/types/sanity';
@@ -22,15 +22,15 @@ export default function HeroSection({ background }: HeroSectionProps) {
   const subtitleParallaxRef = useParallaxEffect<HTMLParagraphElement>();
   const statsParallaxRef = useParallaxEffect<HTMLDivElement>();
   
-  // SplitText para animaciones de texto profesionales
-  const titleSplitRef = useSplitTextFadeIn({
+  // Animaciones de texto profesionales (alternativa gratuita a SplitText)
+  const titleSplitRef = useTextFadeIn({
     type: 'chars',
     stagger: 0.05,
     duration: 1.2,
     delay: 0.5
   });
   
-  const subtitleSplitRef = useSplitTextSlideUp({
+  const subtitleSplitRef = useTextSlideUp({
     type: 'words',
     stagger: 0.1,
     duration: 0.8,
