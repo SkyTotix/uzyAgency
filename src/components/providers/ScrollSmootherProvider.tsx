@@ -19,16 +19,20 @@ export default function ScrollSmootherProvider({ children }: ScrollSmootherProvi
     if (typeof window !== 'undefined' && 'ScrollSmoother' in gsap) {
       const ScrollSmoother = (gsap as any).ScrollSmoother;
       
-      // Crear ScrollSmoother
+      // Crear ScrollSmoother con configuración optimizada según documentación oficial
       const smoother = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
         content: "#smooth-content",
-        smooth: 1.5, // Velocidad del scroll suave (1 = normal, 2 = más lento)
-        effects: true, // Habilitar efectos de parallax
+        smooth: 1.2, // Suavidad del scroll (más bajo = más natural)
+        effects: true, // Habilitar data-speed y data-lag
         smoothTouch: 0.1, // Scroll suave en dispositivos táctiles
         normalizeScroll: true, // Normalizar scroll entre navegadores
         ignoreMobileResize: true, // Ignorar cambios de tamaño en móviles
+        preventDefault: true, // Prevenir scroll default
       });
+
+      // Refrescar ScrollSmoother cuando el contenido cambie
+      ScrollTrigger.refresh();
 
       // Cleanup
       return () => {

@@ -212,7 +212,12 @@ export default function HeroSection({ background }: HeroSectionProps) {
         </div>
 
         {/* Title con caracteres separados - Satoshi (font-display) con parallax */}
-        <h1 ref={titleParallaxRef} className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight tracking-tight">
+        <h1 
+          ref={titleParallaxRef} 
+          data-speed="0.8" 
+          data-lag="0.2"
+          className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight tracking-tight"
+        >
           <div className="mb-2" style={{ perspective: '1000px' }}>
             <span className="char inline-block opacity-0 invisible">U</span>
             <span className="char inline-block opacity-0 invisible">Z</span>
@@ -234,7 +239,12 @@ export default function HeroSection({ background }: HeroSectionProps) {
         </div>
 
         {/* Subtitle - Montserrat (font-sans) con parallax */}
-        <p ref={subtitleParallaxRef} className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal opacity-0 invisible">
+        <p 
+          ref={subtitleParallaxRef} 
+          data-speed="0.9" 
+          data-lag="0.3"
+          className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal opacity-0 invisible"
+        >
           Creamos experiencias web limpias, funcionales y memorables. 
           Menos ruido, más impacto.
         </p>
@@ -260,7 +270,12 @@ export default function HeroSection({ background }: HeroSectionProps) {
         </div>
 
                 {/* Stats con contadores animados - Satoshi para números, Montserrat para labels con parallax */}
-                <div ref={statsParallaxRef} className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+                <div 
+                  ref={statsParallaxRef} 
+                  data-speed="1.1" 
+                  data-lag="0.4"
+                  className="grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+                >
                   <div className="hero-stats text-center opacity-0 invisible bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-xl">
                     <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
                       <span className="counter-value" data-target="50">0</span>

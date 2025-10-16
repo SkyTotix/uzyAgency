@@ -187,7 +187,12 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header de la sección con parallax */}
-        <div ref={headerParallaxRef} className="text-center mb-16">
+        <div 
+          ref={headerParallaxRef} 
+          data-speed="0.9" 
+          data-lag="0.25"
+          className="text-center mb-16"
+        >
           <h2 className="showcase-title font-display text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight opacity-0 invisible">
             Proyectos Destacados
           </h2>
@@ -197,7 +202,12 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
         </div>
 
         {/* Grid de proyectos con parallax */}
-        <div ref={projectsParallaxRef} className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div 
+          ref={projectsParallaxRef} 
+          data-speed="1.1" 
+          data-lag="0.35"
+          className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+        >
           {projects.map((project) => (
             <Card
               key={project._id}

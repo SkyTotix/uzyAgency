@@ -145,7 +145,13 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
     >
       <div className="max-w-6xl mx-auto px-4">
         {/* Header - Satoshi + Montserrat con parallax */}
-        <div ref={headerParallaxRef} className="services-header max-w-2xl mb-20" style={{ perspective: '1000px' }}>
+        <div 
+          ref={headerParallaxRef} 
+          data-speed="0.95" 
+          data-lag="0.2"
+          className="services-header max-w-2xl mb-20" 
+          style={{ perspective: '1000px' }}
+        >
           <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight opacity-0 invisible">
             Servicios
           </h2>
@@ -155,7 +161,13 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
         </div>
 
         {/* Services Grid */}
-        <div ref={cardsParallaxRef} className="grid md:grid-cols-2 gap-6" style={{ perspective: '1500px' }}>
+        <div 
+          ref={cardsParallaxRef} 
+          data-speed="1.05" 
+          data-lag="0.3"
+          className="grid md:grid-cols-2 gap-6" 
+          style={{ perspective: '1500px' }}
+        >
           {services.map((service) => (
             <Link
               key={service.number}
