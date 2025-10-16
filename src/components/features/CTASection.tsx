@@ -17,68 +17,59 @@ export default function CTASection() {
       }
     });
 
-    // Animación épica del título con split y blur
+    // Animación sutil del título
     tl.fromTo(".cta-title",
       { 
         opacity: 0,
-        y: 80,
-        scale: 0.8,
-        filter: "blur(20px)"
+        y: 40
       },
       {
         autoAlpha: 1,
         y: 0,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 1.5,
-        ease: "power4.out"
+        duration: 0.8,
+        ease: "power2.out"
       }
     )
     
-    // Subtítulo con efecto de escritura
+    // Subtítulo con animación simple
     .fromTo(".cta-subtitle",
       { 
         opacity: 0,
-        y: 30,
-        clipPath: "inset(0 100% 0 0)"
+        y: 20
       },
       {
         autoAlpha: 1,
         y: 0,
-        clipPath: "inset(0 0% 0 0)",
-        duration: 1,
+        duration: 0.6,
         ease: "power2.out"
       },
-      "-=0.8"
+      "-=0.4"
     )
     
-    // Botones con efecto de morphing
+    // Botones con animación sutil
     .fromTo(".cta-btn",
       { 
         opacity: 0,
-        scale: 0.5,
-        rotationX: -45,
-        transformOrigin: "center"
+        y: 30
       },
       {
         autoAlpha: 1,
-        scale: 1,
-        rotationX: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "back.out(2)"
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out"
       },
-      "-=0.4"
+      "-=0.2"
     );
 
-    // Hover effects con magnetic pull
+    // Hover effects sutiles
     const buttons = document.querySelectorAll('.cta-btn');
     buttons.forEach(button => {
       button.addEventListener('mouseenter', () => {
         gsap.to(button, {
-          scale: 1.05,
-          y: -3,
-          duration: 0.3,
+          scale: 1.02,
+          y: -2,
+          duration: 0.2,
           ease: "power2.out"
         });
       });
@@ -87,7 +78,7 @@ export default function CTASection() {
         gsap.to(button, {
           scale: 1,
           y: 0,
-          duration: 0.3,
+          duration: 0.2,
           ease: "power2.out"
         });
       });
@@ -108,28 +99,27 @@ export default function CTASection() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-        <h2 className="cta-title font-display text-4xl md:text-6xl font-bold text-white mb-6 leading-tight opacity-0 invisible" 
-            style={{ perspective: '1000px' }}>
+        <h2 className="cta-title font-display text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight opacity-0 invisible">
           ¿Tienes un proyecto
           <br />
           en mente?
         </h2>
         
-        <p className="cta-subtitle text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto opacity-0 invisible">
+        <p className="cta-subtitle font-sans text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto tracking-normal leading-relaxed opacity-0 invisible">
           Trabajemos juntos para crear algo extraordinario
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center" style={{ perspective: '1000px' }}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/contact"
-            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-medium rounded-none hover:bg-gray-100 transition-colors opacity-0 invisible"
+            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-sans font-semibold rounded-none hover:bg-gray-100 transition-colors tracking-wide opacity-0 invisible"
           >
             Iniciar proyecto
           </Link>
           
           <Link
             href="/about"
-            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-medium border-2 border-white rounded-none hover:bg-white hover:text-gray-900 transition-all opacity-0 invisible"
+            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-sans font-semibold border-2 border-white rounded-none hover:bg-white hover:text-gray-900 transition-all tracking-wide opacity-0 invisible"
           >
             Conocer más
           </Link>
