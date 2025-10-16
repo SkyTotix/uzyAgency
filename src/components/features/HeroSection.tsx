@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
+import { useSplitTextFadeIn, useSplitTextSlideUp } from '@/lib/hooks/useSplitText';
 import Link from 'next/link';
 import BackgroundManager from './BackgroundManager';
 import type { Background } from '@/lib/types/sanity';
@@ -20,6 +21,21 @@ export default function HeroSection({ background }: HeroSectionProps) {
   const titleParallaxRef = useParallaxEffect<HTMLHeadingElement>();
   const subtitleParallaxRef = useParallaxEffect<HTMLParagraphElement>();
   const statsParallaxRef = useParallaxEffect<HTMLDivElement>();
+  
+  // SplitText para animaciones de texto profesionales
+  const titleSplitRef = useSplitTextFadeIn({
+    type: 'chars',
+    stagger: 0.05,
+    duration: 1.2,
+    delay: 0.5
+  });
+  
+  const subtitleSplitRef = useSplitTextSlideUp({
+    type: 'words',
+    stagger: 0.1,
+    duration: 0.8,
+    delay: 1.2
+  });
 
   // Cursor personalizado que sigue el mouse
   useEffect(() => {
@@ -211,26 +227,17 @@ export default function HeroSection({ background }: HeroSectionProps) {
           </span>
         </div>
 
-        {/* Title con caracteres separados - Satoshi (font-display) con parallax */}
+        {/* Title con SplitText - Satoshi (font-display) con parallax */}
         <h1 
-          ref={titleParallaxRef} 
+          ref={(el) => {
+            titleParallaxRef.current = el;
+            titleSplitRef.current = el;
+          }}
           data-speed="0.8" 
           data-lag="0.2"
           className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight tracking-tight"
         >
-          <div className="mb-2" style={{ perspective: '1000px' }}>
-            <span className="char inline-block opacity-0 invisible">U</span>
-            <span className="char inline-block opacity-0 invisible">Z</span>
-            <span className="char inline-block opacity-0 invisible">I</span>
-          </div>
-          <div style={{ perspective: '1000px' }}>
-            <span className="char inline-block text-gray-400 opacity-0 invisible">A</span>
-            <span className="char inline-block text-gray-400 opacity-0 invisible">G</span>
-            <span className="char inline-block text-gray-400 opacity-0 invisible">E</span>
-            <span className="char inline-block text-gray-400 opacity-0 invisible">N</span>
-            <span className="char inline-block text-gray-400 opacity-0 invisible">C</span>
-            <span className="char inline-block text-gray-400 opacity-0 invisible">Y</span>
-          </div>
+          UZI AGENCY
         </h1>
 
         {/* Línea decorativa */}
@@ -238,12 +245,15 @@ export default function HeroSection({ background }: HeroSectionProps) {
           <div className="hero-line w-24 h-0.5 bg-gray-900"></div>
         </div>
 
-        {/* Subtitle - Montserrat (font-sans) con parallax */}
+        {/* Subtitle con SplitText - Montserrat (font-sans) con parallax */}
         <p 
-          ref={subtitleParallaxRef} 
+          ref={(el) => {
+            subtitleParallaxRef.current = el;
+            subtitleSplitRef.current = el;
+          }}
           data-speed="0.9" 
           data-lag="0.3"
-          className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal opacity-0 invisible"
+          className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal"
         >
           Creamos experiencias web limpias, funcionales y memorables. 
           Menos ruido, más impacto.
