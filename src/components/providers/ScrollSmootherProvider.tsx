@@ -23,12 +23,13 @@ export default function ScrollSmootherProvider({ children }: ScrollSmootherProvi
       const smoother = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
         content: "#smooth-content",
-        smooth: 1.0, // Suavidad más natural (reducido de 1.2)
+        smooth: 1.0, // Suavidad más natural
         effects: true, // Habilitar data-speed y data-lag
-        smoothTouch: 0.05, // Scroll más suave en móviles (reducido de 0.1)
+        smoothTouch: 0.05, // Scroll más suave en móviles
         normalizeScroll: true, // Normalizar scroll entre navegadores
         ignoreMobileResize: true, // Ignorar cambios de tamaño en móviles
         preventDefault: true, // Prevenir scroll default
+        autoResize: true, // Auto-redimensionar para evitar espacios blancos
         onUpdate: (self: any) => {
           // Optimización: Solo actualizar elementos visibles
           const elements = document.querySelectorAll('[data-speed], [data-lag]');
@@ -48,8 +49,19 @@ export default function ScrollSmootherProvider({ children }: ScrollSmootherProvi
       // Refrescar ScrollSmoother cuando el contenido cambie
       ScrollTrigger.refresh();
 
+      // Manejar resize para evitar espacios blancos
+      const handleResize = () => {
+        if (smoother) {
+          smoother.refresh();
+        }
+        ScrollTrigger.refresh();
+      };
+
+      window.addEventListener('resize', handleResize);
+
       // Cleanup
       return () => {
+        window.removeEventListener('resize', handleResize);
         if (smoother) {
           smoother.kill();
         }

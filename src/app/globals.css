@@ -3,10 +3,42 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    height: 100%;
+    overflow-x: hidden;
   }
   
   body {
     @apply font-sans antialiased text-gray-800 bg-gray-50;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  /* Fix para ScrollSmoother - eliminar espacio blanco */
+  #smooth-wrapper {
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  
+  #smooth-content {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  /* Eliminar espacios blancos al final */
+  footer {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+  /* Asegurar que no hay espacios extra */
+  * {
+    box-sizing: border-box;
   }
   
   h1, h2, h3, h4, h5, h6 {
