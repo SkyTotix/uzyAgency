@@ -14,24 +14,21 @@ export default function CTASection() {
   const buttonsParallaxRef = useParallaxEffect<HTMLDivElement>();
 
   useGSAP(() => {
-    // Optimización: Usar scrub en lugar de timeline para mejor performance
+    // Animaciones simples y funcionales
     gsap.fromTo(".cta-title",
       { 
         opacity: 0,
-        y: 30,
-        scale: 0.98
+        y: 30
       },
       {
         opacity: 1,
         y: 0,
-        scale: 1,
-        ease: "none",
+        duration: 0.8,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 85%",
-          end: "top 60%",
-          scrub: 0.8, // Suavizado optimizado
-          invalidateOnRefresh: true
+          start: "top 80%",
+          toggleActions: "play none none none"
         }
       }
     );
@@ -44,13 +41,12 @@ export default function CTASection() {
       {
         opacity: 1,
         y: 0,
-        ease: "none",
+        duration: 0.6,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
-          end: "top 50%",
-          scrub: 0.6,
-          invalidateOnRefresh: true
+          start: "top 75%",
+          toggleActions: "play none none none"
         }
       }
     );
@@ -63,23 +59,20 @@ export default function CTASection() {
       {
         opacity: 1,
         y: 0,
-        ease: "none",
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
-          end: "top 40%",
-          scrub: 0.5,
-          invalidateOnRefresh: true
+          start: "top 70%",
+          toggleActions: "play none none none"
         }
       }
     );
 
-    // Hover effects optimizados con will-change
+    // Hover effects optimizados
     const buttons = document.querySelectorAll('.cta-btn');
     buttons.forEach(button => {
-      // Aplicar will-change para mejor performance
-      (button as HTMLElement).style.willChange = 'transform';
-      
       button.addEventListener('mouseenter', () => {
         gsap.to(button, {
           scale: 1.02,
@@ -119,13 +112,13 @@ export default function CTASection() {
         data-lag="0.2"
         className="max-w-4xl mx-auto px-4 text-center relative z-10"
       >
-        <h2 className="cta-title font-display text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight opacity-0 invisible">
+        <h2 className="cta-title font-display text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
           ¿Tienes un proyecto
           <br />
           en mente?
         </h2>
         
-        <p className="cta-subtitle font-sans text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto tracking-normal leading-relaxed opacity-0 invisible">
+        <p className="cta-subtitle font-sans text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto tracking-normal leading-relaxed">
           Trabajemos juntos para crear algo extraordinario
         </p>
 
@@ -137,14 +130,14 @@ export default function CTASection() {
         >
           <Link
             href="/contact"
-            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-sans font-semibold rounded-none hover:bg-gray-100 transition-colors tracking-wide opacity-0 invisible"
+            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 font-sans font-semibold rounded-none hover:bg-gray-100 transition-colors tracking-wide"
           >
             Iniciar proyecto
           </Link>
           
           <Link
             href="/about"
-            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-sans font-semibold border-2 border-white rounded-none hover:bg-white hover:text-gray-900 transition-all tracking-wide opacity-0 invisible"
+            className="cta-btn inline-flex items-center justify-center px-8 py-4 bg-transparent text-white font-sans font-semibold border-2 border-white rounded-none hover:bg-white hover:text-gray-900 transition-all tracking-wide"
           >
             Conocer más
           </Link>
