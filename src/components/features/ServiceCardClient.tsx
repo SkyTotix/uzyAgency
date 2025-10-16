@@ -106,7 +106,7 @@ export default function ServiceCardClient({ service }: ServiceCardClientProps) {
   
   return (
     <div ref={cardRef}>
-      <Card className="hover:shadow-xl transition-shadow duration-300 h-full border border-gray-200 hover:border-[#0081af]/40">
+      <Card className="hover:shadow-xl transition-all duration-300 h-full bg-white/20 backdrop-blur-md border border-white/30 hover:border-white/50 hover:bg-white/30">
         <div className="p-6 h-full flex flex-col">
           {/* Header con icono y título */}
           <div className="mb-4">

@@ -88,7 +88,7 @@ export default function CTASection() {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 md:py-32 bg-gray-900 overflow-hidden"
+      className="relative py-24 md:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900/20 overflow-hidden"
     >
       {/* Elementos decorativos */}
       <div className="absolute inset-0 opacity-10">

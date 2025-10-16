@@ -184,7 +184,7 @@ export default function HeroSection({ background }: HeroSectionProps) {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center bg-white px-4 py-20 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50/30 px-4 py-20 overflow-hidden"
     >
       {/* Cursor personalizado */}
       <div 
@@ -253,27 +253,27 @@ export default function HeroSection({ background }: HeroSectionProps) {
           </Link>
         </div>
 
-        {/* Stats con contadores animados - Satoshi para números, Montserrat para labels */}
-        <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-          <div className="hero-stats text-center opacity-0 invisible">
-            <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
-              <span className="counter-value" data-target="50">0</span>
-            </div>
-            <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Proyectos</div>
-          </div>
-          <div className="hero-stats text-center opacity-0 invisible">
-            <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
-              <span className="counter-value percentage" data-target="98">0</span>
-            </div>
-            <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Satisfacción</div>
-          </div>
-          <div className="hero-stats text-center opacity-0 invisible">
-            <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
-              <span className="counter-value" data-target="5">0</span>
-            </div>
-            <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Años</div>
-          </div>
-        </div>
+                {/* Stats con contadores animados - Satoshi para números, Montserrat para labels */}
+                <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+                  <div className="hero-stats text-center opacity-0 invisible bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-xl">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
+                      <span className="counter-value" data-target="50">0</span>
+                    </div>
+                    <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Proyectos</div>
+                  </div>
+                  <div className="hero-stats text-center opacity-0 invisible bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-xl">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
+                      <span className="counter-value percentage" data-target="98">0</span>
+                    </div>
+                    <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Satisfacción</div>
+                  </div>
+                  <div className="hero-stats text-center opacity-0 invisible bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-xl">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
+                      <span className="counter-value" data-target="5">0</span>
+                    </div>
+                    <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Años</div>
+                  </div>
+                </div>
       </div>
 
     </section>

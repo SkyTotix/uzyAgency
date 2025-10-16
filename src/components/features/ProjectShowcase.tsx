@@ -177,7 +177,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   return (
     <section 
       ref={showcaseRef}
-      className="py-20 bg-gray-50 relative overflow-hidden"
+      className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/20 relative overflow-hidden"
     >
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -197,7 +197,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
             <Card
               key={project._id}
               className={cn(
-                "project-card group relative overflow-hidden bg-white border border-gray-200 hover:border-gray-400 transition-all duration-300 opacity-0 invisible",
+                "project-card group relative overflow-hidden bg-white/20 backdrop-blur-md border border-white/30 hover:border-white/50 hover:bg-white/30 transition-all duration-300 opacity-0 invisible",
                 "hover:shadow-xl"
               )}
             >

@@ -125,7 +125,7 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
   // Estado vacío si no hay servicios
   if (!services || services.length === 0) {
     return (
-      <section className="py-24 md:py-32 bg-gray-50">
+      <section className="py-24 md:py-32 bg-gradient-to-br from-gray-50 via-white to-blue-50/20">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="font-sans text-lg text-gray-600 tracking-normal">No hay servicios disponibles en este momento.</p>
         </div>
@@ -136,7 +136,7 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 md:py-32 bg-gray-50"
+      className="py-24 md:py-32 bg-gradient-to-br from-gray-50 via-white to-blue-50/20"
     >
       <div className="max-w-6xl mx-auto px-4">
         {/* Header - Satoshi + Montserrat */}
@@ -155,7 +155,7 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
             <Link
               key={service.number}
               href={service.link}
-              className="service-card bg-white p-8 md:p-12 hover:shadow-xl transition-all duration-300 opacity-0 invisible border border-gray-100"
+              className="service-card bg-white/20 backdrop-blur-md p-8 md:p-12 hover:shadow-xl hover:bg-white/30 transition-all duration-300 opacity-0 invisible border border-white/30 hover:border-white/50"
             >
               {/* Number - Monospace */}
               <div className="service-number text-sm font-mono text-gray-400 mb-6 transition-all tracking-wider">
