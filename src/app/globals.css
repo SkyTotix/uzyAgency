@@ -3,10 +3,14 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    overflow-x: hidden;
   }
   
   body {
     @apply font-sans antialiased text-gray-800 bg-gray-50;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -36,6 +40,16 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  /* Fix suave para espacio blanco del footer */
+  footer {
+    margin-bottom: 0 !important;
+  }
+  
+  /* Asegurar que no hay espacios extra al final */
+  body {
+    margin-bottom: 0 !important;
   }
   
   /* Optimizaciones de performance para ScrollSmoother */
