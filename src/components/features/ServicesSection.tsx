@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
+import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
 import Link from 'next/link';
 
 interface Service {
@@ -18,6 +19,10 @@ interface ServicesSectionProps {
 
 export default function ServicesSection({ services }: ServicesSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  
+  // Efectos de parallax para elementos específicos
+  const headerParallaxRef = useParallaxEffect<HTMLDivElement>();
+  const cardsParallaxRef = useParallaxEffect<HTMLDivElement>();
 
   useGSAP(() => {
     const tl = gsap.timeline({
@@ -139,8 +144,8 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
       className="py-24 md:py-32 bg-gradient-to-br from-gray-50 via-white to-blue-50/20"
     >
       <div className="max-w-6xl mx-auto px-4">
-        {/* Header - Satoshi + Montserrat */}
-        <div className="services-header max-w-2xl mb-20" style={{ perspective: '1000px' }}>
+        {/* Header - Satoshi + Montserrat con parallax */}
+        <div ref={headerParallaxRef} className="services-header max-w-2xl mb-20" style={{ perspective: '1000px' }}>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight opacity-0 invisible">
             Servicios
           </h2>
@@ -150,7 +155,7 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-6" style={{ perspective: '1500px' }}>
+        <div ref={cardsParallaxRef} className="grid md:grid-cols-2 gap-6" style={{ perspective: '1500px' }}>
           {services.map((service) => (
             <Link
               key={service.number}

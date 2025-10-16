@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
+import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
 import Link from 'next/link';
 import BackgroundManager from './BackgroundManager';
 import type { Background } from '@/lib/types/sanity';
@@ -14,6 +15,11 @@ interface HeroSectionProps {
 export default function HeroSection({ background }: HeroSectionProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
+  
+  // Efectos de parallax para elementos específicos
+  const titleParallaxRef = useParallaxEffect<HTMLHeadingElement>();
+  const subtitleParallaxRef = useParallaxEffect<HTMLParagraphElement>();
+  const statsParallaxRef = useParallaxEffect<HTMLDivElement>();
 
   // Cursor personalizado que sigue el mouse
   useEffect(() => {
@@ -205,8 +211,8 @@ export default function HeroSection({ background }: HeroSectionProps) {
           </span>
         </div>
 
-        {/* Title con caracteres separados - Satoshi (font-display) */}
-        <h1 className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight tracking-tight">
+        {/* Title con caracteres separados - Satoshi (font-display) con parallax */}
+        <h1 ref={titleParallaxRef} className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight tracking-tight">
           <div className="mb-2" style={{ perspective: '1000px' }}>
             <span className="char inline-block opacity-0 invisible">U</span>
             <span className="char inline-block opacity-0 invisible">Z</span>
@@ -227,8 +233,8 @@ export default function HeroSection({ background }: HeroSectionProps) {
           <div className="hero-line w-24 h-0.5 bg-gray-900"></div>
         </div>
 
-        {/* Subtitle - Montserrat (font-sans) */}
-        <p className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal opacity-0 invisible">
+        {/* Subtitle - Montserrat (font-sans) con parallax */}
+        <p ref={subtitleParallaxRef} className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal opacity-0 invisible">
           Creamos experiencias web limpias, funcionales y memorables. 
           Menos ruido, más impacto.
         </p>
@@ -253,8 +259,8 @@ export default function HeroSection({ background }: HeroSectionProps) {
           </Link>
         </div>
 
-                {/* Stats con contadores animados - Satoshi para números, Montserrat para labels */}
-                <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+                {/* Stats con contadores animados - Satoshi para números, Montserrat para labels con parallax */}
+                <div ref={statsParallaxRef} className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
                   <div className="hero-stats text-center opacity-0 invisible bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-xl">
                     <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
                       <span className="counter-value" data-target="50">0</span>

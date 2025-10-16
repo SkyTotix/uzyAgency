@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import GSAPProvider from "@/components/providers/GSAPProvider";
 import AnalyticsProvider from "@/components/providers/AnalyticsProvider";
+import ScrollSmootherProvider from "@/components/providers/ScrollSmootherProvider";
 import { montserrat, satoshi } from "@/lib/fonts";
 
 export const metadata: Metadata = {
@@ -96,7 +97,9 @@ export default function RootLayout({
       <body className={`${montserrat.variable} ${satoshi.variable} font-sans antialiased pt-20`}>
         <GSAPProvider>
           <AnalyticsProvider>
-            {children}
+            <ScrollSmootherProvider>
+              {children}
+            </ScrollSmootherProvider>
           </AnalyticsProvider>
         </GSAPProvider>
       </body>

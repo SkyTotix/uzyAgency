@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
+import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { sanityUtils } from '@/lib/sanity';
@@ -16,6 +17,10 @@ interface ProjectShowcaseProps {
 
 export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   const showcaseRef = useRef<HTMLElement>(null);
+  
+  // Efectos de parallax para elementos específicos
+  const headerParallaxRef = useParallaxEffect<HTMLDivElement>();
+  const projectsParallaxRef = useParallaxEffect<HTMLDivElement>();
 
   // Animación GSAP con ScrollTrigger
   useGSAP(() => {
@@ -181,8 +186,8 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
     >
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header de la sección */}
-        <div className="text-center mb-16">
+        {/* Header de la sección con parallax */}
+        <div ref={headerParallaxRef} className="text-center mb-16">
           <h2 className="showcase-title font-display text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight opacity-0 invisible">
             Proyectos Destacados
           </h2>
@@ -191,8 +196,8 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
           </p>
         </div>
 
-        {/* Grid de proyectos */}
-        <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {/* Grid de proyectos con parallax */}
+        <div ref={projectsParallaxRef} className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {projects.map((project) => (
             <Card
               key={project._id}
