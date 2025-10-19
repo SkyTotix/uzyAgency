@@ -34,23 +34,23 @@ export class TextSplitter {
   private split(): void {
     const { type } = this.options;
     
+    // Guardar el texto original antes de limpiar
+    const originalText = this.element.textContent || '';
+    
     // Limpiar contenido anterior
     this.element.innerHTML = '';
     
     // Dividir según el tipo especificado
     if (type.includes('chars')) {
-      this.splitChars();
-    }
-    if (type.includes('words')) {
-      this.splitWords();
-    }
-    if (type.includes('lines')) {
-      this.splitLines();
+      this.splitChars(originalText);
+    } else if (type.includes('words')) {
+      this.splitWords(originalText);
+    } else if (type.includes('lines')) {
+      this.splitLines(originalText);
     }
   }
 
-  private splitChars(): void {
-    const text = this.element.textContent || '';
+  private splitChars(text: string): void {
     const chars = text.split('');
     
     chars.forEach((char, index) => {
@@ -66,8 +66,7 @@ export class TextSplitter {
     });
   }
 
-  private splitWords(): void {
-    const text = this.element.textContent || '';
+  private splitWords(text: string): void {
     const words = text.split(/\s+/).filter(word => word.length > 0);
     
     words.forEach((word, index) => {
@@ -91,8 +90,7 @@ export class TextSplitter {
     });
   }
 
-  private splitLines(): void {
-    const text = this.element.textContent || '';
+  private splitLines(text: string): void {
     const lines = text.split('\n').filter(line => line.trim().length > 0);
     
     lines.forEach((line, index) => {
