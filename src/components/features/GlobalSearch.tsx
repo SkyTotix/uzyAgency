@@ -198,16 +198,6 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     }
   };
 
-  // Obtener ícono de tipo
-  const getTypeIcon = (type: SearchResultType) => {
-    const icons = {
-      post: '📝',
-      project: '💼',
-      service: '🚀'
-    };
-    return icons[type] || '📄';
-  };
-
   // Obtener label de tipo
   const getTypeLabel = (type: SearchResultType) => {
     const labels = {
@@ -242,16 +232,16 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] px-4 bg-black/50 backdrop-blur-md"
       onClick={handleBackdropClick}
     >
       <div 
         ref={modalRef}
-        className="w-full max-w-3xl bg-gray-900 rounded-2xl shadow-2xl overflow-hidden opacity-0 border-2 border-brand-800"
+        className="w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden opacity-0 border border-gray-200"
       >
         {/* Header con input de búsqueda */}
-        <div className="p-6 border-b border-gray-700">
-          <div className="flex items-center space-x-4">
+        <div className="p-6 border-b border-gray-100">
+          <div className="flex items-center space-x-3">
             <div className="flex-1 relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                 <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -264,13 +254,13 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Buscar en blog, proyectos y servicios..."
-                className="w-full pl-12 pr-4 py-3 text-lg bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all text-white placeholder-gray-400"
+                className="w-full pl-12 pr-4 py-4 text-lg bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
               />
             </div>
             
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
               aria-label="Cerrar búsqueda"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,48 +269,48 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
             </button>
           </div>
 
-          {/* Filtros de tipo */}
+          {/* Filtros de tipo - diseño minimalista */}
           <div className="flex items-center space-x-2 mt-4">
-            <span className="text-sm text-gray-500 font-medium">Filtrar:</span>
+            <span className="text-sm text-gray-500 font-medium mr-2">Filtrar:</span>
             <button
               onClick={() => handleTypeFilter('all')}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                 selectedType === 'all'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
               }`}
             >
               Todos
             </button>
             <button
               onClick={() => handleTypeFilter('post')}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                 selectedType === 'post'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
               }`}
             >
-              📝 Blog
+              Blog
             </button>
             <button
               onClick={() => handleTypeFilter('project')}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                 selectedType === 'project'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
               }`}
             >
-              💼 Proyectos
+              Proyectos
             </button>
             <button
               onClick={() => handleTypeFilter('service')}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                 selectedType === 'service'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
               }`}
             >
-              🚀 Servicios
+              Servicios
             </button>
           </div>
         </div>
@@ -328,24 +318,28 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
         {/* Resultados */}
         <div ref={resultsRef} className="max-h-[60vh] overflow-y-auto">
           {isLoading && (
-            <div className="flex items-center justify-center py-12">
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-                <p className="text-sm text-gray-500">Buscando...</p>
+            <div className="flex items-center justify-center py-16">
+              <div className="flex flex-col items-center space-y-4">
+                <div className="w-10 h-10 border-[3px] border-gray-900 border-t-transparent rounded-full animate-spin" />
+                <p className="text-sm font-medium text-gray-600">Buscando...</p>
               </div>
             </div>
           )}
 
           {!isLoading && searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
-            <div className="py-12 text-center text-gray-500">
-              <p className="text-sm">Escribe al menos 2 caracteres para buscar</p>
+            <div className="py-16 text-center">
+              <p className="text-sm text-gray-500">Escribe al menos 2 caracteres para buscar</p>
             </div>
           )}
 
           {!isLoading && results && results.results.length === 0 && (
-            <div className="py-12 text-center">
-              <div className="text-6xl mb-4">🔍</div>
-              <p className="text-lg font-medium text-gray-900 mb-2">
+            <div className="py-16 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <p className="text-lg font-semibold text-gray-900 mb-2">
                 No se encontraron resultados
               </p>
               <p className="text-sm text-gray-500">
@@ -356,12 +350,9 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
 
           {!isLoading && results && results.results.length > 0 && (
             <div className="p-4 space-y-2">
-              {/* Resumen de resultados */}
-              <div className="text-sm text-gray-500 mb-4 px-2">
+              {/* Resumen de resultados - minimalista */}
+              <div className="text-sm text-gray-500 mb-3 px-2">
                 {results.total} {results.total === 1 ? 'resultado' : 'resultados'} encontrados
-                {results.types.posts > 0 && ` • ${results.types.posts} blog`}
-                {results.types.projects > 0 && ` • ${results.types.projects} proyectos`}
-                {results.types.services > 0 && ` • ${results.types.services} servicios`}
               </div>
 
               {/* Lista de resultados */}
@@ -369,10 +360,10 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                 <button
                   key={result._id}
                   onClick={() => handleSelectResult(result)}
-                  className={`search-result-item w-full text-left p-4 rounded-lg transition-all duration-200 ${
+                  className={`search-result-item w-full text-left p-4 rounded-xl transition-all duration-200 ${
                     index === selectedIndex
-                      ? 'bg-blue-50 border border-blue-200 shadow-sm'
-                      : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                      ? 'bg-gray-900 text-white shadow-md'
+                      : 'bg-white border border-gray-200 hover:border-gray-300 hover:shadow-sm'
                   }`}
                 >
                   <div className="flex items-start space-x-4">
@@ -391,30 +382,43 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
 
                     {/* Contenido */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-lg">{getTypeIcon(result._type)}</span>
-                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-gray-100 text-gray-600">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                          index === selectedIndex 
+                            ? 'bg-white/20 text-white' 
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
                           {getTypeLabel(result._type)}
                         </span>
                         {result.featured && (
-                          <span className="text-xs font-medium px-2 py-0.5 rounded bg-yellow-100 text-yellow-800">
+                          <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                            index === selectedIndex
+                              ? 'bg-yellow-500/20 text-yellow-200'
+                              : 'bg-yellow-50 text-yellow-700'
+                          }`}>
                             ⭐ Destacado
                           </span>
                         )}
                       </div>
                       
-                      <h3 className="text-base font-semibold text-gray-900 mb-1 line-clamp-1">
+                      <h3 className={`text-base font-bold mb-1 line-clamp-1 ${
+                        index === selectedIndex ? 'text-white' : 'text-gray-900'
+                      }`}>
                         {result.title}
                       </h3>
                       
                       {(result.excerpt || result.description) && (
-                        <p className="text-sm text-gray-600 line-clamp-2">
+                        <p className={`text-sm line-clamp-2 ${
+                          index === selectedIndex ? 'text-gray-200' : 'text-gray-600'
+                        }`}>
                           {extractText(result.excerpt || result.description)}
                         </p>
                       )}
 
                       {result.category && (
-                        <div className="mt-2 text-xs text-gray-500">
+                        <div className={`mt-2 text-xs ${
+                          index === selectedIndex ? 'text-gray-300' : 'text-gray-500'
+                        }`}>
                           🏷️ {result.category.title}
                         </div>
                       )}
@@ -422,7 +426,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
 
                     {/* Indicador de selección */}
                     {index === selectedIndex && (
-                      <div className="flex-shrink-0 text-blue-600">
+                      <div className="flex-shrink-0 text-white">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
@@ -434,24 +438,22 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
             </div>
           )}
 
-          {/* Ayuda de navegación */}
+          {/* Ayuda de navegación - minimalista */}
           {results && results.results.length > 0 && (
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-              <div className="flex items-center justify-between text-xs text-gray-500">
-                <div className="flex items-center space-x-4">
-                  <span className="flex items-center">
-                    <kbd className="px-2 py-1 bg-white border border-gray-300 rounded shadow-sm font-mono">↑↓</kbd>
-                    <span className="ml-2">Navegar</span>
-                  </span>
-                  <span className="flex items-center">
-                    <kbd className="px-2 py-1 bg-white border border-gray-300 rounded shadow-sm font-mono">Enter</kbd>
-                    <span className="ml-2">Abrir</span>
-                  </span>
-                  <span className="flex items-center">
-                    <kbd className="px-2 py-1 bg-white border border-gray-300 rounded shadow-sm font-mono">Esc</kbd>
-                    <span className="ml-2">Cerrar</span>
-                  </span>
-                </div>
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
+              <div className="flex items-center justify-center gap-6 text-xs text-gray-500">
+                <span className="flex items-center gap-2">
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded font-mono">↑↓</kbd>
+                  <span>Navegar</span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded font-mono">Enter</kbd>
+                  <span>Abrir</span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <kbd className="px-2 py-1 bg-white border border-gray-300 rounded font-mono">Esc</kbd>
+                  <span>Cerrar</span>
+                </span>
               </div>
             </div>
           )}
