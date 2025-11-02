@@ -163,26 +163,38 @@ export default function BackgroundManager({ background }: BackgroundManagerProps
   }
 }
 
-// Fondo por defecto con formas flotantes
+// Fondo por defecto con formas flotantes animadas con GSAP
 function DefaultBackground() {
+  const bgRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const shapes = bgRef.current?.querySelectorAll('.floating-shape');
+    if (!shapes || shapes.length === 0) return;
+
+    // Animación suave para cada forma
+    shapes.forEach((shape, index) => {
+      gsap.to(shape, {
+        y: "random(-40, 40)",
+        x: "random(-30, 30)",
+        rotation: "random(-20, 20)",
+        opacity: "random(0.15, 0.4)",
+        duration: "random(8, 15)",
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+        delay: index * 0.5
+      });
+    });
+  }, { scope: bgRef });
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="floating-shape absolute top-20 left-10 w-32 h-32 border border-gray-200 opacity-20" />
-      <div className="floating-shape absolute top-40 right-20 w-24 h-24 border border-gray-300 opacity-30" 
-           style={{ animationDelay: '2s' }} />
-      <div className="floating-shape absolute bottom-32 left-1/4 w-20 h-20 border border-gray-200 opacity-20" 
-           style={{ animationDelay: '4s' }} />
-      
-      <style jsx>{`
-        @keyframes float-shape {
-          0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.25; }
-          50% { transform: translateY(-35px) rotate(12deg); opacity: 0.4; }
-        }
-        
-        .floating-shape {
-          animation: float-shape 10s ease-in-out infinite;
-        }
-      `}</style>
+    <div ref={bgRef} className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Formas geométricas minimalistas */}
+      <div className="floating-shape absolute top-20 left-10 w-32 h-32 border-2 border-gray-200 opacity-0" />
+      <div className="floating-shape absolute top-40 right-20 w-24 h-24 border border-gray-300 opacity-0" />
+      <div className="floating-shape absolute bottom-32 left-1/4 w-20 h-20 border border-gray-200 opacity-0" />
+      <div className="floating-shape absolute top-60 left-1/2 w-28 h-28 border-2 border-gray-300 opacity-0" />
+      <div className="floating-shape absolute bottom-60 right-1/3 w-16 h-16 border border-gray-200 opacity-0" />
     </div>
   );
 }
