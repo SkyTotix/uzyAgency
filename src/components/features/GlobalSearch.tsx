@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
@@ -34,11 +35,17 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedType, setSelectedType] = useState<SearchResultType | 'all'>('all');
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
   
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  // Mount check for Portal
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Animación de entrada del modal
   useGSAP(() => {
@@ -228,9 +235,9 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
     return '';
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  const modalContent = (
     <div 
       className="fixed inset-0 z-[100] flex items-start justify-center pt-[8vh] px-4 bg-black/50 backdrop-blur-md"
       onClick={handleBackdropClick}
@@ -461,4 +468,8 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' 
+    ? createPortal(modalContent, document.body)
+    : null;
 }
