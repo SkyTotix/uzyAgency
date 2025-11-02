@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 import type { Testimonial } from '@/lib/types/sanity';
 
 interface TestimonialCarouselProps {
@@ -149,7 +149,7 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
               {currentTestimonial.avatar?.asset?._ref && (
                 <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/30">
                   <Image
-                    src={sanityUtils.imageUrl(currentTestimonial.avatar, 128, 128)}
+                    src={urlFor(currentTestimonial.avatar).width(128).height(128).url()}
                     alt={currentTestimonial.name}
                     fill
                     sizes="64px"

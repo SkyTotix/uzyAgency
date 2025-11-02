@@ -6,7 +6,7 @@ import { gsap } from '@/lib/gsap';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Post } from '@/lib/types/sanity';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
 interface BlogRelatedPostsProps {
   posts: Post[];
@@ -111,7 +111,7 @@ export default function BlogRelatedPosts({ posts }: BlogRelatedPostsProps) {
               {post.mainImage ? (
                 <div className="relative h-48 overflow-hidden bg-gray-100">
                   <Image
-                    src={sanityUtils.imageUrl(post.mainImage, 500, 300) || '/placeholder-blog.jpg'}
+                    src={urlFor(post.mainImage).width(500).height(300).url() || '/placeholder-blog.jpg'}
                     alt={post.mainImage.alt || post.title}
                     fill
                     className="related-image object-cover"

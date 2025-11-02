@@ -7,7 +7,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 import type { Post } from '@/lib/types/sanity';
 
 interface BlogListProps {
@@ -108,7 +108,7 @@ export default function BlogList({ posts }: BlogListProps) {
                   {post.mainImage?.asset?._ref ? (
                     <>
                       <Image
-                        src={sanityUtils.imageUrl(post.mainImage, 800, 600)}
+                        src={urlFor(post.mainImage).width(800).height(600).url()}
                         alt={post.mainImage.alt || post.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -169,7 +169,7 @@ export default function BlogList({ posts }: BlogListProps) {
                           <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-300">
                             {post.author.image?.asset?._ref ? (
                               <Image
-                                src={sanityUtils.imageUrl(post.author.image, 64, 64)}
+                                src={urlFor(post.author.image).width(64).height(64).url()}
                                 alt={post.author.name}
                                 fill
                                 sizes="32px"

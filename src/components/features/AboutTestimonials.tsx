@@ -5,7 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import Image from 'next/image';
 import type { Testimonial } from '@/lib/types/sanity';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
 interface AboutTestimonialsProps {
   testimonials: Testimonial[];
@@ -156,7 +156,7 @@ export default function AboutTestimonials({ testimonials }: AboutTestimonialsPro
                 {current.avatar ? (
                   <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100">
                     <Image
-                      src={sanityUtils.imageUrl(current.avatar, 100, 100) || '/placeholder-avatar.jpg'}
+                      src={urlFor(current.avatar).width(100).height(100).url() || '/placeholder-avatar.jpg'}
                       alt={current.name}
                       fill
                       className="object-cover"

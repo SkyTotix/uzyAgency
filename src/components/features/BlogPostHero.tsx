@@ -6,7 +6,7 @@ import { gsap } from '@/lib/gsap';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Post } from '@/lib/types/sanity';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
 interface BlogPostHeroProps {
   post: Post;
@@ -139,7 +139,7 @@ export default function BlogPostHero({ post }: BlogPostHeroProps) {
               {post.author.image && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-100">
                   <Image
-                    src={sanityUtils.imageUrl(post.author.image, 80, 80) || '/placeholder-avatar.jpg'}
+                    src={urlFor(post.author.image).width(80).height(80).url() || '/placeholder-avatar.jpg'}
                     alt={post.author.name}
                     fill
                     className="object-cover"
@@ -163,7 +163,7 @@ export default function BlogPostHero({ post }: BlogPostHeroProps) {
         {post.mainImage && (
           <div className="post-image relative h-[400px] md:h-[500px] mb-16 overflow-hidden bg-gray-100 opacity-0 invisible">
             <Image
-              src={sanityUtils.imageUrl(post.mainImage, 1200, 800) || '/placeholder-blog.jpg'}
+              src={urlFor(post.mainImage).width(1200).height(800).url() || '/placeholder-blog.jpg'}
               alt={post.mainImage.alt || post.title}
               fill
               className="object-cover"

@@ -8,7 +8,7 @@ import { gsap } from '@/lib/gsap';
 import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 import type { Project } from '@/lib/types/sanity';
 
 interface ProjectShowcaseProps {
@@ -221,7 +221,7 @@ export default function ProjectShowcase({ projects }: ProjectShowcaseProps) {
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
                   <Image
-                    src={sanityUtils.imageUrl(project.mainImage, 1200, 800)}
+                    src={urlFor(project.mainImage).width(1200).height(800).url()}
                     alt={project.mainImage.alt || project.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Header, Footer } from '@/components/layout';
 import { getBlogPostBySlug, getRelatedPosts } from '@/lib/server/data/blogData';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 import BlogPostHero from '@/components/features/BlogPostHero';
 import BlogPostContent from '@/components/features/BlogPostContent';
 import BlogRelatedPosts from '@/components/features/BlogRelatedPosts';
@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   const ogImage = post.seo?.ogImage
-    ? sanityUtils.imageUrl(post.seo.ogImage, 1200, 630)
+    ? urlFor(post.seo.ogImage).width(1200).height(630).url()
     : post.mainImage
-    ? sanityUtils.imageUrl(post.mainImage, 1200, 630)
+    ? urlFor(post.mainImage).width(1200).height(630).url()
     : '/og-image-blog.jpg';
 
   return {
@@ -88,7 +88,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.mainImage ? sanityUtils.imageUrl(post.mainImage, 1200, 630) : undefined,
+    image: post.mainImage ? urlFor(post.mainImage).width(1200).height(630).url() : undefined,
     datePublished: post.publishedAt,
     author: post.author ? {
       '@type': 'Person',

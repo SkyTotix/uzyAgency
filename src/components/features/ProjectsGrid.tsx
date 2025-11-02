@@ -6,7 +6,7 @@ import { gsap } from '@/lib/gsap';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Project } from '@/lib/types/sanity';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
 interface ProjectsGridProps {
   projects: Project[];
@@ -169,7 +169,7 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
               {project.mainImage ? (
                 <div className="relative h-64 md:h-80 overflow-hidden bg-gray-100">
                   <Image
-                    src={sanityUtils.imageUrl(project.mainImage, 800, 600) || '/placeholder.jpg'}
+                    src={urlFor(project.mainImage).width(800).height(600).url() || '/placeholder.jpg'}
                     alt={project.mainImage.alt || project.title}
                     fill
                     className="project-image object-cover"

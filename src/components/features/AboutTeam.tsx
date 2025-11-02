@@ -5,7 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import Image from 'next/image';
 import type { TeamMember } from '@/lib/types/sanity';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
 interface AboutTeamProps {
   members: TeamMember[];
@@ -155,7 +155,7 @@ export default function AboutTeam({ members }: AboutTeamProps) {
               {member.image ? (
                 <div className="relative w-full aspect-square mb-4 overflow-hidden bg-gray-100">
                   <Image
-                    src={sanityUtils.imageUrl(member.image, 400, 400) || '/placeholder-avatar.jpg'}
+                    src={urlFor(member.image).width(400).height(400).url() || '/placeholder-avatar.jpg'}
                     alt={member.image.alt || member.name}
                     fill
                     className="team-image object-cover"

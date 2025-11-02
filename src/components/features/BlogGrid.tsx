@@ -6,7 +6,7 @@ import { gsap } from '@/lib/gsap';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Post } from '@/lib/types/sanity';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
 interface BlogGridProps {
   posts: Post[];
@@ -142,7 +142,7 @@ export default function BlogGrid({ posts }: BlogGridProps) {
               {post.mainImage ? (
                 <div className="relative h-64 overflow-hidden bg-gray-100">
                   <Image
-                    src={sanityUtils.imageUrl(post.mainImage, 600, 400) || '/placeholder-blog.jpg'}
+                    src={urlFor(post.mainImage).width(600).height(400).url() || '/placeholder-blog.jpg'}
                     alt={post.mainImage.alt || post.title}
                     fill
                     className="blog-image object-cover"
@@ -191,7 +191,7 @@ export default function BlogGrid({ posts }: BlogGridProps) {
                     {post.author.image && (
                       <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-100">
                         <Image
-                          src={sanityUtils.imageUrl(post.author.image, 50, 50) || '/placeholder-avatar.jpg'}
+                          src={urlFor(post.author.image).width(50).height(50).url() || '/placeholder-avatar.jpg'}
                           alt={post.author.name}
                           fill
                           className="object-cover"
