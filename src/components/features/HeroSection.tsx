@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { gsap } from '@/lib/gsap';
 import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
 import { useTextFadeIn, useTextSlideUp } from '@/lib/hooks/useTextAnimations';
 import Link from 'next/link';
@@ -11,17 +11,11 @@ import type { Background } from '@/lib/types/sanity';
 
 interface HeroSectionProps {
   background?: Background | null;
-  videoMode?: 'scroll' | 'loop';
 }
 
-export default function HeroSection({ background, videoMode: propVideoMode = 'scroll' }: HeroSectionProps) {
+export default function HeroSection({ background }: HeroSectionProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  
-  // Estado temporal para alternar entre modos (para pruebas)
-  const [localVideoMode, setLocalVideoMode] = useState<'scroll' | 'loop'>(propVideoMode);
-  const videoMode = localVideoMode;
   
   // Efectos de parallax para elementos específicos
   const titleParallaxRef = useParallaxEffect<HTMLHeadingElement>();
@@ -209,38 +203,6 @@ export default function HeroSection({ background, videoMode: propVideoMode = 'sc
 
   }, { scope: heroRef });
 
-  // Hook useGSAP para control de video según modo
-  useGSAP(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (videoMode === 'scroll') {
-      // Modo scroll: sincronizar video con scroll usando ScrollTrigger
-      const videoTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: () => `+=${video.duration * 100}`,
-          scrub: true,
-          pin: true
-        }
-      });
-
-      videoTimeline.to(video, {
-        currentTime: video.duration,
-        duration: video.duration,
-        ease: 'none'
-      });
-    } else if (videoMode === 'loop') {
-      // Modo loop: reproducir video en bucle
-      video.play().catch((error) => {
-        console.warn('Error reproduciendo video:', error);
-      });
-    }
-
-    // Cleanup: ScrollTrigger se limpia automáticamente por useGSAP
-  }, { scope: heroRef, dependencies: [videoMode] });
-
   return (
     <section 
       ref={heroRef}
@@ -256,33 +218,7 @@ export default function HeroSection({ background, videoMode: propVideoMode = 'sc
       {/* Fondo dinámico desde Sanity */}
       <BackgroundManager background={background} />
 
-      {/* Video de fondo opcional */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover z-0 opacity-30"
-        muted
-        playsInline
-        preload="auto"
-        loop={videoMode === 'loop'}
-        autoPlay={videoMode === 'loop'}
-      >
-        {/* Placeholder para video - reemplazar con tu video real */}
-        <source src="/videos/hero-background.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
       <div className="max-w-5xl mx-auto w-full relative z-10">
-        {/* Badge - Montserrat (font-sans) */}
-        {/* Botón de prueba temporal para alternar modos */}
-        <div className="flex justify-center mb-4">
-          <button
-            onClick={() => setLocalVideoMode(prev => prev === 'scroll' ? 'loop' : 'scroll')}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
-          >
-            Cambiar a modo: {videoMode === 'scroll' ? 'Loop' : 'Scroll'}
-          </button>
-        </div>
-        
         {/* Badge - Montserrat (font-sans) */}
         <div className="flex justify-center mb-8 hero-badge opacity-0 invisible">
           <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-sans font-medium tracking-wide">
