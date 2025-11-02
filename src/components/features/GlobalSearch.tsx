@@ -232,7 +232,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] px-4 bg-black/50 backdrop-blur-md"
+      className="fixed inset-0 z-[100] flex items-start justify-center pt-[8vh] px-4 bg-black/50 backdrop-blur-md"
       onClick={handleBackdropClick}
     >
       <div 
