@@ -2,8 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
-import GlobalSearch from '@/components/features/GlobalSearch';
+
+// Lazy load GlobalSearch para mejorar performance inicial
+const GlobalSearch = dynamic(() => import('@/components/features/GlobalSearch'), {
+  loading: () => null,
+  ssr: false
+});
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,7 +66,7 @@ export default function Header() {
               </kbd>
             </button>
             
-            <Link href="/contact" className="px-6 py-2 bg-gray-900 text-white text-sm font-sans font-semibold hover:bg-gray-800 transition-colors tracking-wide">
+            <Link href="/contact" prefetch={true} className="px-6 py-2 bg-gray-900 text-white text-sm font-sans font-semibold hover:bg-gray-800 transition-colors tracking-wide">
               Contactar
             </Link>
           </nav>
@@ -97,7 +103,7 @@ export default function Header() {
               Blog
             </Link>
             <div className="pt-4 px-3">
-              <Link href="/contact" className="block text-center py-2 bg-gray-900 text-white text-sm font-sans font-semibold hover:bg-gray-800 tracking-wide">
+              <Link href="/contact" prefetch={true} className="block text-center py-2 bg-gray-900 text-white text-sm font-sans font-semibold hover:bg-gray-800 tracking-wide">
                 Contactar
               </Link>
             </div>
