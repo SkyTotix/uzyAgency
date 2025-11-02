@@ -31,3 +31,4 @@ export { default as ServicesPageGrid } from './ServicesPageGrid';
 export { default as ServicesPageHero } from './ServicesPageHero';
 export { default as TeamMemberGrid } from './TeamMemberGrid';
 export { default as TestimonialCarousel } from './TestimonialCarousel';
+export { default as VideoBackground } from './VideoBackground';
