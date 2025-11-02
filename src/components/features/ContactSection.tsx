@@ -64,7 +64,7 @@ export default function ContactSection() {
   return (
     <section 
       ref={contactRef}
-      className="py-20 bg-gradient-to-br from-blue-50 via-white to-indigo-50 min-h-screen"
+      className="py-20 bg-gradient-to-br from-blue-50 via-white to-indigo-50"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
@@ -165,21 +165,10 @@ export default function ContactSection() {
 
           {/* Columna Derecha - Formulario de Contacto */}
           <div className="contact-form-wrapper opacity-0 invisible">
-            <Card className="p-8 bg-white/90 backdrop-blur-sm border border-blue-100 shadow-xl">
-              <div className="mb-6">
-                <h2 className="font-display text-2xl font-bold text-gray-900 mb-2">
-                  Envíanos un Mensaje
-                </h2>
-                <p className="text-gray-600">
-                  Completa el formulario y nos pondremos en contacto contigo lo antes posible.
-                </p>
-              </div>
-              
-              <ContactForm 
-                onSuccess={handleFormSuccess}
-                onError={handleFormError}
-              />
-            </Card>
+            <ContactForm 
+              onSuccess={handleFormSuccess}
+              onError={handleFormError}
+            />
           </div>
         </div>
 

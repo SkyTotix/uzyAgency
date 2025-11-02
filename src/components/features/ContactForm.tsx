@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
-import { Button, Input, Textarea } from '@/components/ui';
+import { Button, Input, Textarea, ToastNotification } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { processContactForm } from '@/lib/server/contact';
 
@@ -56,7 +56,17 @@ interface ContactFormProps {
 export default function ContactForm({ onSuccess, onError, className }: ContactFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [toast, setToast] = useState<{
+    show: boolean;
+    type: 'success' | 'error' | 'info';
+    title: string;
+    message: string;
+  }>({
+    show: false,
+    type: 'info',
+    title: '',
+    message: ''
+  });
   
   const {
     register,
@@ -72,6 +82,10 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
 
   // Watch para el contador de caracteres
   const messageValue = watch('message', '');
+  
+  const closeToast = () => {
+    setToast(prev => ({ ...prev, show: false }));
+  };
 
   useGSAP(() => {
     // Animación del header
@@ -158,18 +172,28 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
 
       if (result.success) {
         console.log('Formulario enviado exitosamente:', result);
-        setIsSuccess(true);
         reset();
+        
+        // Mostrar toast de éxito
+        setToast({
+          show: true,
+          type: 'success',
+          title: '¡Mensaje Enviado!',
+          message: result.message || 'Mensaje enviado exitosamente'
+        });
         
         if (onSuccess) {
           onSuccess(result.message || 'Mensaje enviado exitosamente');
         }
-        
-        // Auto-hide success message después de 5 segundos
-        setTimeout(() => {
-          setIsSuccess(false);
-        }, 5000);
       } else {
+        // Mostrar toast de error
+        setToast({
+          show: true,
+          type: 'error',
+          title: 'Error al Enviar',
+          message: result.message || 'Error al enviar el mensaje'
+        });
+        
         setError('root', {
           type: 'manual',
           message: result.message || 'Error al enviar el mensaje'
@@ -182,6 +206,14 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
     } catch (error) {
       console.error('Error enviando formulario:', error);
       const errorMessage = 'Error interno del servidor. Por favor, inténtalo de nuevo.';
+      
+      // Mostrar toast de error
+      setToast({
+        show: true,
+        type: 'error',
+        title: 'Error al Enviar',
+        message: errorMessage
+      });
       
       setError('root', {
         type: 'manual',
@@ -241,30 +273,6 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
           {/* Formulario */}
           <div className="contact-form">
             <div className="bg-white p-8">
-              {/* Mensaje de éxito */}
-              {isSuccess && (
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                      ✓
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-green-800">¡Mensaje enviado!</h4>
-                      <p className="text-green-700 text-sm">Te contactaremos pronto.</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Mensaje de error */}
-              {errors.root && (
-                <div className="form-element mb-6">
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                    {errors.root.message}
-                  </div>
-                </div>
-              )}
-
               <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                 {/* Campos básicos */}
                 <div className="space-y-6">
@@ -381,6 +389,15 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
           </div>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      <ToastNotification
+        show={toast.show}
+        type={toast.type}
+        title={toast.title}
+        message={toast.message}
+        onClose={closeToast}
+      />
     </section>
   );
 }

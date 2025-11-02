@@ -53,11 +53,16 @@ export default function ToastNotification({
   if (!show && !isVisible) return null;
 
   return (
-    <div className={cn(
-      "fixed top-4 right-4 z-50 max-w-sm w-full mx-4",
-      "transform transition-all duration-300 ease-in-out",
-      isVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-    )}>
+    <div 
+      role="status"
+      aria-live="polite"
+      data-testid={`toast-${type}`}
+      className={cn(
+        "fixed top-4 right-4 z-50 max-w-sm w-full mx-4",
+        "transform transition-all duration-300 ease-in-out",
+        isVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+      )}
+    >
       <div className={cn(
         "bg-white rounded-lg shadow-lg border-l-4 p-4",
         typeStyles[type]
@@ -73,6 +78,8 @@ export default function ToastNotification({
           <div className="ml-4 flex-shrink-0">
             <button
               onClick={handleClose}
+              aria-label="Cerrar notificación"
+              data-testid="toast-close-button"
               className="inline-flex text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-md p-1"
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
