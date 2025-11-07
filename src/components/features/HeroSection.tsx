@@ -4,7 +4,6 @@ import { useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
-import { useTextFadeIn, useTextSlideUp } from '@/lib/hooks/useTextAnimations';
 import Link from 'next/link';
 import BackgroundManager from './BackgroundManager';
 import type { Background } from '@/lib/types/sanity';
@@ -22,20 +21,6 @@ export default function HeroSection({ background }: HeroSectionProps) {
   const subtitleParallaxRef = useParallaxEffect<HTMLParagraphElement>();
   const statsParallaxRef = useParallaxEffect<HTMLDivElement>();
   
-  // Animaciones de texto profesionales (alternativa gratuita a SplitText)
-  const titleSplitRef = useTextFadeIn({
-    type: 'chars',
-    stagger: 0.05,
-    duration: 1.2,
-    delay: 0.5
-  });
-  
-  const subtitleSplitRef = useTextSlideUp({
-    type: 'words',
-    stagger: 0.1,
-    duration: 0.8,
-    delay: 1.2
-  });
 
   // Cursor personalizado que sigue el mouse
   useEffect(() => {
@@ -58,40 +43,38 @@ export default function HeroSection({ background }: HeroSectionProps) {
   useGSAP(() => {
     const tl = gsap.timeline({ delay: 0.3 });
     
-    // Animación espectacular del badge con elastic
-    tl.fromTo(".hero-badge",
-      { 
-        opacity: 0, 
-        scale: 0,
-        rotation: -180
-      },
-      { 
-        autoAlpha: 1, 
-        scale: 1,
-        rotation: 0,
-        duration: 1,
-        ease: "elastic.out(1, 0.5)"
-      }
-    )
-    
-    // Título con efecto de split text y stagger de letras
-    .fromTo(".hero-title .char",
-      { 
-        opacity: 0, 
-        y: 100,
+    // Badge con animación de palabras (igual que el título)
+    tl.fromTo(".hero-badge .word",
+      {
+        opacity: 0,
+        y: 80,
         rotationX: -90,
         transformOrigin: "50% 50%"
       },
-      { 
-        autoAlpha: 1, 
+      {
+        autoAlpha: 1,
         y: 0,
         rotationX: 0,
         duration: 1.2,
-        stagger: {
-          amount: 0.8,
-          from: "start",
-          ease: "power4.out"
-        },
+        stagger: 0.15,
+        ease: "power4.out"
+      }
+    )
+    
+    // Título con efecto de split text y stagger de palabras (igual que "Proyectos que inspiran")
+    .fromTo(".hero-title .word",
+      {
+        opacity: 0,
+        y: 80,
+        rotationX: -90,
+        transformOrigin: "50% 50%"
+      },
+      {
+        autoAlpha: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 1.2,
+        stagger: 0.15,
         ease: "power4.out"
       },
       "-=0.5"
@@ -104,17 +87,21 @@ export default function HeroSection({ background }: HeroSectionProps) {
       "-=0.8"
     )
     
-    // Subtítulo con efecto de escritura
-    .fromTo(".hero-subtitle",
-      { 
+    // Subtítulo con animación de palabras (igual que el título y badge)
+    .fromTo(".hero-subtitle .word",
+      {
         opacity: 0,
-        clipPath: "inset(0 100% 0 0)"
+        y: 80,
+        rotationX: -90,
+        transformOrigin: "50% 50%"
       },
-      { 
+      {
         autoAlpha: 1,
-        clipPath: "inset(0 0% 0 0)",
-        duration: 1,
-        ease: "power2.out"
+        y: 0,
+        rotationX: 0,
+        duration: 1.2,
+        stagger: 0.08,
+        ease: "power4.out"
       },
       "-=0.6"
     )
@@ -220,24 +207,26 @@ export default function HeroSection({ background }: HeroSectionProps) {
 
       <div className="max-w-5xl mx-auto w-full relative z-10">
         {/* Badge - Montserrat (font-sans) */}
-        <div className="flex justify-center mb-8 hero-badge opacity-0 invisible">
+        <div className="flex justify-center mb-8 hero-badge" style={{ perspective: '1000px' }}>
           <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-sans font-medium tracking-wide">
             <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse"></span>
-            Disponible para nuevos proyectos
+            <span className="word inline-block opacity-0 invisible mr-1">Disponible</span>
+            <span className="word inline-block opacity-0 invisible mr-1">para</span>
+            <span className="word inline-block opacity-0 invisible mr-1">nuevos</span>
+            <span className="word inline-block opacity-0 invisible">proyectos</span>
           </span>
         </div>
 
         {/* Title con SplitText - Satoshi (font-display) con parallax */}
         <h1 
-          ref={(el) => {
-            titleParallaxRef.current = el;
-            titleSplitRef.current = el;
-          }}
+          ref={titleParallaxRef}
           data-speed="0.8" 
           data-lag="0.2"
           className="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 text-center mb-8 leading-tight tracking-tight"
+          style={{ perspective: '1000px' }}
         >
-          UZI AGENCY
+          <span className="word inline-block opacity-0 invisible mr-4">UZI</span>
+          <span className="word inline-block opacity-0 invisible">AGENCY</span>
         </h1>
 
         {/* Línea decorativa */}
@@ -247,16 +236,24 @@ export default function HeroSection({ background }: HeroSectionProps) {
 
         {/* Subtitle con SplitText - Montserrat (font-sans) con parallax */}
         <p 
-          ref={(el) => {
-            subtitleParallaxRef.current = el;
-            subtitleSplitRef.current = el;
-          }}
+          ref={subtitleParallaxRef}
           data-speed="0.9" 
           data-lag="0.3"
           className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal"
+          style={{ perspective: '1000px' }}
         >
-          Creamos experiencias web limpias, funcionales y memorables. 
-          Menos ruido, más impacto.
+          <span className="word inline-block opacity-0 invisible">Creamos</span>{' '}
+          <span className="word inline-block opacity-0 invisible">experiencias</span>{' '}
+          <span className="word inline-block opacity-0 invisible">web</span>{' '}
+          <span className="word inline-block opacity-0 invisible">limpias,</span>{' '}
+          <span className="word inline-block opacity-0 invisible">funcionales</span>{' '}
+          <span className="word inline-block opacity-0 invisible">y</span>{' '}
+          <span className="word inline-block opacity-0 invisible">memorables.</span>
+          <br className="hidden md:block" />
+          <span className="word inline-block opacity-0 invisible">Menos</span>{' '}
+          <span className="word inline-block opacity-0 invisible">ruido,</span>{' '}
+          <span className="word inline-block opacity-0 invisible">más</span>{' '}
+          <span className="word inline-block opacity-0 invisible">impacto.</span>
         </p>
 
         {/* CTA Buttons - Montserrat (font-sans) */}
