@@ -43,21 +43,17 @@ export default function HeroSection({ background }: HeroSectionProps) {
   useGSAP(() => {
     const tl = gsap.timeline({ delay: 0.3 });
     
-    // Badge con animación de palabras (igual que el título)
-    tl.fromTo(".hero-badge .word",
+    // Badge con clip-path (igual que el subtítulo)
+    tl.fromTo(".hero-badge",
       {
         opacity: 0,
-        y: 80,
-        rotationX: -90,
-        transformOrigin: "50% 50%"
+        clipPath: "inset(0 100% 0 0)"
       },
       {
         autoAlpha: 1,
-        y: 0,
-        rotationX: 0,
+        clipPath: "inset(0 0% 0 0)",
         duration: 1.2,
-        stagger: 0.15,
-        ease: "power4.out"
+        ease: "power2.out"
       }
     )
     
@@ -87,21 +83,17 @@ export default function HeroSection({ background }: HeroSectionProps) {
       "-=0.8"
     )
     
-    // Subtítulo con animación de palabras (igual que el título y badge)
-    .fromTo(".hero-subtitle .word",
+    // Subtítulo con clip-path (igual que "Cada proyecto es una historia...")
+    .fromTo(".hero-subtitle",
       {
         opacity: 0,
-        y: 80,
-        rotationX: -90,
-        transformOrigin: "50% 50%"
+        clipPath: "inset(0 100% 0 0)"
       },
       {
         autoAlpha: 1,
-        y: 0,
-        rotationX: 0,
+        clipPath: "inset(0 0% 0 0)",
         duration: 1.2,
-        stagger: 0.08,
-        ease: "power4.out"
+        ease: "power2.out"
       },
       "-=0.6"
     )
@@ -207,13 +199,10 @@ export default function HeroSection({ background }: HeroSectionProps) {
 
       <div className="max-w-5xl mx-auto w-full relative z-10">
         {/* Badge - Montserrat (font-sans) */}
-        <div className="flex justify-center mb-8 hero-badge" style={{ perspective: '1000px' }}>
-          <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-sans font-medium tracking-wide">
+        <div className="flex justify-center mb-8">
+          <span className="hero-badge inline-flex items-center px-4 py-2 rounded-full bg-gray-100 text-gray-800 text-sm font-sans font-medium tracking-wide opacity-0 invisible">
             <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse"></span>
-            <span className="word inline-block opacity-0 invisible mr-1">Disponible</span>
-            <span className="word inline-block opacity-0 invisible mr-1">para</span>
-            <span className="word inline-block opacity-0 invisible mr-1">nuevos</span>
-            <span className="word inline-block opacity-0 invisible">proyectos</span>
+            Disponible para nuevos proyectos
           </span>
         </div>
 
@@ -234,26 +223,16 @@ export default function HeroSection({ background }: HeroSectionProps) {
           <div className="hero-line w-24 h-0.5 bg-gray-900"></div>
         </div>
 
-        {/* Subtitle con SplitText - Montserrat (font-sans) con parallax */}
+        {/* Subtitle con clip-path - Montserrat (font-sans) con parallax */}
         <p 
           ref={subtitleParallaxRef}
           data-speed="0.9" 
           data-lag="0.3"
-          className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal"
-          style={{ perspective: '1000px' }}
+          className="hero-subtitle font-sans text-lg md:text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed tracking-normal opacity-0 invisible"
         >
-          <span className="word inline-block opacity-0 invisible">Creamos</span>{' '}
-          <span className="word inline-block opacity-0 invisible">experiencias</span>{' '}
-          <span className="word inline-block opacity-0 invisible">web</span>{' '}
-          <span className="word inline-block opacity-0 invisible">limpias,</span>{' '}
-          <span className="word inline-block opacity-0 invisible">funcionales</span>{' '}
-          <span className="word inline-block opacity-0 invisible">y</span>{' '}
-          <span className="word inline-block opacity-0 invisible">memorables.</span>
+          Creamos experiencias web limpias, funcionales y memorables.
           <br className="hidden md:block" />
-          <span className="word inline-block opacity-0 invisible">Menos</span>{' '}
-          <span className="word inline-block opacity-0 invisible">ruido,</span>{' '}
-          <span className="word inline-block opacity-0 invisible">más</span>{' '}
-          <span className="word inline-block opacity-0 invisible">impacto.</span>
+          Menos ruido, más impacto.
         </p>
 
         {/* CTA Buttons - Montserrat (font-sans) */}
