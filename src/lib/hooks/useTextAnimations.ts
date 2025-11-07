@@ -17,9 +17,17 @@ interface TextAnimationOptions extends TextSplitOptions {
   onComplete?: () => void;
 }
 
+// Tipo para el TextSplitter
+interface TextSplitter {
+  getChars(): HTMLElement[];
+  getWords(): HTMLElement[];
+  getLines(): HTMLElement[];
+  revert(): void;
+}
+
 export function useTextAnimations(options: TextAnimationOptions) {
   const elementRef = useRef<HTMLElement>(null);
-  const splitterRef = useRef<any>(null);
+  const splitterRef = useRef<TextSplitter | null>(null);
 
   const {
     type = 'chars',
@@ -39,7 +47,7 @@ export function useTextAnimations(options: TextAnimationOptions) {
     if (!elementRef.current) return;
 
     // Crear TextSplitter
-    splitterRef.current = createTextSplitter(elementRef.current, { type });
+    splitterRef.current = createTextSplitter(elementRef.current, { type }) as TextSplitter;
 
     // Obtener elementos a animar
     const elements = getElementsToAnimate();
@@ -84,6 +92,7 @@ export function useTextAnimations(options: TextAnimationOptions) {
         tl.kill();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, animation, stagger, duration, delay, ease, scrollTrigger, trigger, start, end, onComplete]);
 
   const getElementsToAnimate = (): HTMLElement[] => {

@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
-import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
+import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
 import { useTextFadeIn, useTextSlideUp } from '@/lib/hooks/useTextAnimations';
 import Link from 'next/link';
 import BackgroundManager from './BackgroundManager';

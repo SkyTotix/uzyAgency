@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
-import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
+import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
 import { Card } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { urlFor } from '@/lib/sanity';

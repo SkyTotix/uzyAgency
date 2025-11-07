@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from 'react';
 import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
 
 export default function Footer() {

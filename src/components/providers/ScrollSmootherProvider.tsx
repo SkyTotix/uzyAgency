@@ -7,6 +7,32 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Registrar ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
+// Tipos para ScrollSmoother (plugin premium de GSAP)
+interface ScrollSmootherInstance {
+  kill(): void;
+  refresh(): void;
+}
+
+interface ScrollSmootherStatic {
+  create(config: ScrollSmootherConfig): ScrollSmootherInstance;
+}
+
+interface ScrollSmootherConfig {
+  wrapper: string;
+  content: string;
+  smooth: number;
+  effects: boolean;
+  smoothTouch: number;
+  normalizeScroll: boolean;
+  ignoreMobileResize: boolean;
+  preventDefault: boolean;
+  onUpdate?: (self: ScrollSmootherInstance) => void;
+}
+
+type GSAPWithScrollSmoother = typeof gsap & {
+  ScrollSmoother?: ScrollSmootherStatic;
+};
+
 interface ScrollSmootherProviderProps {
   children: React.ReactNode;
 }
@@ -16,8 +42,9 @@ export default function ScrollSmootherProvider({ children }: ScrollSmootherProvi
 
   useEffect(() => {
     // Verificar si ScrollSmoother está disponible
-    if (typeof window !== 'undefined' && 'ScrollSmoother' in gsap) {
-      const ScrollSmoother = (gsap as any).ScrollSmoother;
+    const gsapWithScrollSmoother = gsap as GSAPWithScrollSmoother;
+    if (typeof window !== 'undefined' && gsapWithScrollSmoother.ScrollSmoother) {
+      const ScrollSmoother = gsapWithScrollSmoother.ScrollSmoother;
       
       // Crear ScrollSmoother con configuración optimizada para performance
       const smoother = ScrollSmoother.create({
@@ -29,7 +56,7 @@ export default function ScrollSmootherProvider({ children }: ScrollSmootherProvi
         normalizeScroll: true, // Normalizar scroll entre navegadores
         ignoreMobileResize: true, // Ignorar cambios de tamaño en móviles
         preventDefault: true, // Prevenir scroll default
-        onUpdate: (self: any) => {
+        onUpdate: () => {
           // Optimización: Solo actualizar elementos visibles
           const elements = document.querySelectorAll('[data-speed], [data-lag]');
           elements.forEach(el => {

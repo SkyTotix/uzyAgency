@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 import { sanityClientReadOnly } from '@/lib/sanity';
 
 // Forzar que esta página sea dinámica
@@ -136,11 +136,11 @@ export default function TestImagesPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {images.map((image, index) => {
-                const imageUrl = sanityUtils.imageUrl({
+                const imageUrl = urlFor({
                   _type: 'image',
                   asset: image.asset,
                   alt: image.alt || `Imagen ${index + 1}`
-                }, 400, 300);
+                }).width(400).height(300).url();
 
                 return (
                   <div key={image._id} className="bg-gray-50 rounded-lg p-4">

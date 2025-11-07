@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
-import { useParallaxEffect, useFadeInEffect } from '@/lib/hooks/useScrollSmoother';
+import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
 import Link from 'next/link';
 
 interface Service {

@@ -7,13 +7,38 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Registrar ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
+// Tipos para ScrollSmoother (plugin premium de GSAP)
+interface ScrollSmootherInstance {
+  kill(): void;
+  refresh(): void;
+}
+
+interface ScrollSmootherStatic {
+  create(config: ScrollSmootherConfig): ScrollSmootherInstance;
+}
+
+interface ScrollSmootherConfig {
+  wrapper: string;
+  content: string;
+  smooth: number;
+  effects: boolean;
+  smoothTouch: number;
+  normalizeScroll: boolean;
+  ignoreMobileResize: boolean;
+}
+
+type GSAPWithScrollSmoother = typeof gsap & {
+  ScrollSmoother?: ScrollSmootherStatic;
+};
+
 export function useScrollSmoother() {
-  const smootherRef = useRef<any>(null);
+  const smootherRef = useRef<ScrollSmootherInstance | null>(null);
 
   useEffect(() => {
     // Verificar si ScrollSmoother está disponible
-    if (typeof window !== 'undefined' && 'ScrollSmoother' in gsap) {
-      const ScrollSmoother = (gsap as any).ScrollSmoother;
+    const gsapWithScrollSmoother = gsap as GSAPWithScrollSmoother;
+    if (typeof window !== 'undefined' && gsapWithScrollSmoother.ScrollSmoother) {
+      const ScrollSmoother = gsapWithScrollSmoother.ScrollSmoother;
       
       // Crear ScrollSmoother
       smootherRef.current = ScrollSmoother.create({
@@ -45,14 +70,15 @@ export function useParallaxEffect<T extends HTMLElement = HTMLElement>() {
   const elementRef = useRef<T>(null);
 
   useEffect(() => {
-    if (!elementRef.current) return;
+    const element = elementRef.current;
+    if (!element) return;
 
     // Crear efecto de parallax con scrub suave según documentación oficial
-    gsap.to(elementRef.current, {
+    gsap.to(element, {
       yPercent: -30, // Movimiento más sutil
       ease: "none",
       scrollTrigger: {
-        trigger: elementRef.current,
+        trigger: element,
         start: "top bottom", // Cuando el top del elemento toca el bottom del viewport
         end: "bottom top", // Cuando el bottom del elemento toca el top del viewport
         scrub: 1, // Suavizado de 1 segundo (más natural que true)
@@ -63,7 +89,7 @@ export function useParallaxEffect<T extends HTMLElement = HTMLElement>() {
     // Cleanup
     return () => {
       ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === elementRef.current) {
+        if (trigger.trigger === element) {
           trigger.kill();
         }
       });
@@ -78,10 +104,11 @@ export function useFadeInEffect<T extends HTMLElement = HTMLElement>() {
   const elementRef = useRef<T>(null);
 
   useEffect(() => {
-    if (!elementRef.current) return;
+    const element = elementRef.current;
+    if (!element) return;
 
     // Crear efecto de fade in con scrub suave
-    gsap.fromTo(elementRef.current, 
+    gsap.fromTo(element, 
       { 
         opacity: 0, 
         y: 80,
@@ -93,7 +120,7 @@ export function useFadeInEffect<T extends HTMLElement = HTMLElement>() {
         scale: 1,
         ease: "none",
         scrollTrigger: {
-          trigger: elementRef.current,
+          trigger: element,
           start: "top 85%", // Más temprano para mejor visibilidad
           end: "top 50%", // Animación más corta
           scrub: 0.5, // Suavizado de 0.5 segundos
@@ -106,7 +133,7 @@ export function useFadeInEffect<T extends HTMLElement = HTMLElement>() {
     // Cleanup
     return () => {
       ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === elementRef.current) {
+        if (trigger.trigger === element) {
           trigger.kill();
         }
       });

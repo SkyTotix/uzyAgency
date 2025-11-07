@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { sanityUtils } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 import { sanityClientReadOnly } from '@/lib/sanity';
 
 // Forzar que esta página sea dinámica
@@ -155,19 +155,19 @@ export default function DebugBlogPage() {
               {posts.map((post, index) => {
                 // Generar URLs de imagen
                 const mainImageUrl = post.mainImage?.asset?._ref 
-                  ? sanityUtils.imageUrl({
+                  ? urlFor({
                       _type: 'image',
                       asset: post.mainImage.asset,
                       alt: post.mainImage.alt
-                    }, 400, 300)
+                    }).width(400).height(300).url()
                   : null;
 
                 const authorImageUrl = post.author?.image?.asset?._ref
-                  ? sanityUtils.imageUrl({
+                  ? urlFor({
                       _type: 'image',
                       asset: post.author.image.asset,
                       alt: post.author.image.alt
-                    }, 64, 64)
+                    }).width(64).height(64).url()
                   : null;
 
                 return (
