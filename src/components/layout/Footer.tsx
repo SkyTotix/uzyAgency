@@ -4,11 +4,11 @@ import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
 
 export default function Footer() {
   const footerParallaxRef = useParallaxEffect<HTMLElement>();
-  
+
   return (
-    <footer 
+    <footer
       ref={footerParallaxRef}
-      data-speed="1.1" 
+      data-speed="1.1"
       data-lag="0.4"
       className="bg-gray-900 text-white"
     >
@@ -20,7 +20,7 @@ export default function Footer() {
               Uzi Agency
             </h3>
             <p className="text-gray-300 font-sans mb-4 max-w-md leading-relaxed tracking-normal">
-              Creamos experiencias digitales extraordinarias con animaciones profesionales 
+              Creamos experiencias digitales extraordinarias con animaciones profesionales
               y tecnologías de vanguardia.
             </p>
             <div className="flex space-x-4">
@@ -60,9 +60,9 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-sans font-semibold mb-4 tracking-wide">Contacto</h4>
             <ul className="space-y-2 text-gray-300 font-sans tracking-normal">
-              <li>hola@uziagency.com</li>
-              <li>+1 (555) 123-4567</li>
-              <li>Ciudad, País</li>
+              <li>uziagency@gmail.com</li>
+              <li>+52 777 493 3883</li>
+              <li>Cuernavaca, Morelos</li>
             </ul>
           </div>
         </div>

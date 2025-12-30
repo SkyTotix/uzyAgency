@@ -22,17 +22,17 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {label}
           </label>
         )}
-        
+
         <textarea
           id={textareaId}
           ref={ref}
           className={cn(
-            // Estilos base
-            "block w-full rounded-md shadow-sm sm:text-sm",
-            // Border y fondo
-            "border-gray-300 bg-white",
-            // Focus states con nueva paleta
-            "focus:border-primary focus:ring-primary focus:ring-2 focus:ring-offset-0",
+            // Estilos base - sin sombra, borde definido
+            "block w-full rounded-lg sm:text-sm",
+            // Border sutil y fondo
+            "border border-gray-200 bg-white",
+            // Focus states - sombra solo en focus
+            "focus:border-primary focus:ring-primary focus:ring-2 focus:ring-offset-0 focus:shadow-sm",
             // Disabled state
             "disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed",
             // Error state

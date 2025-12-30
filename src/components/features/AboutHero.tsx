@@ -162,28 +162,28 @@ export default function AboutHero({ teamCount }: AboutHeroProps) {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6" style={{ perspective: '1500px' }}>
-          <div className="about-stat text-center p-6 border border-gray-200 hover:border-gray-900 transition-colors opacity-0 invisible">
+          <div className="about-stat text-center p-6 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-xl opacity-0 invisible">
             <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <span className="counter-value plus" data-target="50">0</span>
             </div>
             <div className="text-sm text-gray-600 font-medium">Proyectos</div>
           </div>
           
-          <div className="about-stat text-center p-6 border border-gray-200 hover:border-gray-900 transition-colors opacity-0 invisible">
+          <div className="about-stat text-center p-6 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-xl opacity-0 invisible">
             <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <span className="counter-value plus" data-target={teamCount}>0</span>
             </div>
             <div className="text-sm text-gray-600 font-medium">Equipo</div>
           </div>
           
-          <div className="about-stat text-center p-6 border border-gray-200 hover:border-gray-900 transition-colors opacity-0 invisible">
+          <div className="about-stat text-center p-6 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-xl opacity-0 invisible">
             <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <span className="counter-value percentage" data-target="98">0</span>
             </div>
             <div className="text-sm text-gray-600 font-medium">Satisfacción</div>
           </div>
           
-          <div className="about-stat text-center p-6 border border-gray-200 hover:border-gray-900 transition-colors opacity-0 invisible">
+          <div className="about-stat text-center p-6 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-xl opacity-0 invisible">
             <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <span className="counter-value plus" data-target="5">0</span>
             </div>

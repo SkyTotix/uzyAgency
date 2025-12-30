@@ -183,8 +183,8 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
 
         {/* Estadísticas */}
         <div className="portfolio-stats opacity-0 invisible">
-          <div className="flex justify-center space-x-8 md:space-x-12">
-            <div className="text-center">
+          <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-8">
+            <div className="text-center px-6 py-5 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-lg">
               <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
                 {projects.length}
               </div>
@@ -192,7 +192,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                 Proyectos
               </div>
             </div>
-            <div className="text-center">
+            <div className="text-center px-6 py-5 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-lg">
               <div className="text-3xl md:text-4xl font-bold text-purple-600 mb-2">
                 {projects.filter(p => p.featured).length}
               </div>
@@ -200,7 +200,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                 Destacados
               </div>
             </div>
-            <div className="text-center">
+            <div className="text-center px-6 py-5 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-lg">
               <div className="text-3xl md:text-4xl font-bold text-green-600 mb-2">
                 {new Set(projects.map(p => p.category?.title).filter(Boolean)).size}
               </div>

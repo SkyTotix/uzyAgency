@@ -135,12 +135,12 @@ export default function ServicesPageHero({ totalServices }: ServicesPageHeroProp
 
         {/* Contador de servicios */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-4 px-6 py-3 border border-gray-300">
-            <span className="text-4xl font-bold text-gray-900">
+          <div className="inline-flex flex-col items-center px-6 py-4 bg-white/20 backdrop-blur-md border border-white/30 rounded-xl shadow-xl hover:bg-white/30 hover:border-white/60 transition-all duration-300 min-w-[160px] space-y-2">
+            <span className="text-4xl md:text-5xl font-bold text-gray-900 leading-none">
               <span className="services-counter">0</span>
             </span>
-            <span className="text-sm text-gray-600 font-medium uppercase tracking-wider">
-              Servicios disponibles
+            <span className="text-sm text-gray-600 font-medium tracking-wide">
+              Servicios
             </span>
           </div>
         </div>

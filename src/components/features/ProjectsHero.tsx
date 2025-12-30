@@ -150,21 +150,21 @@ export default function ProjectsHero({ stats }: ProjectsHeroProps) {
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto" style={{ perspective: '1500px' }}>
-          <div className="stat-card text-center p-6 border border-gray-200 hover:border-gray-900 transition-colors opacity-0 invisible">
+          <div className="stat-card text-center p-6 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-xl opacity-0 invisible">
             <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <span className="counter-value" data-target={stats.total}>0</span>
             </div>
             <div className="text-sm text-gray-600 font-medium">Proyectos</div>
           </div>
           
-          <div className="stat-card text-center p-6 border border-gray-200 hover:border-gray-900 transition-colors opacity-0 invisible">
+          <div className="stat-card text-center p-6 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-xl opacity-0 invisible">
             <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <span className="counter-value" data-target={stats.featured}>0</span>
             </div>
             <div className="text-sm text-gray-600 font-medium">Destacados</div>
           </div>
           
-          <div className="stat-card text-center p-6 border border-gray-200 hover:border-gray-900 transition-colors opacity-0 invisible">
+          <div className="stat-card text-center p-6 bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/30 hover:border-white/60 transition-all duration-300 rounded-xl shadow-xl opacity-0 invisible">
             <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <span className="counter-value" data-target={stats.categories}>0</span>
             </div>

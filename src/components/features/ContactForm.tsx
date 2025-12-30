@@ -67,7 +67,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
     title: '',
     message: ''
   });
-  
+
   const {
     register,
     handleSubmit,
@@ -82,7 +82,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
 
   // Watch para el contador de caracteres
   const messageValue = watch('message', '');
-  
+
   const closeToast = () => {
     setToast(prev => ({ ...prev, show: false }));
   };
@@ -91,10 +91,10 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
     // Animación del header
     gsap.fromTo(".contact-title",
       { opacity: 0, y: 60 },
-      { 
-        autoAlpha: 1, 
-        y: 0, 
-        duration: 1, 
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 1,
         ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -107,10 +107,10 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
 
     gsap.fromTo(".contact-subtitle",
       { opacity: 0, y: 40 },
-      { 
-        autoAlpha: 1, 
-        y: 0, 
-        duration: 0.8, 
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.8,
         ease: "power2.out",
         delay: 0.2,
         scrollTrigger: {
@@ -173,7 +173,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
       if (result.success) {
         console.log('Formulario enviado exitosamente:', result);
         reset();
-        
+
         // Mostrar toast de éxito
         setToast({
           show: true,
@@ -181,7 +181,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
           title: '¡Mensaje Enviado!',
           message: result.message || 'Mensaje enviado exitosamente'
         });
-        
+
         if (onSuccess) {
           onSuccess(result.message || 'Mensaje enviado exitosamente');
         }
@@ -193,12 +193,12 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
           title: 'Error al Enviar',
           message: result.message || 'Error al enviar el mensaje'
         });
-        
+
         setError('root', {
           type: 'manual',
           message: result.message || 'Error al enviar el mensaje'
         });
-        
+
         if (onError) {
           onError(result.message || 'Error al enviar el mensaje');
         }
@@ -206,7 +206,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
     } catch (error) {
       console.error('Error enviando formulario:', error);
       const errorMessage = 'Error interno del servidor. Por favor, inténtalo de nuevo.';
-      
+
       // Mostrar toast de error
       setToast({
         show: true,
@@ -214,12 +214,12 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
         title: 'Error al Enviar',
         message: errorMessage
       });
-      
+
       setError('root', {
         type: 'manual',
         message: errorMessage
       });
-      
+
       if (onError) {
         onError(errorMessage);
       }
@@ -231,19 +231,19 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
     {
       icon: '📧',
       title: 'Email',
-      content: 'hola@uziagency.com',
-      link: 'mailto:hola@uziagency.com'
+      content: 'uziagency@gmail.com',
+      link: 'mailto:uziagency@gmail.com'
     },
     {
       icon: '📱',
       title: 'Teléfono',
-      content: '+1 (555) 123-4567',
-      link: 'tel:+15551234567'
+      content: '+52 777 493 3883',
+      link: 'tel:+527774933883'
     },
     {
       icon: '📍',
       title: 'Ubicación',
-      content: 'Ciudad de México, México',
+      content: 'Cuernavaca, Morelos, México',
       link: null
     },
     {
@@ -274,15 +274,15 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
           <div className="contact-form">
             <div className="bg-white p-8">
               <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-                {/* Campos básicos */}
-                <div className="space-y-6">
+                {/* Campos básicos - mayor separación entre grupos */}
+                <div className="space-y-8">
                   <div className="form-element opacity-0 invisible">
                     <Input
                       label="Nombre completo"
                       {...register('name')}
-                      placeholder="Tu nombre completo"
+                      placeholder="Juan Pérez"
                       error={errors.name?.message}
-                      className="border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-4 py-3 text-lg"
+                      className="border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
                     />
                   </div>
                   <div className="form-element opacity-0 invisible">
@@ -290,39 +290,39 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                       type="email"
                       label="Correo electrónico"
                       {...register('email')}
-                      placeholder="tu@email.com"
+                      placeholder="juan@empresa.com"
                       error={errors.email?.message}
-                      className="border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-4 py-3 text-lg"
+                      className="border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
                     />
                   </div>
                   <div className="form-element opacity-0 invisible">
                     <Input
-                      label="Empresa"
+                      label="Empresa (opcional)"
                       {...register('company')}
-                      placeholder="Nombre de tu empresa"
+                      placeholder="ACME Corp"
                       error={errors.company?.message}
-                      className="border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-4 py-3 text-lg"
+                      className="border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
                     />
                   </div>
                 </div>
 
-                {/* Mensaje */}
+                {/* Mensaje - contador movido abajo */}
                 <div className="form-element opacity-0 invisible">
-                  <div className="flex justify-between items-center mb-3">
-                    <label className="block text-lg font-medium text-gray-900">
-                      Mensaje
-                    </label>
-                    <span className="text-sm text-gray-400">
+                  <label className="block text-lg font-medium text-gray-900 mb-2">
+                    Mensaje
+                  </label>
+                  <div className="relative">
+                    <Textarea
+                      {...register('message')}
+                      rows={6}
+                      placeholder="Necesito una página web para mi negocio de..."
+                      error={errors.message?.message}
+                      className="resize-none border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
+                    />
+                    <span className="absolute bottom-3 right-3 text-xs text-gray-400">
                       {messageValue.length}/1000
                     </span>
                   </div>
-                  <Textarea
-                    {...register('message')}
-                    rows={6}
-                    placeholder="Cuéntanos sobre tu proyecto, objetivos, ideas específicas..."
-                    error={errors.message?.message}
-                    className="resize-none border-0 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-4 py-3 text-lg"
-                  />
                 </div>
 
                 {/* Botón de envío */}
@@ -331,7 +331,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     type="submit"
                     variant="primary"
                     size="lg"
-                    className="w-full bg-gray-900 hover:bg-gray-800 text-white font-medium py-4 px-8 text-lg transition-colors duration-200"
+                    className="w-full bg-gray-900 hover:bg-gray-800 text-white font-medium py-4 px-8 text-lg rounded-lg transition-colors duration-200"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -365,8 +365,8 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-1">{item.title}</h4>
                       {item.link ? (
-                        <a 
-                          href={item.link} 
+                        <a
+                          href={item.link}
                           className="text-gray-600 hover:text-gray-900 transition-colors text-lg"
                         >
                           {item.content}
