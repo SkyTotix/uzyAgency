@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 import withPWA from '@ducanh2912/next-pwa';
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      { source: '/manifest.json', destination: '/api/manifest' },
+    ];
+  },
   images: {
     remotePatterns: [
       {

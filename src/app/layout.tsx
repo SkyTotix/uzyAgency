@@ -6,7 +6,7 @@ import ScrollSmootherProvider from "@/components/providers/ScrollSmootherProvide
 import { montserrat, satoshi } from "@/lib/fonts";
 
 export const metadata: Metadata = {
-  title: "UziAgency | High-Performance Digital Development",
+  title: "UziAgency | Desarrollo Digital de Alto Rendimiento",
   description: "Agencia digital especializada en desarrollo web de alto rendimiento, animaciones profesionales y experiencias digitales extraordinarias. Transformamos ideas en realidad con tecnología de vanguardia.",
   keywords: ["desarrollo web", "animaciones", "agencia digital", "Next.js", "React", "GSAP", "Tailwind CSS", "experiencias digitales"],
   authors: [{ name: "UziAgency Team" }],
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "UziAgency | High-Performance Digital Development",
+    title: "UziAgency | Desarrollo Digital de Alto Rendimiento",
     description: "Agencia digital especializada en desarrollo web de alto rendimiento, animaciones profesionales y experiencias digitales extraordinarias.",
     url: '/',
     siteName: 'UziAgency',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'UziAgency - High-Performance Digital Development',
+        alt: 'UziAgency - Desarrollo Digital de Alto Rendimiento',
       },
     ],
     locale: 'es_ES',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "UziAgency | High-Performance Digital Development",
+    title: "UziAgency | Desarrollo Digital de Alto Rendimiento",
     description: "Agencia digital especializada en desarrollo web de alto rendimiento y animaciones profesionales.",
     images: ['/og-image.jpg'],
   },

@@ -71,10 +71,9 @@ test.describe('Homepage', () => {
     const logo = page.locator('text=/Uzi Agency/i').first();
     await expect(logo).toBeVisible();
 
-    // Verificar enlaces de navegación principales
-    await expect(page.locator('nav a:has-text("Inicio")')).toBeVisible();
+    // Verificar enlaces de navegación principales (Proyectos oculto cuando SHOW_PROJECTS es false)
     await expect(page.locator('nav a:has-text("Servicios")')).toBeVisible();
-    await expect(page.locator('nav a:has-text("Portfolio")')).toBeVisible();
+    await expect(page.locator('nav a:has-text("Acerca")')).toBeVisible();
     await expect(page.locator('nav a:has-text("Blog")')).toBeVisible();
   });
 
@@ -163,6 +162,11 @@ test.describe('Homepage', () => {
     expect(manifestContent).toHaveProperty('icons');
     expect(Array.isArray(manifestContent.icons)).toBe(true);
     expect(manifestContent.icons.length).toBeGreaterThan(0);
+
+    // Cuando SHOW_PROJECTS es false, el shortcut Portfolio no debe estar
+    const shortcuts = manifestContent.shortcuts || [];
+    const portfolioShortcut = shortcuts.find((s: { name: string }) => s.name === 'Portfolio');
+    expect(portfolioShortcut).toBeUndefined();
 
     // Volver a la homepage
     await page.goto('/');

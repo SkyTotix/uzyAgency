@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import { Card, ToastNotification } from '@/components/ui';
 import ContactForm from './ContactForm';
+import { SITE_CONTACT } from '@/lib/config/site';
 export default function ContactSection() {
   const contactRef = useRef<HTMLElement>(null);
   const [toast, setToast] = useState<{
@@ -92,8 +93,7 @@ export default function ContactSection() {
                     <span className="text-blue-600 mr-3 mt-1">🏢</span>
                     <div>
                       <strong>UziAgency</strong><br />
-                      Av. Principal 123, Oficina 456<br />
-                      Ciudad, País 12345
+                      {SITE_CONTACT.address.full}
                     </div>
                   </div>
                 </div>
@@ -107,19 +107,19 @@ export default function ContactSection() {
                 <div className="space-y-4 text-gray-700">
                   <p className="flex items-center">
                     <span className="text-blue-600 mr-3">📧</span>
-                    <a href="mailto:hola@uziagency.com" className="hover:text-blue-600 transition-colors">
-                      hola@uziagency.com
+                    <a href={`mailto:${SITE_CONTACT.email}`} className="hover:text-blue-600 transition-colors">
+                      {SITE_CONTACT.email}
                     </a>
                   </p>
                   <p className="flex items-center">
                     <span className="text-blue-600 mr-3">📱</span>
-                    <a href="tel:+1234567890" className="hover:text-blue-600 transition-colors">
-                      +1 (234) 567-8900
+                    <a href={`tel:${SITE_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-blue-600 transition-colors">
+                      {SITE_CONTACT.phone}
                     </a>
                   </p>
                   <p className="flex items-center">
                     <span className="text-blue-600 mr-3">💬</span>
-                    <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">
+                    <a href={`https://wa.me/${SITE_CONTACT.whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">
                       WhatsApp
                     </a>
                   </p>
@@ -153,11 +153,11 @@ export default function ContactSection() {
                   Respuesta Rápida
                 </h2>
                 <p className="text-blue-100 mb-4">
-                  Nos comprometemos a responder todas las consultas en un plazo máximo de 24 horas.
+                  Nos esforzamos por responder todas las consultas en un plazo de 24-48 horas.
                 </p>
                 <div className="flex items-center text-blue-200">
                   <span className="text-2xl mr-2">🚀</span>
-                  <span className="text-sm">Tiempo promedio de respuesta: 4 horas</span>
+                  <span className="text-sm">Respondemos lo antes posible</span>
                 </div>
               </Card>
             </div>

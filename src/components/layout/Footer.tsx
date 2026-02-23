@@ -1,6 +1,9 @@
 "use client";
 
+import Link from 'next/link';
 import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
+import { SHOW_PROJECTS } from '@/lib/config/features';
+import { SITE_CONTACT } from '@/lib/config/site';
 
 export default function Footer() {
   const footerParallaxRef = useParallaxEffect<HTMLElement>();
@@ -49,10 +52,12 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-sans font-semibold mb-4 tracking-wide">Enlaces Rápidos</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Inicio</a></li>
-              <li><a href="#" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Servicios</a></li>
-              <li><a href="#" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Portfolio</a></li>
-              <li><a href="#" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Contacto</a></li>
+              <li><Link href="/" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Inicio</Link></li>
+              <li><Link href="/services" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Servicios</Link></li>
+              {SHOW_PROJECTS && (
+                <li><Link href="/projects" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Portfolio</Link></li>
+              )}
+              <li><Link href="/contact" className="text-gray-300 font-sans hover:text-white transition-colors tracking-normal">Contacto</Link></li>
             </ul>
           </div>
 
@@ -60,16 +65,16 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-sans font-semibold mb-4 tracking-wide">Contacto</h4>
             <ul className="space-y-2 text-gray-300 font-sans tracking-normal">
-              <li>uziagency@gmail.com</li>
-              <li>+52 777 493 3883</li>
-              <li>Cuernavaca, Morelos</li>
+              <li><a href={`mailto:${SITE_CONTACT.email}`} className="hover:text-white transition-colors">{SITE_CONTACT.email}</a></li>
+              <li><a href={`tel:${SITE_CONTACT.phone.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{SITE_CONTACT.phone}</a></li>
+              <li>{SITE_CONTACT.address.full}</li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 font-sans text-sm tracking-wide">
-            © 2024 Uzi Agency. Todos los derechos reservados.
+            © 2026 Uzi Agency. Todos los derechos reservados.
           </p>
         </div>
       </div>

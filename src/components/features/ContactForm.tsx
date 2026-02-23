@@ -9,6 +9,7 @@ import { gsap } from '@/lib/gsap';
 import { Button, Input, Textarea, ToastNotification } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { processContactForm } from '@/lib/server/contact';
+import { SITE_CONTACT } from '@/lib/config/site';
 
 // Esquema de validación Zod
 const contactFormSchema = z.object({
@@ -231,19 +232,19 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
     {
       icon: '📧',
       title: 'Email',
-      content: 'uziagency@gmail.com',
-      link: 'mailto:uziagency@gmail.com'
+      content: SITE_CONTACT.email,
+      link: `mailto:${SITE_CONTACT.email}`
     },
     {
       icon: '📱',
       title: 'Teléfono',
-      content: '+52 777 493 3883',
-      link: 'tel:+527774933883'
+      content: SITE_CONTACT.phone,
+      link: `tel:${SITE_CONTACT.phone.replace(/\s/g, '')}`
     },
     {
       icon: '📍',
       title: 'Ubicación',
-      content: 'Cuernavaca, Morelos, México',
+      content: SITE_CONTACT.address.full,
       link: null
     },
     {
@@ -280,7 +281,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     <Input
                       label="Nombre completo"
                       {...register('name')}
-                      placeholder="Juan Pérez"
+                      placeholder="Tu nombre"
                       error={errors.name?.message}
                       className="border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
                     />
@@ -290,7 +291,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                       type="email"
                       label="Correo electrónico"
                       {...register('email')}
-                      placeholder="juan@empresa.com"
+                      placeholder="tu@email.com"
                       error={errors.email?.message}
                       className="border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
                     />
@@ -299,7 +300,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     <Input
                       label="Empresa (opcional)"
                       {...register('company')}
-                      placeholder="ACME Corp"
+                      placeholder="Nombre de tu empresa"
                       error={errors.company?.message}
                       className="border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
                     />
@@ -315,7 +316,7 @@ export default function ContactForm({ onSuccess, onError, className }: ContactFo
                     <Textarea
                       {...register('message')}
                       rows={6}
-                      placeholder="Necesito una página web para mi negocio de..."
+                      placeholder="Cuéntanos sobre tu proyecto..."
                       error={errors.message?.message}
                       className="resize-none border border-gray-200 focus:border-blue-600 rounded-lg px-4 py-3 text-lg"
                     />

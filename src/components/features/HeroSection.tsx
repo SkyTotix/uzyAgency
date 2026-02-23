@@ -6,6 +6,7 @@ import { gsap } from '@/lib/gsap';
 import { useParallaxEffect } from '@/lib/hooks/useScrollSmoother';
 import Link from 'next/link';
 import BackgroundManager from './BackgroundManager';
+import { SHOW_PROJECTS } from '@/lib/config/features';
 import type { Background } from '@/lib/types/sanity';
 
 interface HeroSectionProps {
@@ -237,15 +238,17 @@ export default function HeroSection({ background }: HeroSectionProps) {
 
         {/* CTA Buttons - Montserrat (font-sans) */}
         <div className="hero-cta flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
-          <Link
-            href="/projects"
-            className="cta-button group inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white font-sans font-semibold rounded-none hover:bg-gray-800 transition-all duration-200 opacity-0 invisible tracking-wide"
-          >
-            Ver proyectos
-            <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+          {SHOW_PROJECTS && (
+            <Link
+              href="/projects"
+              className="cta-button group inline-flex items-center justify-center px-8 py-4 bg-gray-900 text-white font-sans font-semibold rounded-none hover:bg-gray-800 transition-all duration-200 opacity-0 invisible tracking-wide"
+            >
+              Ver proyectos
+              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          )}
           
           <Link
             href="/contact"
@@ -264,9 +267,15 @@ export default function HeroSection({ background }: HeroSectionProps) {
                 >
                   <div className="hero-stats text-center opacity-0 invisible bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-xl">
                     <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">
-                      <span className="counter-value" data-target="50">0</span>
+                      {SHOW_PROJECTS ? (
+                        <span className="counter-value" data-target="50">0</span>
+                      ) : (
+                        <span>5+</span>
+                      )}
                     </div>
-                    <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">Proyectos</div>
+                    <div className="text-sm text-gray-600 font-sans font-medium tracking-wide">
+                      {SHOW_PROJECTS ? 'Proyectos' : 'Experiencia'}
+                    </div>
                   </div>
                   <div className="hero-stats text-center opacity-0 invisible bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 shadow-xl">
                     <div className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-1">

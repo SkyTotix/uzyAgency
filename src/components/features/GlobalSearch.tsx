@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import type { SearchResponse, SearchResult, SearchResultType } from '@/lib/types/sanity';
+import { SHOW_PROJECTS } from '@/lib/config/features';
 
 // Tipos para bloques de Sanity
 interface SanitySpan {
@@ -116,7 +117,15 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
       }
 
       const data: SearchResponse = await response.json();
-      setResults(data);
+      // Filtrar resultados de proyectos si están ocultos
+      const filteredData = !SHOW_PROJECTS && data.results
+        ? {
+            ...data,
+            results: data.results.filter((r) => r._type !== 'project'),
+            total: data.results.filter((r) => r._type !== 'project').length,
+          }
+        : data;
+      setResults(filteredData);
       setSelectedIndex(0);
     } catch (error) {
       console.error('Error al buscar:', error);
@@ -260,7 +269,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                placeholder="Buscar en blog, proyectos y servicios..."
+                placeholder={SHOW_PROJECTS ? "Buscar en blog, proyectos y servicios..." : "Buscar en blog y servicios..."}
                 className="w-full pl-12 pr-4 py-4 text-lg bg-white border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
               />
             </div>
@@ -299,16 +308,18 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
             >
               Blog
             </button>
-            <button
-              onClick={() => handleTypeFilter('project')}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-                selectedType === 'project'
-                  ? 'bg-gray-900 text-white shadow-sm'
-                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              Proyectos
-            </button>
+            {SHOW_PROJECTS && (
+              <button
+                onClick={() => handleTypeFilter('project')}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+                  selectedType === 'project'
+                    ? 'bg-gray-900 text-white shadow-sm'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Proyectos
+              </button>
+            )}
             <button
               onClick={() => handleTypeFilter('service')}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${

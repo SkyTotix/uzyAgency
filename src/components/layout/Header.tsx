@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
+import { SHOW_PROJECTS } from '@/lib/config/features';
 
 // Lazy load GlobalSearch para mejorar performance inicial
 const GlobalSearch = dynamic(() => import('@/components/features/GlobalSearch'), {
@@ -39,9 +40,11 @@ export default function Header() {
 
           {/* Desktop Navigation - Montserrat (font-sans) */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/projects" prefetch={true} className="text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors tracking-wide">
-              Proyectos
-            </Link>
+            {SHOW_PROJECTS && (
+              <Link href="/projects" prefetch={true} className="text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors tracking-wide">
+                Proyectos
+              </Link>
+            )}
             <Link href="/services" prefetch={true} className="text-sm font-sans font-medium text-gray-600 hover:text-gray-900 transition-colors tracking-wide">
               Servicios
             </Link>
@@ -90,9 +93,11 @@ export default function Header() {
           isMenuOpen ? "max-h-80 opacity-100 pb-6" : "max-h-0 opacity-0 overflow-hidden"
         )}>
           <div className="py-4 space-y-1">
-            <Link href="/projects" prefetch={true} className="block px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 tracking-wide">
-              Proyectos
-            </Link>
+            {SHOW_PROJECTS && (
+              <Link href="/projects" prefetch={true} className="block px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 tracking-wide">
+                Proyectos
+              </Link>
+            )}
             <Link href="/services" prefetch={true} className="block px-3 py-2 text-sm font-sans font-medium text-gray-600 hover:text-gray-900 tracking-wide">
               Servicios
             </Link>

@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap';
 import Link from 'next/link';
+import { SHOW_PROJECTS } from '@/lib/config/features';
 
 const projects = [
   {
@@ -33,6 +34,7 @@ export default function FeaturedWork() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
+    if (!SHOW_PROJECTS || !sectionRef.current) return;
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -144,6 +146,8 @@ export default function FeaturedWork() {
       });
     });
   }, { scope: sectionRef });
+
+  if (!SHOW_PROJECTS) return null;
 
   return (
     <section 

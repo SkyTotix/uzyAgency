@@ -6,32 +6,20 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('Navigation', () => {
-  test('debe navegar a la página de Portfolio correctamente', async ({ page }) => {
-    // Iniciar en la homepage
+  test('no debe mostrar enlace de Proyectos en nav cuando SHOW_PROJECTS es false', async ({ page }) => {
     await page.goto('/');
 
-    // Click en el enlace de Portfolio
-    await page.click('nav a:has-text("Portfolio")');
+    // El enlace de Proyectos/Portfolio no debe estar visible
+    await expect(page.locator('nav a:has-text("Proyectos")')).toHaveCount(0);
+    await expect(page.locator('nav a:has-text("Portfolio")')).toHaveCount(0);
+  });
 
-    // Esperar a que la navegación se complete
-    await page.waitForURL('**/projects');
+  test('debe cargar /projects al navegar directamente por URL', async ({ page }) => {
+    // La ruta /projects sigue existiendo aunque no esté en el nav
+    await page.goto('/projects');
 
-    // Verificar que estamos en la página de Portfolio
     expect(page.url()).toContain('/projects');
-
-    // Verificar que el contenido de Portfolio se cargó
-    await expect(page.locator('h1, h2').first()).toBeVisible();
-
-    // Verificar que no hay errores en consola
-    const errors: string[] = [];
-    page.on('console', (msg) => {
-      if (msg.type() === 'error') {
-        errors.push(msg.text());
-      }
-    });
-
-    await page.waitForTimeout(500);
-    expect(errors).toHaveLength(0);
+    await expect(page.locator('main')).toBeVisible();
   });
 
   test('debe navegar a la página de Blog correctamente', async ({ page }) => {
@@ -148,15 +136,12 @@ test.describe('Navigation', () => {
     // Esperar a que el menú se abra
     await page.waitForTimeout(500);
 
-    // Click en un enlace del menú móvil
-    await page.click('text=Portfolio, text=Servicios').catch(() => {
-      // Si falla, intentar con otro selector
-      return page.locator('a:has-text("Servicios")').click();
-    });
+    // Click en Servicios (Proyectos está oculto cuando SHOW_PROJECTS es false)
+    await page.locator('a:has-text("Servicios")').click();
 
-    // Verificar navegación
+    // Verificar navegación a Servicios
     await page.waitForLoadState('networkidle');
-    expect(page.url()).toMatch(/services|projects/);
+    expect(page.url()).toContain('/services');
   });
 
   test('debe cargar páginas sin timeout', async ({ page }) => {
@@ -191,9 +176,9 @@ test.describe('Navigation', () => {
   });
 
   test('debe tener navegación consistente entre páginas', async ({ page }) => {
-    // Verificar que los mismos enlaces están disponibles en todas las páginas
+    // Enlaces visibles cuando SHOW_PROJECTS es false (sin Proyectos/Portfolio)
     const pages = ['/', '/projects', '/blog'];
-    const expectedLinks = ['Inicio', 'Servicios', 'Portfolio', 'Blog'];
+    const expectedLinks = ['Servicios', 'Acerca', 'Blog'];
 
     for (const url of pages) {
       await page.goto(url);

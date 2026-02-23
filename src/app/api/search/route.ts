@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sanityClientReadOnly } from '@/lib/sanity';
 import { GLOBAL_SEARCH_QUERY, SEARCH_BY_TYPE_QUERY } from '@/lib/queries/search';
 import type { SearchResponse, SearchResult, SearchResultType } from '@/lib/types/sanity';
+import { SHOW_PROJECTS } from '@/lib/config/features';
 
 /**
  * GET /api/search
@@ -38,6 +39,12 @@ export async function GET(request: NextRequest) {
 
     // Búsqueda filtrada por tipo
     if (typeFilter) {
+      if (!SHOW_PROJECTS && typeFilter === 'project') {
+        return NextResponse.json(
+          { results: [], total: 0, query: query.trim(), types: { posts: 0, projects: 0, services: 0 } },
+          { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' } }
+        );
+      }
       const validTypes: SearchResultType[] = ['post', 'project', 'service'];
       if (!validTypes.includes(typeFilter)) {
         return NextResponse.json(
@@ -80,10 +87,11 @@ export async function GET(request: NextRequest) {
       services: SearchResult[];
     }>(GLOBAL_SEARCH_QUERY, { searchTerm: query.trim() });
 
-    // Combinar y ordenar resultados
+    // Combinar y ordenar resultados (excluir projects si están ocultos)
+    const projectsToInclude = SHOW_PROJECTS ? searchResults.projects : [];
     const allResults: SearchResult[] = [
       ...searchResults.posts,
-      ...searchResults.projects,
+      ...projectsToInclude,
       ...searchResults.services,
     ].sort((a, b) => {
       // Priorizar destacados
@@ -102,7 +110,7 @@ export async function GET(request: NextRequest) {
       query: query.trim(),
       types: {
         posts: searchResults.posts.length,
-        projects: searchResults.projects.length,
+        projects: projectsToInclude.length,
         services: searchResults.services.length,
       }
     };

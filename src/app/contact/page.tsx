@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Header, Footer } from '@/components/layout';
 import ContactForm from '@/components/features/ContactForm';
+import { SITE_CONTACT } from '@/lib/config/site';
 
 export const metadata: Metadata = {
   title: 'Contacto | UziAgency - Ponte en Contacto con Nosotros',
-  description: '¿Tienes un proyecto en mente? Contáctanos para hacerlo realidad. Respuesta garantizada en 24 horas. Desarrollo web, diseño UI/UX y animaciones profesionales.',
+  description: '¿Tienes un proyecto en mente? Contáctanos para hacerlo realidad. Nos esforzamos por responder en 24-48 horas. Desarrollo web, diseño UI/UX y animaciones profesionales.',
   keywords: [
     'contacto', 'desarrollo web', 'diseño', 'proyectos digitales', 'consultoría',
     'agencia digital', 'desarrollo de software', 'diseño UI/UX', 'animaciones',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Contacto | UziAgency - Ponte en Contacto con Nosotros',
-    description: '¿Tienes un proyecto en mente? Contáctanos para hacerlo realidad. Respuesta garantizada en 24 horas.',
+    description: '¿Tienes un proyecto en mente? Contáctanos para hacerlo realidad. Nos esforzamos por responder en 24-48 horas.',
     url: '/contact',
     siteName: 'UziAgency',
     images: [
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Contacto | UziAgency - Ponte en Contacto con Nosotros',
-    description: '¿Tienes un proyecto en mente? Contáctanos para hacerlo realidad. Respuesta garantizada en 24 horas.',
+    description: '¿Tienes un proyecto en mente? Contáctanos para hacerlo realidad. Nos esforzamos por responder en 24-48 horas.',
     images: ['/og-image-contact.jpg'],
   },
   robots: {
@@ -71,16 +72,16 @@ const jsonLd = {
     logo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/logo.png`,
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+1-234-567-8900',
+      telephone: SITE_CONTACT.phone,
       contactType: 'customer service',
-      email: 'hola@uziagency.com',
+      email: SITE_CONTACT.email,
       availableLanguage: 'Spanish',
-      areaServed: 'ES',
+      areaServed: 'MX',
       hoursAvailable: {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: [
           'Monday',
-          'Tuesday', 
+          'Tuesday',
           'Wednesday',
           'Thursday',
           'Friday'
@@ -91,15 +92,10 @@ const jsonLd = {
     },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Av. Principal 123, Oficina 456',
-      addressLocality: 'Ciudad',
-      addressCountry: 'ES'
-    },
-    sameAs: [
-      'https://twitter.com/uziagency',
-      'https://linkedin.com/company/uziagency',
-      'https://github.com/uziagency'
-    ]
+      addressLocality: SITE_CONTACT.address.short,
+      postalCode: SITE_CONTACT.address.postalCode,
+      addressCountry: 'MX'
+    }
   }
 };
 
